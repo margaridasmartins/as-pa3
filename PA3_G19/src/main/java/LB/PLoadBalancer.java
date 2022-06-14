@@ -6,6 +6,7 @@ package LB;
 import LB.GUI.ConfigurationGUI;
 import LB.GUI.GUI;
 import LB.Communication.MonitorSocket;
+import LB.Handlers.TMonitorHandler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,6 +47,9 @@ public class PLoadBalancer {
        MonitorSocket monitorSocket = new MonitorSocket(monitorPortNumber, "127.0.0.1");
        monitorSocket.creatSocket();
        
+       // Handle monitor messages
+       TMonitorHandler monitorHandler = new TMonitorHandler(monitorSocket);
+       monitorHandler.start();
         
         
         
