@@ -46,7 +46,7 @@ public class ConfigurationGUI extends javax.swing.JFrame {
 
         portNumber.setModel(new javax.swing.SpinnerNumberModel(5002, 1000, 10000, 1));
 
-        loadBalancerPort.setModel(new javax.swing.SpinnerNumberModel(5001, 1000, 5001, 1));
+        loadBalancerPort.setModel(new javax.swing.SpinnerNumberModel(5001, 1000, 10000, 1));
         loadBalancerPort.setPreferredSize(new java.awt.Dimension(114, 24));
 
         jButton1.setText("Start Client");

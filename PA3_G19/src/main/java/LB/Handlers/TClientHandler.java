@@ -3,18 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package LB.Handlers;
-import LB.Communication.MonitorSocket;
+import LB.Communication.ClientSocket;
 import Utils.CodeMessages;
 
 /**
  *
  * @author guids
  */
-public class TMonitorHandler extends Thread{
+public class TClientHandler extends Thread{
     
-    private final MonitorSocket socket;
+    private final ClientSocket socket;
     
-    public TMonitorHandler(MonitorSocket socket){
+    public TClientHandler(ClientSocket socket){
         this.socket = socket; 
     }
     

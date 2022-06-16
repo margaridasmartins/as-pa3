@@ -5,8 +5,8 @@
 package LB;
 import LB.GUI.ConfigurationGUI;
 import LB.GUI.GUI;
-import LB.Communication.MonitorSocket;
-import LB.Handlers.TMonitorHandler;
+import LB.Communication.ClientSocket;
+import LB.Handlers.TClientHandler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,14 +41,15 @@ public class PLoadBalancer {
        
        // Start main GUI
        GUI gui = new GUI();
+       gui.setLoadBalancerInformation(portNumber, monitorPortNumber);
        gui.setVisible(true);
     
        // Fist loadbalancer should connect to the monitor at the respective port
-       MonitorSocket monitorSocket = new MonitorSocket(monitorPortNumber, "127.0.0.1");
+       ClientSocket monitorSocket = new ClientSocket(monitorPortNumber, "127.0.0.1");
        monitorSocket.creatSocket();
        
        // Handle monitor messages
-       TMonitorHandler monitorHandler = new TMonitorHandler(monitorSocket);
+       TClientHandler monitorHandler = new TClientHandler(monitorSocket);
        monitorHandler.start();
         
         

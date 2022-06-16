@@ -6,6 +6,7 @@ package Client;
 
 import Client.GUI.ConfigurationGUI;
 import Client.GUI.GUI;
+import Client.Communication.ClientSocket;
 
 
 /**
@@ -36,14 +37,22 @@ public class PClient {
             }
        }
        
+       // Connect to Load Balancer
+       ClientSocket lbSocket = new ClientSocket(loadBalancerPortNumber, "127.0.0.1", portNumber);
+       lbSocket.creatSocket();       
+       
        // Start main GUI
        GUI gui = new GUI();
+       gui.setClientInformation(portNumber, loadBalancerPortNumber);
+       gui.setLoadBalancerSocket(lbSocket);
        gui.setVisible(true);
+       
+       
     }
     
-    public static void startClient(int portNumber, int monitorPortNumber){
+    public static void startClient(int portNumber, int loadBalancerPortNumber){
         PClient.portNumber = portNumber;
-        PClient.loadBalancerPortNumber = monitorPortNumber;
+        PClient.loadBalancerPortNumber = loadBalancerPortNumber;
         PClient.started = true;
     }
     

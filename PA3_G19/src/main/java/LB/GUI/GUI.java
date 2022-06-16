@@ -158,10 +158,9 @@ public class GUI extends javax.swing.JFrame {
        PLoadBalancer.terminate();
     }//GEN-LAST:event_jButton1ActionPerformed
     
-    public void setLoadBalancerInformation(int portNumber, int monitorPortNumber, String role){
+    public void setLoadBalancerInformation(int portNumber, int monitorPortNumber){
         portNumberLabel.setText(Integer.toString(portNumber));
         monitorPortNumberLabel.setText(Integer.toString(monitorPortNumber));
-        statusLabel.setText(role);
     }
     /**
      * @param args the command line arguments
