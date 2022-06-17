@@ -282,6 +282,11 @@ public class GUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    public void addReply(String requestId, String serverId, String ni, String pi, String deadline){
+        DefaultTableModel model = (DefaultTableModel) repliesTable.getModel();
+        model.addRow(new Object[]{requestId, serverId, ni, pi, deadline});
+    }
+    
     public void setClientInformation(int portNumber, int loadBPortNumber){
         clientPortNumber.setText(Integer.toString(portNumber));
         loadBalancerPortNumber.setText(Integer.toString(loadBPortNumber));

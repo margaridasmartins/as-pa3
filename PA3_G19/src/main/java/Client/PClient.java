@@ -7,9 +7,13 @@ package Client;
 import Client.GUI.ConfigurationGUI;
 import Client.GUI.GUI;
 import Client.Communication.ClientSocket;
-
+import Client.Communication.TServerSocket;
 
 /**
+ *
+ * Client process class
+ */
+import java.io.IOException;/**
  *
  * Client process class
  */
@@ -21,8 +25,9 @@ public class PClient {
     
     /**
      * @param args the command line arguments
+     * @throws java.io.IOException
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
      
         // Configuration GUI
         ConfigurationGUI configurationGUI =  new ConfigurationGUI();
@@ -47,6 +52,9 @@ public class PClient {
        gui.setLoadBalancerSocket(lbSocket);
        gui.setVisible(true);
        
+       // Create Client Server to receive requests
+       TServerSocket serverSocket = new TServerSocket(portNumber, gui);
+       serverSocket.start();
        
     }
     
