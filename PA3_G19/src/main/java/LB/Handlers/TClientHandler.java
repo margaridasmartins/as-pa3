@@ -5,6 +5,8 @@
 package LB.Handlers;
 import LB.Communication.ClientSocket;
 import Utils.CodeMessages;
+import LB.PLoadBalancer;
+import LB.Entities.LoadBalancer;
 
 /**
  *
@@ -13,9 +15,11 @@ import Utils.CodeMessages;
 public class TClientHandler extends Thread{
     
     private final ClientSocket socket;
+    private LoadBalancer lb;
     
-    public TClientHandler(ClientSocket socket){
+    public TClientHandler(ClientSocket socket, LoadBalancer lb){
         this.socket = socket; 
+        this.lb = lb;
     }
     
     @Override
@@ -37,7 +41,25 @@ public class TClientHandler extends Thread{
                             String hbMessage = CodeMessages.HB.name() + "|" + clientMessage[1];
                             socket.sendMessage(hbMessage);
                         }
-                        break;  
+                        break;
+                    // LB HELLO message from monitor -> HELLO|[P or S]
+                    case HELLO:
+                        {
+                            if(clientMessage[1].equals("P")){
+                                
+                                // setPrimary
+                                lb.setPrimary();
+                                
+                                // get SERVERS
+                                socket.sendMessage(CodeMessages.SERVER.name());
+                            }
+                        }
+                        break;
+                    // SERVERs DETAILS
+                    case SERVER:
+                        {
+                            
+                        }
                 }
             }
     

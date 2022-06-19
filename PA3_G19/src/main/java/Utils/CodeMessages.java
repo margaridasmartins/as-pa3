@@ -12,5 +12,6 @@ public enum CodeMessages {
     HELLO,
     HB,
     REQUEST,
-    REPLY
+    REPLY,
+    SERVER
 }

@@ -24,6 +24,10 @@ class Server {
         lastJobIdx = jobIdx;
     }
     
+    public int getServerId(){
+        return serverID;
+    }
+    
     public int getNJobs(){
         return njobs;
     }

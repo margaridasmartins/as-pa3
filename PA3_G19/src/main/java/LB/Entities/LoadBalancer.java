@@ -26,9 +26,22 @@ public class LoadBalancer {
         this.isPrimary = true;    
     }
     
+    public boolean getPrimary(){
+        return this.isPrimary;  
+    }
+    
     public void addServer(int serverId){
         Server s = new Server(serverId);
         servers.add(0,s);
+    }
+    
+    public void deleteServer(int serverId){
+        for(Server si : servers){
+            if(si.getServerId() == serverId){
+               servers.remove(si);
+               break;
+            }
+        }
     }
     
     public Server getServerforRequest(){
