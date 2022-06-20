@@ -5,7 +5,6 @@
 package LB.Handlers;
 import LB.Communication.ClientSocket;
 import Utils.CodeMessages;
-import LB.PLoadBalancer;
 import LB.Entities.LoadBalancer;
 
 /**
@@ -36,9 +35,9 @@ public class TClientHandler extends Thread{
                 switch(CodeMessages.valueOf(clientMessage[0])){
                     
                     // HB message -> HB|LBID
-                    case HB:
+                    case HEARTBEAT:
                         {
-                            String hbMessage = CodeMessages.HB.name() + "|" + clientMessage[1];
+                            String hbMessage = CodeMessages.HEARTBEAT.name() + "|" + lb.getLoadBalencerID();
                             socket.sendMessage(hbMessage);
                         }
                         break;
@@ -50,15 +49,23 @@ public class TClientHandler extends Thread{
                                 // setPrimary
                                 lb.setPrimary();
                                 
-                                // get SERVERS
-                                socket.sendMessage(CodeMessages.SERVER.name());
                             }
                         }
                         break;
                     // SERVERs DETAILS
-                    case SERVER:
+                    case STATUS:
                         {
                             
+                        }
+                        break;
+                    // Primary LoadBalancer is down need to start as primary
+                    case PRIMARY:  
+                        {
+                            // update Port
+                            lb.setLoadBalencerID(Integer.getInteger(clientMessage[1]));
+                            
+                            // setPrimary
+                            lb.setPrimary();
                         }
                 }
             }

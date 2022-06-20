@@ -4,24 +4,32 @@
  */
 package LB.Entities;
 
+import LB.Communication.ClientSocket;
+
 /**
  *
  * @author guids
  */
 class Server {
     
-    private int serverID;
+    private final int serverID;
     private int njobs = 0;
     private int lastJobIdx = 0;
+    private ClientSocket socket;
     
-    public Server(int serverID){
+    public Server(int serverID, ClientSocket socket){
         this.serverID = serverID; 
+        this.socket = socket;
     }
     
     public void addJob(int jobIdx){
         if(njobs<3)
             njobs++;
         lastJobIdx = jobIdx;
+    }
+    
+    public ClientSocket getSocket(){
+        return socket;
     }
     
     public int getServerId(){

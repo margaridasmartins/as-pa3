@@ -4,7 +4,9 @@
  */
 package LB.Entities;
 
-import java.util.ArrayList;
+import LB.Communication.ClientSocket;
+import LB.Handlers.TClientHandler;
+import java.util.HashMap;
 
 /**
  *
@@ -14,12 +16,13 @@ public class LoadBalancer {
     
     private boolean isPrimary = false;
     
-    private ArrayList<Server> servers;
+    private HashMap<Integer,Server> servers;
     
-    private int jobIdx = 0;
     
-    public  LoadBalancer(){
+    private int lbId;
     
+    public  LoadBalancer(int lbId){
+        this.lbId = lbId;
     }
     
     public void setPrimary(){
@@ -30,34 +33,35 @@ public class LoadBalancer {
         return this.isPrimary;  
     }
     
+    public int getLoadBalencerID(){
+        return lbId;
+    }
+    
+    public void setLoadBalencerID(int lbId){
+        this.lbId = lbId;
+    }   
+
+    public boolean hasServer(int serverId){
+        return servers.containsKey(serverId);
+    }
+    
+    
     public void addServer(int serverId){
-        Server s = new Server(serverId);
-        servers.add(0,s);
+        
+        // new server, needs to create a new connection
+        // Fist loadbalancer should connect to the monitor at the respective port
+        ClientSocket serverSocket = new ClientSocket(serverId, "127.0.0.1");
+        serverSocket.creatSocket();
+        
+        Server s = new Server(serverId, serverSocket);
+        
+        servers.put(serverId, s);
     }
     
     public void deleteServer(int serverId){
-        for(Server si : servers){
-            if(si.getServerId() == serverId){
-               servers.remove(si);
-               break;
-            }
-        }
+        servers.remove(serverId);
     }
     
-    public Server getServerforRequest(){
-        Server s = servers.get(0);
-        s.addJob(jobIdx);
-        servers.remove(s);
-        
-        int i = 0;
-        for(Server si : servers){
-            if(si.getNJobs()> s.getNJobs() ){
-                servers.add(i, s);
-            }
-            i++;
-        }
-        
-        jobIdx++;
-        return s;
-    }
+    
+
 }

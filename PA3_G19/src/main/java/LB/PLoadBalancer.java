@@ -48,7 +48,7 @@ public class PLoadBalancer {
        gui.setVisible(true);
     
        // Creat LoadBalancer Entity
-       LoadBalancer lb = new LoadBalancer();
+       LoadBalancer lb = new LoadBalancer(portNumber);
        
        // Fist loadbalancer should connect to the monitor at the respective port
        ClientSocket monitorSocket = new ClientSocket(monitorPortNumber, "127.0.0.1");
@@ -68,9 +68,8 @@ public class PLoadBalancer {
             }
        }
        
-       
        // LB is primary so it can start accepting Client messages
-       TServerSocket  serverSocket = new TServerSocket(portNumber);
+       TServerSocket  serverSocket = new TServerSocket(lb.getLoadBalencerID());
        serverSocket.start();
         
     }

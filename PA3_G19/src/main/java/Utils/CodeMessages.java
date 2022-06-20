@@ -10,8 +10,9 @@ package Utils;
  */
 public enum CodeMessages {
     HELLO,
-    HB,
+    STATUS,
     REQUEST,
     REPLY,
-    SERVER
+    PRIMARY,
+    HEARTBEAT
 }
