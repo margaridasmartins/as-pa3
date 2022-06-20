@@ -2,7 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package LB.Communication;
+package Client.Communication;
+import Utils.CodeMessages;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,17 +14,20 @@ import java.net.Socket;
  *
  * @author guids
  */
-public class MonitorSocket {
+public class ClientSocket {
     
+    private final int  clientId;
+    private int requestId = 1;
     private int portNumber;
     private String hostName;
     private Socket socket;
     private PrintWriter out; 
     private BufferedReader in;
     
-    public MonitorSocket(int portNumber, String hostName){
+    public ClientSocket(int portNumber, String hostName, int clientId){
         this.portNumber = portNumber;
         this.hostName = hostName;
+        this.clientId = clientId;
     }
     
     public boolean creatSocket(){
@@ -50,8 +54,10 @@ public class MonitorSocket {
         
     }
     
-    public void sendMessage(String message){
-        out.println(message);
+    public int sendRequest(int ni, int dline){
+        out.println(String.format("%s|%d|%d|00|01|%d|00|%d|",
+                CodeMessages.REQUEST.name(), clientId, requestId, ni, dline));
+        return requestId++;
     }
     
     public void closeSocket(){

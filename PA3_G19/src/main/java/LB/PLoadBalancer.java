@@ -5,7 +5,11 @@
 package LB;
 import LB.GUI.ConfigurationGUI;
 import LB.GUI.GUI;
-import LB.Communication.MonitorSocket;
+import LB.Communication.ClientSocket;
+import LB.Communication.TServerSocket;
+import LB.Handlers.TClientHandler;
+import LB.Entities.LoadBalancer;
+import java.io.IOException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,13 +27,13 @@ public class PLoadBalancer {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         
         // Configuration GUI
         ConfigurationGUI configurationGUI =  new ConfigurationGUI();
         configurationGUI.setVisible(true);
         
-        // Wait for configuration GUI
+       // Wait for configuration GUI
        while(!started){
             try {
                 Thread.sleep(100);
@@ -40,14 +44,33 @@ public class PLoadBalancer {
        
        // Start main GUI
        GUI gui = new GUI();
+       gui.setLoadBalancerInformation(portNumber, monitorPortNumber);
        gui.setVisible(true);
     
+       // Creat LoadBalancer Entity
+       LoadBalancer lb = new LoadBalancer(portNumber);
+       
        // Fist loadbalancer should connect to the monitor at the respective port
-       MonitorSocket monitorSocket = new MonitorSocket(monitorPortNumber, "127.0.0.1");
+       ClientSocket monitorSocket = new ClientSocket(monitorPortNumber, "127.0.0.1");
        monitorSocket.creatSocket();
        
-        
-        
+       // Handle monitor messages
+       TClientHandler monitorHandler = new TClientHandler(monitorSocket, lb);
+       monitorHandler.start();
+       
+       
+       // Wait for configuration GUI
+       while(!lb.getPrimary()){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PLoadBalancer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+       }
+       
+       // LB is primary so it can start accepting Client messages
+       TServerSocket  serverSocket = new TServerSocket(lb.getLoadBalencerID());
+       serverSocket.start();
         
     }
     
@@ -60,4 +83,5 @@ public class PLoadBalancer {
     public static void terminate(){
         System.exit(0);
     }
+    
 }

@@ -1,0 +1,46 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package LB.Entities;
+
+import LB.Communication.ClientSocket;
+
+/**
+ *
+ * @author guids
+ */
+class Server {
+    
+    private final int serverID;
+    private int njobs = 0;
+    private int lastJobIdx = 0;
+    private ClientSocket socket;
+    
+    public Server(int serverID, ClientSocket socket){
+        this.serverID = serverID; 
+        this.socket = socket;
+    }
+    
+    public void addJob(int jobIdx){
+        if(njobs<3)
+            njobs++;
+        lastJobIdx = jobIdx;
+    }
+    
+    public ClientSocket getSocket(){
+        return socket;
+    }
+    
+    public int getServerId(){
+        return serverID;
+    }
+    
+    public int getNJobs(){
+        return njobs;
+    }
+    
+    public int getLastJob(){
+        return lastJobIdx;
+    }
+}

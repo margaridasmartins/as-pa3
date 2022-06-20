@@ -4,6 +4,9 @@
  */
 package LB.GUI;
 import LB.PLoadBalancer;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,6 +19,15 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        //align Table cells to center
+        for(int i=0; i < clientReqTable.getColumnCount(); i++){
+            clientReqTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
     }
 
     /**
@@ -37,7 +49,7 @@ public class GUI extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        clientReqTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 384));
@@ -67,7 +79,7 @@ public class GUI extends javax.swing.JFrame {
         jTabbedPane1.setToolTipText("");
         jTabbedPane1.setName(""); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        clientReqTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -90,7 +102,7 @@ public class GUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(clientReqTable);
 
         jTabbedPane1.addTab("Client Requests", jScrollPane1);
 
@@ -158,11 +170,17 @@ public class GUI extends javax.swing.JFrame {
        PLoadBalancer.terminate();
     }//GEN-LAST:event_jButton1ActionPerformed
     
-    public void setLoadBalancerInformation(int portNumber, int monitorPortNumber, String role){
+    public void setLoadBalancerInformation(int portNumber, int monitorPortNumber){
         portNumberLabel.setText(Integer.toString(portNumber));
         monitorPortNumberLabel.setText(Integer.toString(monitorPortNumber));
-        statusLabel.setText(role);
     }
+    
+    public void addRequest(int clientId, int requestId, int serverId, int ni, int deadline){
+                       
+        DefaultTableModel model = (DefaultTableModel) clientReqTable.getModel();
+        model.addRow(new Object[]{clientId, requestId, serverId, ni,  deadline});
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -199,6 +217,7 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable clientReqTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -206,7 +225,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel monitorPortNumberLabel;
     private javax.swing.JLabel portNumberLabel;
     private javax.swing.JLabel statusLabel;
