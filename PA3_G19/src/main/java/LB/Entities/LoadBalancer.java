@@ -4,8 +4,9 @@
  */
 package LB.Entities;
 
+import java.util.concurrent.locks.ReentrantLock;
 import LB.Communication.ClientSocket;
-import LB.Handlers.TClientHandler;
+import java.util.LinkedList;
 import java.util.HashMap;
 
 /**
@@ -17,12 +18,17 @@ public class LoadBalancer {
     private boolean isPrimary = false;
     
     private HashMap<Integer,Server> servers;
+    private Server bestServer; 
     
+    private LinkedList<String> requests;
     
     private int lbId;
     
+    private final ReentrantLock rl;
+    
     public  LoadBalancer(int lbId){
         this.lbId = lbId;
+        this.rl = new ReentrantLock();
     }
     
     public void setPrimary(){
@@ -45,8 +51,12 @@ public class LoadBalancer {
         return servers.containsKey(serverId);
     }
     
+    public Server getServer(int serverId){
+        
+        return servers.get(serverId);
+    }
     
-    public void addServer(int serverId){
+    public Server addServer(int serverId){
         
         // new server, needs to create a new connection
         // Fist loadbalancer should connect to the monitor at the respective port
@@ -56,6 +66,48 @@ public class LoadBalancer {
         Server s = new Server(serverId, serverSocket);
         
         servers.put(serverId, s);
+        
+        return s;
+    }
+    
+    public void updateServer(int serverId, int njobs, int ni){
+    
+        Server s;
+        if(!hasServer(serverId)){
+            s = addServer(serverId);
+        }
+        else{
+            s = getServer(serverId);
+        }
+        
+        s.setNI(ni);
+        s.setNJobs(njobs);
+    }
+    
+    public Server getBestServer(){
+        return bestServer;
+    }
+    
+    public void addRequest(String request){
+        rl.lock();
+        try {
+            requests.add(request);
+        } finally {
+            rl.unlock();
+        }
+        
+    }
+    
+    public String getFirstRequest(){
+        String request;
+        
+        rl.lock();
+        try {
+            request = requests.pollFirst();
+        } finally {
+            rl.unlock();
+        }
+        return request;
     }
     
     public void deleteServer(int serverId){

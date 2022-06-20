@@ -6,6 +6,8 @@ package LB.Handlers;
 import LB.Communication.ClientSocket;
 import Utils.CodeMessages;
 import LB.Entities.LoadBalancer;
+import LB.Entities.Server;
+import LB.GUI.GUI;
 
 /**
  *
@@ -15,16 +17,21 @@ public class TClientHandler extends Thread{
     
     private final ClientSocket socket;
     private LoadBalancer lb;
+    private GUI gui;
     
-    public TClientHandler(ClientSocket socket, LoadBalancer lb){
+    public TClientHandler(ClientSocket socket, LoadBalancer lb, GUI gui){
         this.socket = socket; 
         this.lb = lb;
+        this.gui = gui;
     }
     
     @Override
     public void run(){
     
         String inputLine;
+        
+        // Hello to Monitor
+        socket.sendMessage(CodeMessages.HELLO.name() + "|" + "LB" + lb.getLoadBalencerID());
         
         while (true) {
             // keep listening to incoming messages
@@ -55,7 +62,29 @@ public class TClientHandler extends Thread{
                     // SERVERs DETAILS
                     case STATUS:
                         {
+                            // Update serverStatus
+                            int nservers = Integer.getInteger(clientMessage[1]);
                             
+                            int j = 2;
+                            for(int i =0; i<nservers; i++){
+                                lb.updateServer(Integer.getInteger(clientMessage[j]),
+                                        Integer.getInteger(clientMessage[++j]),
+                                        Integer.getInteger(clientMessage[++j]));
+                                j++;
+                            }
+                            
+                            // Choose server and  forward request
+                            String r = lb.getFirstRequest();
+                            Server s = lb.getBestServer();
+                            
+                            s.getSocket().sendMessage(r);
+                            
+                            String[] request = r.split("|");
+                            
+                            // Update GUI
+                            gui.addRequest(Integer.getInteger(request[1]), 
+                                    Integer.getInteger(request[2]), s.getServerId(),
+                                    Integer.getInteger(request[5]) , Integer.getInteger(request[7]));
                         }
                         break;
                     // Primary LoadBalancer is down need to start as primary
@@ -73,5 +102,6 @@ public class TClientHandler extends Thread{
         }
         
     }
+    
     
 }
