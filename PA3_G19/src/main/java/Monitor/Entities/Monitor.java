@@ -39,11 +39,11 @@ public class Monitor {
 
     /* Whether or not the primary Load Balancer is working */
     private final int[] loadBalancers;
-    
+
     private final List<Integer> heartBeatMessages;
-    
+
     private final HashMap<Integer, ClientSocket> sockets;
-    
+
     private final int heartbeatThreashold;
 
     private final ReentrantLock rl;
@@ -56,51 +56,49 @@ public class Monitor {
         loadBalancerRequests = new ArrayList<>();
         rl = new ReentrantLock();
         this.heartbeatThreashold = heartbeatThreashold;
-        heartBeatMessages = new  ArrayList<>();
-        loadBalancers = new int[2]; 
+        heartBeatMessages = new ArrayList<>();
+        loadBalancers = new int[2];
         sockets = new HashMap<>();
     }
-    
-    public boolean hasPrimaryLB(){
-        return loadBalancers[0]!=0;
+
+    public boolean hasPrimaryLB() {
+        return loadBalancers[0] != 0;
     }
 
     public void setLBUp(int ID) {
-        if(loadBalancers[0] == 0){
+        if (loadBalancers[0] == 0) {
             loadBalancers[0] = ID;
-        }
-        else{
+        } else {
             loadBalancers[1] = ID;
         }
     }
-    
-    public void addSocket(int ID, ClientSocket cs){
+
+    public void addSocket(int ID, ClientSocket cs) {
         sockets.put(ID, cs);
     }
-    
-    public void setDown(int ID){
-        
+
+    public void setDown(int ID) {
+
         // Server Down
-        if(serversInfo.containsKey(ID)){
+        if (serversInfo.containsKey(ID)) {
             serversInfo.remove(ID);
-            for(RequestMessage rm : new ArrayList<>(serversRequests.get(ID).values())){
+            for (RequestMessage rm : new ArrayList<>(serversRequests.get(ID).values())) {
                 sockets.get(loadBalancers[0]).sendMessage(rm);
             }
             serversRequests.remove(ID);
-        }
-        else{
-            if(loadBalancers[0] == ID){
+            gui.setServerDown(ID);
+        } else {
+            if (loadBalancers[0] == ID) {
                 PrimaryMessage pm = new PrimaryMessage(ID);
                 sockets.get(loadBalancers[0]).closeSocket();
                 sockets.get(loadBalancers[1]).sendMessage(pm);
                 sockets.put(loadBalancers[0], sockets.get(loadBalancers[1]));
                 sockets.remove(loadBalancers[1]);
                 loadBalancers[1] = 0;
-                
+
                 THeartBeatHandler hbsocket = new THeartBeatHandler(sockets.get(loadBalancers[0]), this, ID);
                 hbsocket.start();
-            }
-            else{
+            } else {
                 loadBalancers[1] = 0;
                 sockets.remove(ID);
             }
@@ -146,13 +144,13 @@ public class Monitor {
             rl.lock();
             serversInfo.putIfAbsent(serverID, new ServerRequestsInfo());
             serversInfo.get(serverID).receiveRequest(request.nIterations());
-            
+
             serversRequests.putIfAbsent(serverID, new HashMap<>());
             serversRequests.get(serverID).put(requestID, request);
-            
+
             clientsInfo.putIfAbsent(clientID, new ClientRequestsInfo(clientID));
             clientsInfo.get(clientID).forwardingRequest();
-            
+
             loadBalancerRequests.add(request);
 
             gui.addRequestToLBTable(request);
@@ -193,14 +191,14 @@ public class Monitor {
         try {
             rl.lock();
             serversInfo.get(serverID).completeRequest(request.nIterations());
-            
+
             ClientRequestsInfo requestInfo = clientsInfo.get(clientID);
             if (request.requestCode() == 2) {
                 requestInfo.replyingRequest();
             } else {
                 requestInfo.rejectingRequest();
             }
-            
+
             serversRequests.get(serverID).remove(requestID);
 
             gui.setNRequestsServer(serverID, serversRequests.get(serverID).size());
@@ -231,20 +229,20 @@ public class Monitor {
             rl.unlock();
         }
     }
-    
-    public void addHeartBeat(int ID){
+
+    public void addHeartBeat(int ID) {
         heartBeatMessages.add(ID);
     }
-    
-    public void removeHeartBeat(int ID){
+
+    public void removeHeartBeat(int ID) {
         heartBeatMessages.remove(Integer.valueOf(ID));
     }
-    
-    public boolean hasHeartBeat(int ID){
+
+    public boolean hasHeartBeat(int ID) {
         return heartBeatMessages.contains(ID);
     }
-    
-    public int getHeartbeatThreashold(){
+
+    public int getHeartbeatThreashold() {
         return heartbeatThreashold;
     }
 
@@ -310,7 +308,5 @@ public class Monitor {
             totalIterations -= iterations;
         }
     }
-    
-    
 
 }
