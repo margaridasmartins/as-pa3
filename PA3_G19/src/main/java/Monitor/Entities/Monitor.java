@@ -99,12 +99,15 @@ public class Monitor {
 
         try {
             rl.lock();
-            serversInfo.getOrDefault(serverID, new ServerRequestsInfo())
-                    .receiveRequest(request.nIterations());
-            serversRequests.getOrDefault(serverID, new HashMap<>())
-                    .put(requestID, request);
-            clientsInfo.getOrDefault(clientID, new ClientRequestsInfo(clientID))
-                    .forwardingRequest();
+            serversInfo.putIfAbsent(serverID, new ServerRequestsInfo());
+            serversInfo.get(serverID).receiveRequest(request.nIterations());
+            
+            serversRequests.putIfAbsent(serverID, new HashMap<>());
+            serversRequests.get(serverID).put(requestID, request);
+            
+            clientsInfo.putIfAbsent(clientID, new ClientRequestsInfo(clientID));
+            clientsInfo.get(clientID).forwardingRequest();
+            
             loadBalancerRequests.add(request);
 
             gui.addRequestToLBTable(request);
@@ -125,8 +128,8 @@ public class Monitor {
 
         try {
             rl.lock();
-            clientsInfo.getOrDefault(clientID, new ClientRequestsInfo(clientID))
-                    .processingRequest();
+            clientsInfo.putIfAbsent(clientID, new ClientRequestsInfo(clientID));
+            clientsInfo.get(clientID).processingRequest();
         } finally {
             rl.unlock();
         }
@@ -144,16 +147,16 @@ public class Monitor {
 
         try {
             rl.lock();
-            serversInfo.getOrDefault(serverID, new ServerRequestsInfo())
-                    .completeRequest(request.nIterations());
-            ClientRequestsInfo requestInfo = clientsInfo.getOrDefault(clientID, new ClientRequestsInfo(clientID));
+            serversInfo.get(serverID).completeRequest(request.nIterations());
+            
+            ClientRequestsInfo requestInfo = clientsInfo.get(clientID);
             if (request.requestCode() == 2) {
                 requestInfo.replyingRequest();
             } else {
                 requestInfo.rejectingRequest();
             }
-            serversRequests.getOrDefault(serverID, new HashMap<>())
-                    .remove(requestID);
+            
+            serversRequests.get(serverID).remove(requestID);
 
             gui.setNRequestsServer(serverID, serversRequests.get(serverID).size());
         } finally {
@@ -217,28 +220,24 @@ public class Monitor {
 
         void forwardingRequest() {
             pending++;
-            System.out.println("forward "+ pending +","+ beingProcessed+","+ rejected+","+ processed);
             update();
         }
 
         void processingRequest() {
             pending--;
             beingProcessed++;
-            System.out.println("process "+ pending +","+ beingProcessed+","+ rejected+","+ processed);
             update();
         }
 
         void rejectingRequest() {
             pending--;
             rejected++;
-            System.out.println("reject "+ pending +","+ beingProcessed+","+ rejected+","+ processed);
             update();
         }
 
         void replyingRequest() {
             beingProcessed--;
             processed++;
-            System.out.println("reply "+ pending +","+ beingProcessed+","+ rejected+","+ processed);
             update();
         }
 

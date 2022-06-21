@@ -75,12 +75,13 @@ public class TClientHandler extends Thread{
                             
                             RequestMessage rm = new RequestMessage(CodeMessages.REQUEST, r.clientID(),
                             r.requestID(), s.getServerId(), 0, r.nIterations(), 0, r.deadline(),0);
-
                             
-                            s.getSocket().sendMessage(rm);
                             
-                            //forward also to monitor
+                            // forward to monitor
                             socket.sendMessage(rm);
+                            
+                            // forward to server
+                            s.getSocket().sendMessage(rm);
                             
                             // Update GUI
                             gui.addRequest(r.clientID(), r.requestID(), s.getServerId(),
