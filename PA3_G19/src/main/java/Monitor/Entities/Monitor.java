@@ -6,6 +6,7 @@ package Monitor.Entities;
 
 import Communication.ClientSocket;
 import Monitor.GUI.GUI;
+import Monitor.Handlers.THeartBeatHandler;
 import Utils.Message;
 import Utils.RequestMessage;
 import Utils.ServerStatusMessage;
@@ -92,8 +93,12 @@ public class Monitor {
                 PrimaryMessage pm = new PrimaryMessage(ID);
                 sockets.get(loadBalancers[0]).closeSocket();
                 sockets.get(loadBalancers[1]).sendMessage(pm);
-                loadBalancers[1] = 0;
                 sockets.put(loadBalancers[0], sockets.get(loadBalancers[1]));
+                sockets.remove(loadBalancers[1]);
+                loadBalancers[1] = 0;
+                
+                THeartBeatHandler hbsocket = new THeartBeatHandler(sockets.get(loadBalancers[0]), this, ID);
+                hbsocket.start();
             }
             else{
                 loadBalancers[1] = 0;
