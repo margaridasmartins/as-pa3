@@ -126,6 +126,7 @@ public class Server {
                 nPendingRequest--;
                 currentRequests[workerId] = pendingRequests[id];
                 workers[workerId].newWork(pendingRequests[id].nIterations());
+                monitorSocket.sendMessage(new Message(CodeMessages.PROCESS).port(currentRequests[workerId].clientID()));
                 ncurrentRequests++;
                 pendingRequests[id]= null;
             }
