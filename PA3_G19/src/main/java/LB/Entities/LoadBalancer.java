@@ -67,7 +67,6 @@ public class LoadBalancer {
         // new server, needs to create a new connection
         // Fist loadbalancer should connect to the monitor at the respective port
         
-        System.out.println(String.valueOf(serverId));
         ClientSocket serverSocket = new ClientSocket(serverId, "127.0.0.1");
         
         Server s = new Server(serverId, serverSocket);
@@ -97,6 +96,7 @@ public class LoadBalancer {
                         bNJ = s.nRequests();
                         bNI = s.totalNIterations();
                     }
+                    break;
                 }
             }
             
@@ -109,6 +109,7 @@ public class LoadBalancer {
         // add new ones
         for(ServerStatusMessage s : status){
             if(!servers.containsKey(s.serverID())){
+                System.out.println(String.valueOf(s.serverID()));
                 Server si = addServer(s.serverID());
                 si.setNI(s.totalNIterations());
                 si.setNJobs(s.nRequests());

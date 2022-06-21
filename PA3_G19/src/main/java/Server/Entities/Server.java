@@ -114,10 +114,10 @@ public class Server {
                     id=0;
                 }
                 nPendingRequest--;
-                pendingRequests[id]= null;
                 currentRequests[workerId] = pendingRequests[id];
                 workers[workerId].newWork(pendingRequests[id].nIterations());
                 ncurrentRequests++;
+                pendingRequests[id]= null;
             }
         } finally {
             rl.unlock();
