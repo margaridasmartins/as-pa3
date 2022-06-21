@@ -57,6 +57,9 @@ public class TReplyHandler extends Thread{
                         break;  
                     }
                 }
+                else{
+                    break;
+                }
             } catch (IOException ex) {
                 System.err.println("Socket error");
             } catch (ClassNotFoundException ex) {

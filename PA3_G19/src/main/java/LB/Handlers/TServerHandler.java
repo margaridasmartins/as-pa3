@@ -59,6 +59,9 @@ public class TServerHandler extends Thread {
                     break;
                 }
             }
+            else{
+                break;
+            }
 
         }
     } 

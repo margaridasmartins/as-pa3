@@ -31,14 +31,16 @@ public class THeartBeatHandler extends Thread{
     public void run(){
         
         try {
-            
-            socket.sendMessage(new HeartBeatMessage(0));
-            Thread.sleep(monitor.getHeartbeatThreashold());
-            if(monitor.hasHeartBeat(ID)){
-                monitor.removeHeartBeat(ID);
-            }
-            else{
-                monitor.setDown(ID);
+            while(true){
+                socket.sendMessage(new HeartBeatMessage(0));
+                Thread.sleep(monitor.getHeartbeatThreashold());
+                if(monitor.hasHeartBeat(ID)){
+                    monitor.removeHeartBeat(ID);
+                }
+                else{
+                    monitor.setDown(ID);
+                    break;
+                }
             }
             
         } catch (InterruptedException ex) {

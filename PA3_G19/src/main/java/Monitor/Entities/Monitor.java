@@ -90,8 +90,10 @@ public class Monitor {
         else{
             if(loadBalancers[0] == ID){
                 PrimaryMessage pm = new PrimaryMessage(ID);
+                sockets.get(loadBalancers[0]).closeSocket();
                 sockets.get(loadBalancers[1]).sendMessage(pm);
                 loadBalancers[1] = 0;
+                sockets.get(loadBalancers[1]).closeSocket();
             }
             else{
                 loadBalancers[1] = 0;

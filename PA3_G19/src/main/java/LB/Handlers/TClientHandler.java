@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 public class TClientHandler extends Thread{
     
-    private final ClientSocket socket;
+    private  ClientSocket socket;
     private LoadBalancer lb;
     private GUI gui;
     
@@ -97,8 +97,13 @@ public class TClientHandler extends Thread{
                             
                             // setPrimary
                             lb.setPrimary();
+                            
+                            this.socket = new ClientSocket(pm.ID(), "127.0.0.1");
                         }
                 }
+            }
+            else{
+                break;
             }
     
         }
