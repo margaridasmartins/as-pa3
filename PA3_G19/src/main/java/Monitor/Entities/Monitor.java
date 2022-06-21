@@ -23,7 +23,7 @@ public class Monitor {
     private final HashMap<Integer, ServerRequestsInfo> serversInfo;
     
     /* List of requests of every server by ID */
-    private final HashMap<Integer, List<RequestMessage>> serversRequests;
+    private final HashMap<Integer, HashMap<Integer, RequestMessage>> serversRequests;
     
     /* Requests information of every client by ID */
     private final HashMap<Integer, ClientRequestsInfo> clientsInfo;
@@ -51,11 +51,12 @@ public class Monitor {
     public void forwardingRequest(RequestMessage request) {
         int clientID = request.clientID();
         int serverID = request.serverID();
+        int requestID = request.requestID();
         
         serversInfo.getOrDefault(serverID, new ServerRequestsInfo())
                 .receiveRequest(request.nIterations());
-        serversRequests.getOrDefault(serverID, new ArrayList<>())
-                .add(request);
+        serversRequests.getOrDefault(serverID, new HashMap<>())
+                .put(requestID, request);
         clientsInfo.getOrDefault(clientID, new ClientRequestsInfo())
                 .forwardingRequest();
         loadBalancerRequests.add(request);
@@ -68,6 +69,18 @@ public class Monitor {
                 .forwardingRequest();
     }
     
+    public void replyingRequest(RequestMessage request) {
+        int cliendID = request.port();
+        int serverID = request.serverID();
+        int requestID = request.requestID();
+        
+        serversInfo.getOrDefault(serverID, new ServerRequestsInfo())
+                .completeRequest(request.nIterations());
+        clientsInfo.getOrDefault(cliendID, new ClientRequestsInfo())
+                .replyingRequest();
+        serversRequests.getOrDefault(serverID, new HashMap<>())
+                .remove(requestID);
+    }
     
     class ClientRequestsInfo {
         private int pending = 0;
@@ -75,36 +88,36 @@ public class Monitor {
         private int rejected = 0;
         private int processed = 0;
         
-        public void forwardingRequest() {
+        void forwardingRequest() {
             pending++;
         }
         
-        public void processingRequest() {
+        void processingRequest() {
             pending--;
             beingProcessed++;
         }
         
-        public void rejectingRequest() {
+        void rejectingRequest() {
             beingProcessed--;
             rejected++;
         }
         
-        public void replingRequest() {
+        void replyingRequest() {
             beingProcessed--;
             processed++;
         }
     } 
     
     class ServerRequestsInfo {
-        private int nRequests = 0;
-        private int totalIterations = 0;
+        int nRequests = 0;
+        int totalIterations = 0;
         
-        public void receiveRequest(int iterations) {
+        void receiveRequest(int iterations) {
             nRequests++;
             totalIterations += iterations;
         }
         
-        public void completeRequest(int iterations) {
+        void completeRequest(int iterations) {
             nRequests--;
             totalIterations -= iterations;
         }

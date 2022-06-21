@@ -25,8 +25,12 @@ public class RequestMessage extends Message {
     int deadline;
     /* Value of pi calculated. */
     double pi;
+    /* Request code. */
+    int requestCode;
     
-    public RequestMessage(CodeMessages code, int clientID, int requestID, int serverID, int nRequests, int nIterations, double pi, int deadline) {
+    public RequestMessage(CodeMessages code, 
+            int clientID, int requestID, int serverID, int nRequests, 
+            int nIterations, double pi, int deadline, int requestCode) {
         super(code);
         this.clientID = clientID;
         this.requestID = requestID;
@@ -35,6 +39,7 @@ public class RequestMessage extends Message {
         this.nIterations = nIterations;
         this.pi = pi;
         this.deadline = deadline;
+        this.requestCode = requestCode;
     }
     
      public Message clientID(int clientID) {
@@ -98,5 +103,14 @@ public class RequestMessage extends Message {
     
     public int deadline() {
         return deadline;
+    }
+    
+    public Message requestCode(int requestCode) {
+        this.requestCode = requestCode;
+        return this;
+    }
+    
+    public int requestCode() {
+        return requestCode;
     }
 }
