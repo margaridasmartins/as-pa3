@@ -302,7 +302,8 @@ public class GUI extends javax.swing.JFrame {
     }
 
     public void setLoadBalancerInformation(int portNumber, int heartbeatThreshold) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // TODO:
+        return;
     }
 
     /**

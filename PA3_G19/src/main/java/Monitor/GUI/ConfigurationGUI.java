@@ -102,7 +102,7 @@ public class ConfigurationGUI extends javax.swing.JFrame {
 
     // Start main gui
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //PLoadBalanceradBalancer.startLoadBalancer((Integer) loadBalancerValue.getValue(), (Integer) monitorValue.getValue());
+        PMonitor.startMonitor((Integer) monitorPort.getValue(), (Integer) monitorHeartbeat.getValue());
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
