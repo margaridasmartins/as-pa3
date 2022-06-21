@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Server.GUI;
+import Entities.Request;
 import Server.PServer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -35,9 +37,9 @@ public class GUI extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        requestTable = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        replyTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,7 +64,7 @@ public class GUI extends javax.swing.JFrame {
         jTabbedPane1.setToolTipText("");
         jTabbedPane1.setName(""); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        requestTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -85,11 +87,11 @@ public class GUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(requestTable);
 
         jTabbedPane1.addTab("Requests", jScrollPane1);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        replyTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -112,7 +114,7 @@ public class GUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable2);
+        jScrollPane3.setViewportView(replyTable);
 
         jTabbedPane1.addTab("Replies", jScrollPane3);
 
@@ -176,6 +178,18 @@ public class GUI extends javax.swing.JFrame {
        PServer.terminate();
     }//GEN-LAST:event_jButton1ActionPerformed
     
+    public void addRequest(Request r){
+                       
+        DefaultTableModel model = (DefaultTableModel) requestTable.getModel();
+        model.addRow(new Object[]{r.clientID(), r.requestID(), r.nIterations(),  r.deadline()});
+    }
+    
+    public void addReply(Request r){
+                       
+        DefaultTableModel model = (DefaultTableModel) replyTable.getModel();
+        model.addRow(new Object[]{r.clientID(), r.requestID(), r.nIterations(),  r.deadline(), r.pi()});
+    }
+    
     public void setServerInformation(int portNumber, int monitorPortNumber){
         portNumberLabel.setText(Integer.toString(portNumber));
         monitorPortNumberLabel.setText(Integer.toString(monitorPortNumber));
@@ -226,9 +240,9 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel monitorPortNumberLabel;
     private javax.swing.JLabel portNumberLabel;
+    private javax.swing.JTable replyTable;
+    private javax.swing.JTable requestTable;
     // End of variables declaration//GEN-END:variables
 }

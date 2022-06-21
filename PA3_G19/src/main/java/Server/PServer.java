@@ -52,7 +52,7 @@ public class PServer {
        TClientHandler monitorHandler = new TClientHandler(monitorSocket, portNumber);
        monitorHandler.start();
        
-       Server server = new Server(monitorSocket);
+       Server server = new Server(monitorSocket, gui);
        
        // Create Server
        TServerSocket serverSocket = new TServerSocket(portNumber, server);

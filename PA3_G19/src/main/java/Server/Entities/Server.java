@@ -9,24 +9,24 @@ import Communication.ClientSocket;
 import Utils.CodeMessages;
 import Utils.RequestMessage;
 import java.util.concurrent.locks.ReentrantLock;
-
+import Server.GUI.GUI;
 /**
  *
  * @author guids
  */
 public class Server {
     
-    private Request[] pendingRequests;
+    private final Request[] pendingRequests;
     private int nPendingRequest = 0;
     private int ncurrentRequests = 0;
     private ClientSocket monitorSocket;
     private final TWorker[] workers;
     private final ReentrantLock rl;
-     
-    private Request[] currentRequests;
+    private final GUI gui;
+    private final Request[] currentRequests;
 
     
-    public Server(ClientSocket socket){
+    public Server(ClientSocket socket, GUI gui){
         workers = new TWorker[3];
         
         workers[1] = new TWorker(1, this);
@@ -41,9 +41,13 @@ public class Server {
         currentRequests = new Request[3];
         
         rl = new ReentrantLock();
+        
+        this.gui = gui;
     }
     
     public void newRequest(Request r) throws InterruptedException{
+        
+        gui.addRequest(r);
         if(nPendingRequest == 2 && ncurrentRequests== 3){
             // send reject message
             ClientSocket s = new ClientSocket(r.clientID(), "127.0.0.1");
@@ -54,6 +58,10 @@ public class Server {
             s.sendMessage(rm);
             
             monitorSocket.sendMessage(rm);
+            
+            r.pi(0);
+            gui.addReply(r);
+            
         }
         else if(ncurrentRequests==3){
             pendingRequests[nPendingRequest] = r;
@@ -87,6 +95,10 @@ public class Server {
             s.sendMessage(rm);
             
             monitorSocket.sendMessage(rm);
+            
+            //update gui
+            r.pi(result);
+            gui.addReply(r);
             
             // worker is available
             currentRequests[workerId] = null;
