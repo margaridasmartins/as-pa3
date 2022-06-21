@@ -43,19 +43,19 @@ public class PClient {
        }
        
        // Connect to Load Balancer
-       ClientSocket lbSocket = new ClientSocket(loadBalancerPortNumber, "127.0.1");
+       ClientSocket lbSocket = new ClientSocket(loadBalancerPortNumber, "127.0.0.1");
   
-       System.out.println("Hello");
        // Start main GUI
        GUI gui = new GUI();
        gui.setClientInformation(portNumber, loadBalancerPortNumber);
        gui.setLoadBalancerSocket(lbSocket);
        gui.setVisible(true);
        
-       System.out.println("Hello");
        // Create Client Server to receive requests
        TServerSocket serverSocket = new TServerSocket(portNumber, gui);
        serverSocket.start();
+       
+       
        
     }
     
