@@ -93,7 +93,7 @@ public class Monitor {
                 sockets.get(loadBalancers[0]).closeSocket();
                 sockets.get(loadBalancers[1]).sendMessage(pm);
                 loadBalancers[1] = 0;
-                sockets.get(loadBalancers[1]).closeSocket();
+                sockets.put(loadBalancers[0], sockets.get(loadBalancers[1]));
             }
             else{
                 loadBalancers[1] = 0;
@@ -232,7 +232,7 @@ public class Monitor {
     }
     
     public void removeHeartBeat(int ID){
-        heartBeatMessages.remove(ID);
+        heartBeatMessages.remove(Integer.valueOf(ID));
     }
     
     public boolean hasHeartBeat(int ID){

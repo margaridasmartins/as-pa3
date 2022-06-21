@@ -8,6 +8,7 @@ import Communication.ClientSocket;
 import Monitor.Entities.Monitor;
 import Monitor.GUI.GUI;
 import static Utils.CodeMessages.*;
+import Utils.HeartBeatMessage;
 import Utils.HelloMessage;
 import Utils.Message;
 import Utils.RequestMessage;
@@ -42,25 +43,26 @@ public class TServerHandler extends Thread {
                 Message m = (Message) msg;
                 switch (m.code()) {
                     case HELLO:
+                        HelloMessage hm = (HelloMessage) msg;
+                        
                         if (m.type().equals("LB")) {
                             /* Load Balancer HELLO */
                             if (monitor.hasPrimaryLB()) {
                                 socket.sendMessage(new HelloMessage(0, null, "S"));
                             }
                             else{
-                                HelloMessage hm = (HelloMessage) msg;
-                                monitor.setLBUp(hm.ID());
                                 socket.sendMessage(new HelloMessage(0, null, "P"));
                             }
-                            
-                            
+                            monitor.setLBUp(hm.ID());
                         } else {
-                            
-                            HelloMessage hm = (HelloMessage) msg;
-                            
                             /* Server HELLO */
                             monitor.addServer(hm.ID());
                         }
+                        
+                        monitor.addSocket( hm.ID(), socket);
+                        THeartBeatHandler hbsocket = new THeartBeatHandler(socket, monitor, hm.ID());
+                        hbsocket.start();
+                        
                         break;
                     case STATUS:
                         List<ServerStatusMessage> serversStatus = monitor.getServersStatus();
@@ -78,7 +80,7 @@ public class TServerHandler extends Thread {
                         monitor.replyingRequest((RequestMessage)msg);
                         break;
                     case HEARTBEAT:
-                        monitor.addHeartBeat(m.port());
+                        monitor.addHeartBeat(((HeartBeatMessage)msg).ID());
                         break;
                 }
             }

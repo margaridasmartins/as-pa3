@@ -44,7 +44,7 @@ public class ClientSocket {
     }
     
     public int getPort(){
-        return socket.getPort();
+        return socket.getLocalPort();
     }
     
     /**
