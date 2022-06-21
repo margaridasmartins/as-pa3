@@ -195,24 +195,28 @@ public class Monitor {
 
         void forwardingRequest() {
             pending++;
+            System.out.println("forward "+ pending +","+ beingProcessed+","+ rejected+","+ processed);
             update();
         }
 
         void processingRequest() {
             pending--;
             beingProcessed++;
+            System.out.println("process "+ pending +","+ beingProcessed+","+ rejected+","+ processed);
             update();
         }
 
         void rejectingRequest() {
             pending--;
             rejected++;
+            System.out.println("reject "+ pending +","+ beingProcessed+","+ rejected+","+ processed);
             update();
         }
 
         void replyingRequest() {
             beingProcessed--;
             processed++;
+            System.out.println("reply "+ pending +","+ beingProcessed+","+ rejected+","+ processed);
             update();
         }
 
