@@ -16,7 +16,7 @@ import Monitor.PMonitor;
  * Monitor graphical interface.
  * @author Rafael Sá (104552), Luís Laranjeira (81526)
  */
-public class Monitor_GUI extends javax.swing.JFrame {
+public class GUI extends javax.swing.JFrame {
 
     /** Monitor Service. */
     //private final PMonitor monitor;
@@ -28,7 +28,7 @@ public class Monitor_GUI extends javax.swing.JFrame {
      * @param lbPort load balancer port
      * @param heartbeatThreshold heartbeat threshold
      */
-    public Monitor_GUI(/*int port, String hostname, int lbPort, int heartbeatThreshold*/) {
+    public GUI(/*int port, String hostname, int lbPort, int heartbeatThreshold*/) {
         initComponents();
         //this.monitor = new PMonitor(port, hostname, lbPort, heartbeatThreshold, this);
         //this.monitor.start();
@@ -65,7 +65,7 @@ public class Monitor_GUI extends javax.swing.JFrame {
         jLabelTitle.setMaximumSize(new java.awt.Dimension(70, 22));
 
         jButtonEnd.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButtonEnd.setText("End");
+        jButtonEnd.setText("Terminate");
         jButtonEnd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonEndActionPerformed(evt);
@@ -77,7 +77,7 @@ public class Monitor_GUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Server ID", "State", "Nº of Requests", "Requests"
+                "Server ID", "State", "N. of Requests", "Requests"
             }
         ));
         jTableServer.setColumnSelectionAllowed(true);
@@ -102,7 +102,7 @@ public class Monitor_GUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Request", "Client", "Server", "Nº of Iterations", "Current Iteration"
+                "Request ID", "Client ID", "Server ID", "IN", "DeadLine"
             }
         ));
         jScrollPaneLB.setViewportView(jTableLB);
@@ -115,21 +115,21 @@ public class Monitor_GUI extends javax.swing.JFrame {
             jPanelBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBaseLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBaseLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonEnd)))
+                .addComponent(jTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(jPanelBaseLayout.createSequentialGroup()
+                .addGap(245, 245, 245)
+                .addComponent(jButtonEnd)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelBaseLayout.setVerticalGroup(
             jPanelBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBaseLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonEnd)
-                .addGap(18, 18, 18)
-                .addComponent(jTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                .addGap(8, 8, 8))
+                .addContainerGap())
         );
 
         jPanelServer.setEnabled(false);
@@ -163,26 +163,26 @@ public class Monitor_GUI extends javax.swing.JFrame {
             jPanelServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelServerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelServerLayout.createSequentialGroup()
-                        .addComponent(jButtonBack)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPaneRequests, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE))
+                .addComponent(jScrollPaneRequests, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelServerLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabelTitleServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(192, 192, 192))
+            .addGroup(jPanelServerLayout.createSequentialGroup()
+                .addGap(254, 254, 254)
+                .addComponent(jButtonBack)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelServerLayout.setVerticalGroup(
             jPanelServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelServerLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonBack)
-                .addGap(4, 4, 4)
+                .addContainerGap(10, Short.MAX_VALUE)
                 .addComponent(jLabelTitleServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPaneRequests, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPaneRequests, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonBack)
                 .addContainerGap())
         );
 
@@ -266,6 +266,10 @@ public class Monitor_GUI extends javax.swing.JFrame {
         jLayeredPaneServerRequests.setLayer(jPanelBase, 0);
         jLayeredPaneServerRequests.repaint();
     } 
+
+    public void setLoadBalancerInformation(int portNumber, int heartbeatThreshold) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
     
     /**
@@ -584,7 +588,7 @@ public class Monitor_GUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Monitor_GUI().setVisible(true);
+                new GUI().setVisible(true);
             }
         });
     }

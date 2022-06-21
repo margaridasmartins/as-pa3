@@ -22,7 +22,7 @@ public class PLoadBalancer {
     
     private static int portNumber;
     private static int monitorPortNumber;
-    private static boolean  started = false;
+    private static boolean started = false;
     
     /**
      * @param args the command line arguments
@@ -69,7 +69,7 @@ public class PLoadBalancer {
        }
        
        // LB is primary so it can start accepting Client messages
-       TServerSocket  serverSocket = new TServerSocket(lb.getLoadBalencerID());
+       TServerSocket serverSocket = new TServerSocket(lb.getLoadBalencerID());
        serverSocket.start();
         
     }

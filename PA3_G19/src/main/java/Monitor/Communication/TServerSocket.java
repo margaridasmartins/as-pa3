@@ -2,42 +2,46 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package LB.Communication;
+package Monitor.Communication;
+
+import Communication.ClientSocket;
+import Monitor.GUI.GUI;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
-import LB.Handlers.TServerHandler;
+import Monitor.Handlers.TServerHandler;
+
 /**
  *
- * @author guids
+ * @author leand
  */
+public class TServerSocket extends Thread {
 
-public class TServerSocket extends Thread{
-    
     private final int portNumber;
     private final ServerSocket serverSocket;
-    
-    public TServerSocket(int portNumber) throws IOException{
-        this.portNumber  = portNumber;       
+    private final GUI gui;
+
+    public TServerSocket(int portNumber, Monitor monitor, GUI gui) throws IOException {
+        this.gui = gui;
+        this.portNumber = portNumber;
         this.serverSocket = new ServerSocket(portNumber);
     }
-    
+
     @Override
-    public void run(){
-    
-        while(true){
-            Socket clientSocket;
+    public void run() {
+
+        while (true) {
+            ClientSocket clientSocket;
             try {
-                clientSocket = serverSocket.accept();
-            
-                TServerHandler socket = new TServerHandler(clientSocket);
+                clientSocket = new ClientSocket(serverSocket.accept());
+
+                TServerHandler socket = new TServerHandler(clientSocket, monitor, gui);
                 socket.start();
-            
+
             } catch (IOException ex) {
                 System.err.println("Socket error");
             }
         }
     }
     
-    
+
 }

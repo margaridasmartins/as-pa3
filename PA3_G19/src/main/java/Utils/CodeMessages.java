@@ -14,5 +14,6 @@ public enum CodeMessages {
     REQUEST,
     REPLY,
     PRIMARY,
-    HEARTBEAT
+    HEARTBEAT,
+    FORWARD
 }
