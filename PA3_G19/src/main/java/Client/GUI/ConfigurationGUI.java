@@ -44,7 +44,7 @@ public class ConfigurationGUI extends javax.swing.JFrame {
 
         jLabel3.setText("Load Balancer Port Number");
 
-        portNumber.setModel(new javax.swing.SpinnerNumberModel(5002, 1000, 10000, 1));
+        portNumber.setModel(new javax.swing.SpinnerNumberModel(5003, 1000, 10000, 1));
 
         loadBalancerPort.setModel(new javax.swing.SpinnerNumberModel(5001, 1000, 10000, 1));
         loadBalancerPort.setPreferredSize(new java.awt.Dimension(114, 24));

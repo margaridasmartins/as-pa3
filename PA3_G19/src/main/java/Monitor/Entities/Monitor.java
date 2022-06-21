@@ -63,7 +63,7 @@ public class Monitor {
     public void addServer(int port) {
         try {
             rl.lock();
-            serversInfo.getOrDefault(port, new ServerRequestsInfo());
+            serversInfo.put(port, new ServerRequestsInfo());
             gui.addServerToTable(port);
         } finally {
             rl.unlock();
