@@ -19,11 +19,9 @@ public class TServerSocket extends Thread {
 
     private final int portNumber;
     private final ServerSocket serverSocket;
-    private final GUI gui;
     private final Monitor monitor;
 
-    public TServerSocket(int portNumber, Monitor monitor, GUI gui) throws IOException {
-        this.gui = gui;
+    public TServerSocket(int portNumber, Monitor monitor) throws IOException {
         this.portNumber = portNumber;
         this.serverSocket = new ServerSocket(portNumber);
         this.monitor = monitor;
@@ -37,7 +35,7 @@ public class TServerSocket extends Thread {
             try {
                 clientSocket = new ClientSocket(serverSocket.accept());
 
-                TServerHandler socket = new TServerHandler(clientSocket, monitor, gui);
+                TServerHandler socket = new TServerHandler(clientSocket, monitor);
                 socket.start();
 
             } catch (IOException ex) {

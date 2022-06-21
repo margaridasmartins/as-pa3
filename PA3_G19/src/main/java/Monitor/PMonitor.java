@@ -44,10 +44,10 @@ public class PMonitor {
         gui.setLoadBalancerInformation(portNumber, heartbeatThreshold);
         gui.setVisible(true);
         
-        Monitor monitor = new Monitor();
+        Monitor monitor = new Monitor(gui);
 
         // Create Client Server to receive requests
-        TServerSocket serverSocket = new TServerSocket(portNumber, monitor, gui);
+        TServerSocket serverSocket = new TServerSocket(portNumber, monitor);
         serverSocket.start();
     }
 }
