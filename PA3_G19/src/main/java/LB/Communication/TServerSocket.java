@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package LB.Communication;
+import LB.Entities.LoadBalancer;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,12 +15,15 @@ import LB.Handlers.TServerHandler;
 
 public class TServerSocket extends Thread{
     
-    private final int portNumber;
     private final ServerSocket serverSocket;
+    private final ClientSocket monitorSocket;
+    private final LoadBalancer lb;
     
-    public TServerSocket(int portNumber) throws IOException{
-        this.portNumber  = portNumber;       
+    
+    public TServerSocket(int portNumber, ClientSocket monitorSocket, LoadBalancer lb) throws IOException{  
         this.serverSocket = new ServerSocket(portNumber);
+        this.monitorSocket = monitorSocket;
+        this.lb = lb;
     }
     
     @Override
@@ -30,7 +34,7 @@ public class TServerSocket extends Thread{
             try {
                 clientSocket = serverSocket.accept();
             
-                TServerHandler socket = new TServerHandler(clientSocket);
+                TServerHandler socket = new TServerHandler(clientSocket, monitorSocket, lb);
                 socket.start();
             
             } catch (IOException ex) {

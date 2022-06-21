@@ -4,8 +4,11 @@
  */
 package LB.Handlers;
 
-import LB.Communication.TServerSocket;
+import LB.GUI.GUI;
 import Utils.CodeMessages;
+import LB.Communication.ClientSocket;
+import LB.Entities.LoadBalancer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,9 +21,13 @@ import java.net.Socket;
 public class TServerHandler extends Thread {
 
     private final Socket socket;
+    private final ClientSocket monitorSocket;
+    private final LoadBalancer lb;
 
-    public TServerHandler(Socket socket) {
+    public TServerHandler(Socket socket, ClientSocket monitorSocket, LoadBalancer lb) {
         this.socket = socket;
+        this.monitorSocket = monitorSocket;
+        this.lb = lb;
     }
 
     @Override
@@ -40,7 +47,12 @@ public class TServerHandler extends Thread {
 
                         // Request message -> REQUEST | client id | request id | 00 | 01 | number of iterations | 00 | deadline |
                         case REQUEST: {
-                            // TODO Handle Request
+                            // Forward request to monitor
+                            monitorSocket.sendMessage(inputLine);
+
+                            // Add request
+                            lb.addRequest(inputLine);
+
                         }
                         break;
                     }

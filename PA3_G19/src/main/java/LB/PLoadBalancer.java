@@ -55,7 +55,7 @@ public class PLoadBalancer {
        monitorSocket.creatSocket();
        
        // Handle monitor messages
-       TClientHandler monitorHandler = new TClientHandler(monitorSocket, lb);
+       TClientHandler monitorHandler = new TClientHandler(monitorSocket, lb, gui);
        monitorHandler.start();
        
        
@@ -69,7 +69,7 @@ public class PLoadBalancer {
        }
        
        // LB is primary so it can start accepting Client messages
-       TServerSocket serverSocket = new TServerSocket(lb.getLoadBalencerID());
+       TServerSocket  serverSocket = new TServerSocket(lb.getLoadBalencerID(), monitorSocket, lb);
        serverSocket.start();
         
     }

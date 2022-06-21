@@ -10,11 +10,11 @@ import LB.Communication.ClientSocket;
  *
  * @author guids
  */
-class Server {
+public class Server {
     
     private final int serverID;
     private int njobs = 0;
-    private int lastJobIdx = 0;
+    private int ni = 0;
     private ClientSocket socket;
     
     public Server(int serverID, ClientSocket socket){
@@ -22,10 +22,8 @@ class Server {
         this.socket = socket;
     }
     
-    public void addJob(int jobIdx){
-        if(njobs<3)
-            njobs++;
-        lastJobIdx = jobIdx;
+    public void setNJobs(int njobs){
+        this.njobs = njobs;
     }
     
     public ClientSocket getSocket(){
@@ -40,7 +38,11 @@ class Server {
         return njobs;
     }
     
-    public int getLastJob(){
-        return lastJobIdx;
+    public void setNI(int ni){
+        this.ni = ni;
+    }
+    
+    public int getNI(){
+        return ni;
     }
 }
