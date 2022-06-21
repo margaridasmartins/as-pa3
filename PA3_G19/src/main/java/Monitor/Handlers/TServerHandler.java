@@ -68,6 +68,9 @@ public class TServerHandler extends Thread {
                     case REQUEST:
                         monitor.forwardingRequest((RequestMessage)msg);
                         break;
+                    case PROCESS:
+                        monitor.processingRequest(m);
+                        break;
                     case REPLY:
                         monitor.replyingRequest((RequestMessage)msg);
                         break;
