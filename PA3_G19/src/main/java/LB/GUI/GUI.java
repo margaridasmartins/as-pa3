@@ -179,6 +179,10 @@ public class GUI extends javax.swing.JFrame {
         monitorPortNumberLabel.setText(Integer.toString(monitorPortNumber));
     }
     
+    public void setLoadBalancerStatus(String status){
+        statusLabel.setText(status);
+    }
+    
     public void addRequest(int clientId, int requestId, int serverId, int ni, int deadline){
                        
         DefaultTableModel model = (DefaultTableModel) clientReqTable.getModel();

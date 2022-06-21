@@ -38,8 +38,7 @@ public class TServerSocket extends Thread {
 
                 TServerHandler socket = new TServerHandler(clientSocket, monitor);
                 socket.start();
-                
-                
+
 
             } catch (IOException ex) {
                 System.err.println("Socket error");
