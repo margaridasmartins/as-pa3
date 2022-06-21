@@ -47,10 +47,11 @@ public class ClientSocket {
      * Receive an object message.
      * @return message received
      */
-    public Message getMessage(){
-        Message reply = null;
+    public Object getMessage(){
+        Object reply = null;
         try{
-            reply = (Message)in.readObject();
+            reply = in.readObject();
+            System.out.println(reply.getClass());
         } catch (IOException | ClassNotFoundException ex) {
             System.err.println("Error receiving socket message");
         }
@@ -62,7 +63,7 @@ public class ClientSocket {
      * @param obj   the message object 
      * @return      true if successfully sent, false otherwise
      */
-    public boolean sendMessage(Message obj){
+    public boolean sendMessage(Object obj){
         try{
             out.reset();
             out.writeObject(obj);

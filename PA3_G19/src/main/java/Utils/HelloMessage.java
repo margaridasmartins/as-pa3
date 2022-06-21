@@ -22,7 +22,9 @@ public class HelloMessage extends Message {
         super(CodeMessages.HELLO);
         this.ID = ID;
         this.type = type;
+        this.function = function;
     }
+    
     
     public int ID() {
         return ID;

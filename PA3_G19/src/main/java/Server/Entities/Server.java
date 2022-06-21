@@ -29,13 +29,13 @@ public class Server {
     public Server(ClientSocket socket, GUI gui){
         workers = new TWorker[3];
         
-        workers[1] = new TWorker(1, this);
-        workers[2]= new TWorker(2, this);
-        workers[3] = new TWorker(3, this);
+        workers[0] = new TWorker(1, this);
+        workers[1]= new TWorker(2, this);
+        workers[2] = new TWorker(3, this);
         
+        workers[0].start();
         workers[1].start();
         workers[2].start();
-        workers[3].start();
         
         pendingRequests = new Request[2];
         currentRequests = new Request[3];

@@ -39,13 +39,13 @@ public class TServerHandler extends Thread {
         
         try {
             in =  new ObjectInputStream(socket.getInputStream());
-            Message message = null;
+            Object message = null;
             while (true) {
                 // keep listening to incoming messages
-                if ((message = (Message)in.readObject()) != null) {
+                if ((message = in.readObject()) != null) {
 
-                   
-                    switch (message.code()) {
+                    Message m = (Message) message;
+                    switch (m.code()) {
 
                         // Request message -> REQUEST | client id | request id | 00 | 01 | number of iterations | 00 | deadline |
                         case REQUEST: {

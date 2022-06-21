@@ -33,12 +33,13 @@ public class TServerHandler extends Thread {
     @Override
     public void run() {
 
-        Message msg;
+        Object msg;
         while (true) {
             // keep listening to incoming messages
             if ((msg = socket.getMessage()) != null) {
-
-                switch (msg.code()) {
+                
+                Message m = (Message) msg;
+                switch (m.code()) {
                     case REQUEST: {
                         
                         try {

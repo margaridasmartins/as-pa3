@@ -35,17 +35,18 @@ public class TClientHandler extends Thread{
     @Override
     public void run(){
     
-        Message message;
+        Object message;
         
         // Hello to Monitor
         socket.sendMessage(new HelloMessage(lb.getLoadBalencerID(),"LB", null));
         
         while (true) {
             // keep listening to incoming messages
-            if ((message = socket.getMessage()) != null) {
-                
-                
-                switch(message.code()){
+            if ((message = (Object) socket.getMessage()) != null) {
+                System.out.println(message.getClass());
+                Message m = (Message) message;
+                System.out.println(message.getClass());
+                switch(m.code()){
                     
                     // HB message -> HB|LBID
                     case HEARTBEAT:
@@ -68,7 +69,7 @@ public class TClientHandler extends Thread{
                         {
                             // Update serverStatus                  
                             
-                            lb.updateServers(message.serversStatus());
+                            lb.updateServers(m.serversStatus());
                             
                             // Choose server and  forward request
                             Request r = lb.getFirstRequest();

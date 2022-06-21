@@ -8,6 +8,7 @@ import Communication.ClientSocket;
 import Monitor.Entities.Monitor;
 import Monitor.GUI.GUI;
 import static Utils.CodeMessages.*;
+import Utils.HelloMessage;
 import Utils.Message;
 import Utils.RequestMessage;
 import Utils.ServerStatusMessage;
@@ -33,23 +34,26 @@ public class TServerHandler extends Thread {
     @Override
     public void run() {
 
-        Message msg;
+        Object msg;
         while (true) {
             // keep listening to incoming messages
             if ((msg = socket.getMessage()) != null) {
 
-                switch (msg.code()) {
+                Message m = (Message) msg;
+                switch (m.code()) {
                     case HELLO:
-                        if (msg.type().equals("LB")) {
+                        
+                        
+                        if (m.type().equals("LB")) {
                             /* Load Balancer HELLO */
                             if (monitor.hasPrimaryLB()) {
-                                socket.sendMessage(new Message(HELLO).type("S"));
+                                socket.sendMessage(new HelloMessage(0, null, "S"));
                             }
                             monitor.setLBUp();
-                            socket.sendMessage(new Message(HELLO).type("P"));
+                            socket.sendMessage(new HelloMessage(0, null, "P"));
                         } else {
                             /* Server HELLO */
-                            monitor.addServer(msg.port());
+                            monitor.addServer(m.port());
                         }
                         break;
                     case STATUS:

@@ -42,6 +42,7 @@ public class PClient {
             }
        }
        
+       System.out.println(loadBalancerPortNumber);
        // Connect to Load Balancer
        ClientSocket lbSocket = new ClientSocket(loadBalancerPortNumber, "127.0.0.1");
   

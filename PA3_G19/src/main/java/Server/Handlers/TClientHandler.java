@@ -24,7 +24,7 @@ public class TClientHandler extends Thread{
     @Override
     public void run(){
     
-        Message inputMessage;
+        Object inputMessage;
         
         // Hello to Monitor
         socket.sendMessage(new HelloMessage(serverID, "S", null));
@@ -33,8 +33,8 @@ public class TClientHandler extends Thread{
             // keep listening to incoming messages
             if ((inputMessage = socket.getMessage()) != null) {
                 
-               
-                switch(inputMessage.code()){
+                Message m = (Message) inputMessage;
+                switch(m.code()){
                     
                     // HB message -> HB|ServerID
                     case HEARTBEAT:
