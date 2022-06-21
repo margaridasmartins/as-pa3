@@ -36,16 +36,22 @@ public class Monitor {
 
     /* Whether or not the primary Load Balancer is working */
     private boolean hasPrimaryLB;
+    
+    private final List<Integer> heartBeatMessages;
+    
+    private final int heartbeatThreashold;
 
     private final ReentrantLock rl;
 
-    public Monitor(GUI gui) {
+    public Monitor(GUI gui, int heartbeatThreashold) {
         this.gui = gui;
         serversInfo = new HashMap<>();
         serversRequests = new HashMap<>();
         clientsInfo = new HashMap<>();
         loadBalancerRequests = new ArrayList<>();
         rl = new ReentrantLock();
+        this.heartbeatThreashold = heartbeatThreashold;
+        heartBeatMessages = new  ArrayList<>();
     }
 
     public boolean hasPrimaryLB() {
@@ -167,6 +173,22 @@ public class Monitor {
             rl.unlock();
         }
     }
+    
+    public void addHeartBeat(int ID){
+        heartBeatMessages.add(ID);
+    }
+    
+    public void removeHeartBeat(int ID){
+        heartBeatMessages.remove(ID);
+    }
+    
+    public boolean hasHeartBeat(int ID){
+        return heartBeatMessages.contains(ID);
+    }
+    
+    public int getHeartbeatThreashold(){
+        return heartbeatThreashold;
+    }
 
     /**
      * Representation of the Client's requests information
@@ -216,5 +238,7 @@ public class Monitor {
             totalIterations -= iterations;
         }
     }
+    
+    
 
 }

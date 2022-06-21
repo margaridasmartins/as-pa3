@@ -10,6 +10,7 @@ import Utils.CodeMessages;
 import Utils.RequestMessage;
 import java.util.concurrent.locks.ReentrantLock;
 import Server.GUI.GUI;
+import Utils.Message;
 /**
  *
  * @author guids
@@ -62,6 +63,7 @@ public class Server {
             
             monitorSocket.sendMessage(rm);
             
+            
             r.pi(0);
             gui.addReply(r);
             
@@ -75,6 +77,7 @@ public class Server {
             
             for(int i=0; i<3; i++){
                 if(currentRequests[i] == null){
+                    monitorSocket.sendMessage(new Message(CodeMessages.PROCESS).port(r.clientID()));
                     currentRequests[i] = r;
                     totalIt+= r.nIterations();
                     workers[i].newWork(r.nIterations());

@@ -44,7 +44,7 @@ public class PMonitor {
         gui.setLoadBalancerInformation(portNumber, heartbeatThreshold);
         gui.setVisible(true);
         
-        Monitor monitor = new Monitor(gui);
+        Monitor monitor = new Monitor(gui, heartbeatThreshold);
         gui.setMonitor(monitor);
 
         // Create Client Server to receive requests

@@ -42,8 +42,6 @@ public class TServerHandler extends Thread {
                 Message m = (Message) msg;
                 switch (m.code()) {
                     case HELLO:
-                        
-                        
                         if (m.type().equals("LB")) {
                             /* Load Balancer HELLO */
                             if (monitor.hasPrimaryLB()) {
@@ -70,6 +68,9 @@ public class TServerHandler extends Thread {
                         break;
                     case REPLY:
                         monitor.replyingRequest((RequestMessage)msg);
+                        break;
+                    case HEARTBEAT:
+                        monitor.addHeartBeat(m.port());
                         break;
                 }
             }

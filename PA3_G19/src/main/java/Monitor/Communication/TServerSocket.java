@@ -7,6 +7,7 @@ package Monitor.Communication;
 import Communication.ClientSocket;
 import Monitor.Entities.Monitor;
 import Monitor.GUI.GUI;
+import Monitor.Handlers.THeartBeatHandler;
 import java.io.IOException;
 import java.net.ServerSocket;
 import Monitor.Handlers.TServerHandler;
@@ -37,6 +38,9 @@ public class TServerSocket extends Thread {
 
                 TServerHandler socket = new TServerHandler(clientSocket, monitor);
                 socket.start();
+                
+                THeartBeatHandler hbsocket = new THeartBeatHandler(clientSocket, monitor);
+                hbsocket.start();
 
             } catch (IOException ex) {
                 System.err.println("Socket error");

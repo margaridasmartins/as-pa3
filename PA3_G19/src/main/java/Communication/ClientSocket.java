@@ -43,6 +43,10 @@ public class ClientSocket {
         in = new ObjectInputStream(socket.getInputStream());
     }
     
+    public int getPort(){
+        return socket.getPort();
+    }
+    
     /**
      * Receive an object message.
      * @return message received
