@@ -64,6 +64,7 @@ public class Monitor {
         try {
             rl.lock();
             serversInfo.put(port, new ServerRequestsInfo());
+            serversRequests.put(port, new HashMap<>());
             gui.addServerToTable(port);
         } finally {
             rl.unlock();
@@ -71,7 +72,8 @@ public class Monitor {
     }
     
     public List<RequestMessage> getServerRequests(int serverID) {
-        return (List<RequestMessage>) serversRequests.get(serverID).values();
+        System.out.println(serverID);
+        return new ArrayList<>(serversRequests.get(serverID).values());
     }
 
     /**
