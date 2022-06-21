@@ -42,6 +42,8 @@ public class Server {
         
         rl = new ReentrantLock();
         
+        monitorSocket = socket;
+        
         this.gui = gui;
     }
     
@@ -74,6 +76,7 @@ public class Server {
                     currentRequests[i] = r;
                     workers[i].newWork(r.nIterations());
                     ncurrentRequests++;
+                    break;
                 }
             }
             
