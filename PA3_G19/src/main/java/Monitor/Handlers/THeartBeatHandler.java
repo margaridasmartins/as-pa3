@@ -38,7 +38,7 @@ public class THeartBeatHandler extends Thread{
                 monitor.removeHeartBeat(ID);
             }
             else{
-                // HANDLE SOMETHING DOWN
+                monitor.setDown(ID);
             }
             
         } catch (InterruptedException ex) {

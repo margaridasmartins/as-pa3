@@ -4,10 +4,12 @@
  */
 package Monitor.Entities;
 
+import Communication.ClientSocket;
 import Monitor.GUI.GUI;
 import Utils.Message;
 import Utils.RequestMessage;
 import Utils.ServerStatusMessage;
+import Utils.PrimaryMessage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,9 +37,11 @@ public class Monitor {
     private final List<RequestMessage> loadBalancerRequests;
 
     /* Whether or not the primary Load Balancer is working */
-    private boolean hasPrimaryLB;
+    private final int[] loadBalancers;
     
     private final List<Integer> heartBeatMessages;
+    
+    private final HashMap<Integer, ClientSocket> sockets;
     
     private final int heartbeatThreashold;
 
@@ -52,14 +56,48 @@ public class Monitor {
         rl = new ReentrantLock();
         this.heartbeatThreashold = heartbeatThreashold;
         heartBeatMessages = new  ArrayList<>();
+        loadBalancers = new int[2]; 
+        sockets = new HashMap<>();
+    }
+    
+    public boolean hasPrimaryLB(){
+        return loadBalancers[0]!=0;
     }
 
-    public boolean hasPrimaryLB() {
-        return hasPrimaryLB;
+    public void setLBUp(int ID) {
+        if(loadBalancers[0] == 0){
+            loadBalancers[0] = ID;
+        }
+        else{
+            loadBalancers[1] = ID;
+        }
     }
-
-    public void setLBUp() {
-        hasPrimaryLB = true;
+    
+    public void addSocket(int ID, ClientSocket cs){
+        sockets.put(ID, cs);
+    }
+    
+    public void setDown(int ID){
+        
+        // Server Down
+        if(serversInfo.containsKey(ID)){
+            serversInfo.remove(ID);
+            for(RequestMessage rm : serversRequests.get(ID).values()){
+                sockets.get(loadBalancers[0]).sendMessage(rm);
+            }
+            serversRequests.remove(ID);
+        }
+        else{
+            if(loadBalancers[0] == ID){
+                PrimaryMessage pm = new PrimaryMessage(ID);
+                sockets.get(loadBalancers[1]).sendMessage(pm);
+                loadBalancers[1] = 0;
+            }
+            else{
+                loadBalancers[1] = 0;
+                sockets.remove(ID);
+            }
+        }
     }
 
     /**
