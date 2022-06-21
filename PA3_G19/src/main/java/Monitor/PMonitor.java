@@ -45,6 +45,7 @@ public class PMonitor {
         gui.setVisible(true);
         
         Monitor monitor = new Monitor(gui);
+        gui.setMonitor(monitor);
 
         // Create Client Server to receive requests
         TServerSocket serverSocket = new TServerSocket(portNumber, monitor);

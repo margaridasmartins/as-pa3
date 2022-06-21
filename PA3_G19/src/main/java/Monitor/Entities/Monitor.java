@@ -65,6 +65,10 @@ public class Monitor {
             rl.unlock();
         }
     }
+    
+    public List<RequestMessage> getServerRequests(int serverID) {
+        return (List<RequestMessage>) serversRequests.get(serverID).values();
+    }
 
     /**
      * Lock the monitor status and update it according to the forwarded request.

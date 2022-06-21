@@ -1,26 +1,25 @@
 
 package Monitor.GUI;
 
+import Monitor.Entities.Monitor;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import Monitor.PMonitor;
+import Utils.RequestMessage;
 
 /**
  * Monitor graphical interface.
  * @author Rafael Sá (104552), Luís Laranjeira (81526)
  */
 public class GUI extends javax.swing.JFrame {
-
-    /** Monitor Service. */
-    //private final PMonitor monitor;
     
+    private Monitor monitor;
+
     /**
      * Creates new form Monitor_GUI.
      * @param port monitor server port
@@ -30,8 +29,10 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI(/*int port, String hostname, int lbPort, int heartbeatThreshold*/) {
         initComponents();
-        //this.monitor = new PMonitor(port, hostname, lbPort, heartbeatThreshold, this);
-        //this.monitor.start();
+    }
+    
+    public void setMonitor(Monitor monitor) {
+        this.monitor = monitor;
     }
 
     /**
@@ -351,23 +352,22 @@ public class GUI extends javax.swing.JFrame {
      * Load requests being handled by a server to the table.
      * @param id server id
      */
-    private synchronized void loadServerRequests(Integer id){
+    private synchronized void loadServerRequests(Integer serverID){
         DefaultTableModel model;
         model = (DefaultTableModel) jTableRequests.getModel();
         cleanTable(model);
-        /*
-        Map<Integer, String> currentStates = monitor.getCurrentStates(id);
+        
         boolean exists;
-        for (Message request : monitor.getRequests(id)) {
+        for (RequestMessage request : monitor.getServerRequests(serverID)) {
             exists = false;
             for (int i = 0; i < model.getRowCount(); i++) {
-                if (((String)model.getValueAt(i, 0)).equals("Request " + request.getRequestId())) {
+                if (((String)model.getValueAt(i, 0)).equals("Request " + request.requestID())) {
                     exists = true;
                 }
             }
             if(!exists)
-                model.addRow(new Object[]{"Request " + request.getRequestId(), "Client " + request.getClientId(), request.getIterations(), currentStates.get(request.getRequestId())});
-        }*/
+                model.addRow(new Object[]{"Request " + request.requestID(), "Client " + request.clientID(), request.nIterations(), request.requestCode()});
+        }
     }
     
     /**
@@ -461,7 +461,7 @@ public class GUI extends javax.swing.JFrame {
      * Add a new request to the load balancer table.
      * @param request new request
      */
-    /*public synchronized void addRequestToLBTable(Message request){
+    public synchronized void addRequestToLBTable(RequestMessage request){
         if (!SwingUtilities.isEventDispatchThread()) {
             SwingUtilities.invokeLater(() -> {
                 addRequestToLBTable(request);
@@ -470,8 +470,8 @@ public class GUI extends javax.swing.JFrame {
         }
         DefaultTableModel model;
         model = (DefaultTableModel) jTableLB.getModel();
-        model.addRow(new Object[]{"Request " + request.getRequestId(), "Client " + request.getClientId(), "Not Assigned", request.getIterations(), "Pending"});
-    }*/
+        model.addRow(new Object[]{"Request " + request.requestID(), "Client " + request.clientID(), "Not Assigned", request.nIterations(), "Pending"});
+    }
     
     /**
      * Remove a request from a load balancer table.
@@ -613,12 +613,12 @@ public class GUI extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GUI().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new GUI().setVisible(true);
         });
     }
 
