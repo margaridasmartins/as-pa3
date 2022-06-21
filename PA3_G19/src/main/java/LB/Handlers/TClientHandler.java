@@ -8,6 +8,7 @@ import Utils.CodeMessages;
 import LB.Entities.LoadBalancer;
 import LB.Entities.Server;
 import LB.GUI.GUI;
+import java.util.ArrayList;
 
 /**
  *
@@ -65,13 +66,18 @@ public class TClientHandler extends Thread{
                             // Update serverStatus
                             int nservers = Integer.getInteger(clientMessage[1]);
                             
+                            ArrayList<Integer> existingServers = new ArrayList<Integer>();
+                            
                             int j = 2;
                             for(int i =0; i<nservers; i++){
+                                existingServers.add(Integer.getInteger(clientMessage[j]));
                                 lb.updateServer(Integer.getInteger(clientMessage[j]),
                                         Integer.getInteger(clientMessage[++j]),
                                         Integer.getInteger(clientMessage[++j]));
                                 j++;
                             }
+                            
+                            lb.deleteNonExistingServers(existingServers);
                             
                             // Choose server and  forward request
                             String r = lb.getFirstRequest();

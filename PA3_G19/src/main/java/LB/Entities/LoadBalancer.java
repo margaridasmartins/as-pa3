@@ -6,6 +6,7 @@ package LB.Entities;
 
 import java.util.concurrent.locks.ReentrantLock;
 import LB.Communication.ClientSocket;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.HashMap;
 
@@ -112,6 +113,15 @@ public class LoadBalancer {
     
     public void deleteServer(int serverId){
         servers.remove(serverId);
+    }
+
+    public void deleteNonExistingServers(ArrayList<Integer> existingServers) {
+        for(Integer serverId : servers.keySet()){
+        
+            if(!existingServers.contains(serverId)){
+                servers.remove(serverId);
+            }
+        }
     }
     
     
