@@ -19,7 +19,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author leand
  */
 public class Monitor {
-    
+
     private final GUI gui;
 
     /* Status of every server by ID */
@@ -51,14 +51,15 @@ public class Monitor {
     public boolean hasPrimaryLB() {
         return hasPrimaryLB;
     }
-    
+
     public void setLBUp() {
         hasPrimaryLB = true;
     }
-    
+
     /**
      * Add a new server available to receive requests from the LB.
-     * @param port  the server ID/port
+     *
+     * @param port the server ID/port
      */
     public void addServer(int port) {
         try {
@@ -70,9 +71,14 @@ public class Monitor {
             rl.unlock();
         }
     }
-    
+
     public List<RequestMessage> getServerRequests(int serverID) {
-        return new ArrayList<>(serversRequests.get(serverID).values());
+        try {
+            rl.lock();
+            return new ArrayList<>(serversRequests.get(serverID).values());
+        } finally {
+            rl.unlock();
+        }
     }
 
     /**
@@ -91,10 +97,10 @@ public class Monitor {
                     .receiveRequest(request.nIterations());
             serversRequests.getOrDefault(serverID, new HashMap<>())
                     .put(requestID, request);
-            clientsInfo.getOrDefault(clientID, new ClientRequestsInfo())
+            clientsInfo.getOrDefault(clientID, new ClientRequestsInfo(clientID))
                     .forwardingRequest();
             loadBalancerRequests.add(request);
-            
+
             gui.addRequestToLBTable(request);
             gui.addRequestToTableRequest(request);
             gui.setNRequestsServer(serverID, serversRequests.get(serverID).size());
@@ -109,12 +115,12 @@ public class Monitor {
      * @param msg the message containing the request's client ID
      */
     public void processingRequest(Message msg) {
-        int cliendID = msg.port();
+        int clientID = msg.port();
 
         try {
             rl.lock();
-            clientsInfo.getOrDefault(cliendID, new ClientRequestsInfo())
-                .forwardingRequest();
+            clientsInfo.getOrDefault(clientID, new ClientRequestsInfo(clientID))
+                    .processingRequest();
         } finally {
             rl.unlock();
         }
@@ -126,7 +132,7 @@ public class Monitor {
      * @param request the replied message
      */
     public void replyingRequest(RequestMessage request) {
-        int cliendID = request.port();
+        int clientID = request.clientID();
         int serverID = request.serverID();
         int requestID = request.requestID();
 
@@ -134,11 +140,15 @@ public class Monitor {
             rl.lock();
             serversInfo.getOrDefault(serverID, new ServerRequestsInfo())
                     .completeRequest(request.nIterations());
-            clientsInfo.getOrDefault(cliendID, new ClientRequestsInfo())
-                    .replyingRequest();
+            ClientRequestsInfo requestInfo = clientsInfo.getOrDefault(clientID, new ClientRequestsInfo(clientID));
+            if (request.requestCode() == 2) {
+                requestInfo.replyingRequest();
+            } else {
+                requestInfo.rejectingRequest();
+            }
             serversRequests.getOrDefault(serverID, new HashMap<>())
                     .remove(requestID);
-            
+
             gui.setNRequestsServer(serverID, serversRequests.get(serverID).size());
         } finally {
             rl.unlock();
@@ -162,7 +172,7 @@ public class Monitor {
                 serversStatus.add(new ServerStatusMessage(serverID, nRequests, totalIterations));
             }
             return serversStatus;
-            
+
         } finally {
             rl.unlock();
         }
@@ -173,28 +183,42 @@ public class Monitor {
      */
     class ClientRequestsInfo {
 
+        private int clientID;
         private int pending = 0;
         private int beingProcessed = 0;
         private int rejected = 0;
         private int processed = 0;
 
+        ClientRequestsInfo(int clientID) {
+            this.clientID = clientID;
+        }
+
         void forwardingRequest() {
             pending++;
+            update();
         }
 
         void processingRequest() {
             pending--;
             beingProcessed++;
+            update();
         }
 
         void rejectingRequest() {
-            beingProcessed--;
+            pending--;
             rejected++;
+            update();
         }
 
         void replyingRequest() {
             beingProcessed--;
             processed++;
+            update();
+        }
+
+        void update() {
+            gui.updateClientTable(clientID, pending, beingProcessed,
+                    rejected, processed);
         }
     }
 

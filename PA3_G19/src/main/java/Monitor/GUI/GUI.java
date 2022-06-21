@@ -55,7 +55,7 @@ public class GUI extends javax.swing.JFrame {
         jScrollPaneLB = new javax.swing.JScrollPane();
         jTableLB = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
+        jTableClients = new javax.swing.JTable();
         jPanelServer = new javax.swing.JPanel();
         jButtonBack = new javax.swing.JButton();
         jLabelTitleServer = new javax.swing.JLabel();
@@ -129,7 +129,7 @@ public class GUI extends javax.swing.JFrame {
 
         jTabbedPane.addTab("Load Balancer", jScrollPaneLB);
 
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+        jTableClients.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -152,7 +152,7 @@ public class GUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane5.setViewportView(jTable5);
+        jScrollPane5.setViewportView(jTableClients);
 
         jTabbedPane.addTab("Clients", jScrollPane5);
 
@@ -395,7 +395,7 @@ public class GUI extends javax.swing.JFrame {
         for (RequestMessage request : monitor.getServerRequests(serverID)) {
             exists = false;
             for (int i = 0; i < model.getRowCount(); i++) {
-                if (((String) model.getValueAt(i, 0)).equals(request.requestID())) {
+                if ((Integer)model.getValueAt(i, 0) == request.requestID()) {
                     exists = true;
                 }
             }
@@ -431,7 +431,7 @@ public class GUI extends javax.swing.JFrame {
         DefaultTableModel model;
         model = (DefaultTableModel) jTableRequests.getModel();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (((String) model.getValueAt(i, 0)).equals(requestID)) {
+            if ((Integer) model.getValueAt(i, 0) == requestID) {
                 model.removeRow(i);
             }
         }
@@ -452,6 +452,36 @@ public class GUI extends javax.swing.JFrame {
         DefaultTableModel model;
         model = (DefaultTableModel) jTableServer.getModel();
         model.addRow(new Object[]{serverID, "UP", 0});
+    }
+    
+    /**
+     * Update client table.
+     *
+     * @param clietnID client id
+     */
+    public synchronized void updateClientTable(int clientID, int pending,
+            int beingProcessed, int rejected, int processed) {
+        if (!SwingUtilities.isEventDispatchThread()) {
+            SwingUtilities.invokeLater(() -> {
+                updateClientTable(clientID, pending, beingProcessed, rejected, processed);
+            });
+            return;
+        }
+        DefaultTableModel model;
+        model = (DefaultTableModel) jTableClients.getModel();
+        boolean exists = false;
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if ((Integer)model.getValueAt(i, 0) == clientID) {
+                model.setValueAt(pending, i, 1);
+                model.setValueAt(beingProcessed, i, 2);
+                model.setValueAt(rejected, i, 3);
+                model.setValueAt(processed, i, 4);
+                exists = true;
+            }
+        }
+        if (!exists) {
+            model.addRow(new Object[]{clientID, pending, beingProcessed, rejected, processed});
+        }
     }
 
     /**
@@ -535,7 +565,7 @@ public class GUI extends javax.swing.JFrame {
             model = (DefaultTableModel) jTableRequests.getModel();
             boolean exists = false;
             for (int i = 0; i < model.getRowCount(); i++) {
-                if (((String) model.getValueAt(i, 0)).equals(request.requestID())) {
+                if ((Integer) model.getValueAt(i, 0) == request.requestID()) {
                     exists = true;
                 }
             }
@@ -594,7 +624,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPaneRequests;
     private javax.swing.JScrollPane jScrollPaneServer;
     private javax.swing.JTabbedPane jTabbedPane;
-    private javax.swing.JTable jTable5;
+    private javax.swing.JTable jTableClients;
     private javax.swing.JTable jTableLB;
     private javax.swing.JTable jTableRequests;
     private javax.swing.JTable jTableServer;
