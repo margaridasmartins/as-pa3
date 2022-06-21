@@ -6,10 +6,16 @@ package Client.Handlers;
 
 import Client.GUI.GUI;
 import Utils.CodeMessages;
+import Utils.Message;
+import Utils.RequestMessage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -29,29 +35,27 @@ public class TReplyHandler extends Thread{
     @Override
     public void run(){
     
-        BufferedReader in;
-        String inputLine;
+        ObjectOutputStream out;
+        ObjectInputStream in;
+        
+        Message reply = null;
         
         while (true) {
             try {
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new ObjectOutputStream(socket.getOutputStream());
+                in = new ObjectInputStream(socket.getInputStream());
+                
                 // keep listening to incoming messages
-                if ((inputLine = in.readLine()) != null) {
-                    
-                    String[] serverMessage = inputLine.split("|");
-                    
-                    switch(CodeMessages.valueOf(serverMessage[0])){
+                if ((reply =(Message)in.readObject()) != null) {
+                                        
+                    switch(reply.code()){
                         
-                        // HB message -> HB|LBID
+                        // Reply Message
                         case REPLY:
                         {
-                            String requestId = serverMessage[2];
-                            String serverId = serverMessage[3];
-                            String ni = serverMessage[5];
-                            String pi =  serverMessage[6];
-                            String deadline =  serverMessage[7];
-                            
-                            gui.addReply(requestId, serverId, ni, pi, deadline);
+                           RequestMessage rm = (RequestMessage) reply;
+                           gui.addReply(rm.requestID(), rm.serverID(), rm.nIterations(), 
+                                   rm.pi(), rm.deadline());
                             
                         }
                         break;  
@@ -59,6 +63,8 @@ public class TReplyHandler extends Thread{
                 }
             } catch (IOException ex) {
                 System.err.println("Socket error");
+            } catch (ClassNotFoundException ex) {
+                System.err.println(ex);
             }
     
         }

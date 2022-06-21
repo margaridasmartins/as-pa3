@@ -5,7 +5,7 @@
 package LB.Entities;
 
 import java.util.concurrent.locks.ReentrantLock;
-import LB.Communication.ClientSocket;
+import Communication.ClientSocket;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ public class LoadBalancer {
     private HashMap<Integer,Server> servers;
     private Server bestServer; 
     
-    private LinkedList<String> requests;
+    private LinkedList<Request> requests;
     
     private int lbId;
     
@@ -62,7 +62,6 @@ public class LoadBalancer {
         // new server, needs to create a new connection
         // Fist loadbalancer should connect to the monitor at the respective port
         ClientSocket serverSocket = new ClientSocket(serverId, "127.0.0.1");
-        serverSocket.creatSocket();
         
         Server s = new Server(serverId, serverSocket);
         
@@ -89,7 +88,7 @@ public class LoadBalancer {
         return bestServer;
     }
     
-    public void addRequest(String request){
+    public void addRequest(Request request){
         rl.lock();
         try {
             requests.add(request);
@@ -99,8 +98,8 @@ public class LoadBalancer {
         
     }
     
-    public String getFirstRequest(){
-        String request;
+    public Request getFirstRequest(){
+        Request request;
         
         rl.lock();
         try {

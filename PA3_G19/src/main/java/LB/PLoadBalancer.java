@@ -5,7 +5,7 @@
 package LB;
 import LB.GUI.ConfigurationGUI;
 import LB.GUI.GUI;
-import LB.Communication.ClientSocket;
+import Communication.ClientSocket;
 import LB.Communication.TServerSocket;
 import LB.Handlers.TClientHandler;
 import LB.Entities.LoadBalancer;
@@ -52,7 +52,6 @@ public class PLoadBalancer {
        
        // Fist loadbalancer should connect to the monitor at the respective port
        ClientSocket monitorSocket = new ClientSocket(monitorPortNumber, "127.0.0.1");
-       monitorSocket.creatSocket();
        
        // Handle monitor messages
        TClientHandler monitorHandler = new TClientHandler(monitorSocket, lb, gui);

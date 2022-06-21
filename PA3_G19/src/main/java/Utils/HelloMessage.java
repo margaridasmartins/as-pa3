@@ -15,9 +15,10 @@ public class HelloMessage extends Message {
     /* Server ID. */
     int ID;
 
+    String function;
 
     
-    public HelloMessage(int ID, String type) {
+    public HelloMessage(int ID, String type, String function) {
         super(CodeMessages.HELLO);
         this.ID = ID;
         this.type = type;
@@ -25,6 +26,10 @@ public class HelloMessage extends Message {
     
     public int ID() {
         return ID;
+    }
+    
+    public String function(){
+        return function;
     }
     
     

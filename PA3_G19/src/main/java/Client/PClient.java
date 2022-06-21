@@ -6,7 +6,7 @@ package Client;
 
 import Client.GUI.ConfigurationGUI;
 import Client.GUI.GUI;
-import Client.Communication.ClientSocket;
+import Communication.ClientSocket;
 import Client.Communication.TServerSocket;
 
 /**
@@ -43,8 +43,8 @@ public class PClient {
        }
        
        // Connect to Load Balancer
-       ClientSocket lbSocket = new ClientSocket(loadBalancerPortNumber, "127.0.0.1", portNumber);
-       lbSocket.creatSocket();       
+       ClientSocket lbSocket = new ClientSocket(loadBalancerPortNumber, "127.0.0.1");
+  
        
        // Start main GUI
        GUI gui = new GUI();

@@ -27,7 +27,7 @@ public class TClientHandler extends Thread{
         Message inputMessage;
         
         // Hello to Monitor
-        socket.sendMessage(new HelloMessage(serverID, "S"));
+        socket.sendMessage(new HelloMessage(serverID, "S", null));
         
         while (true) {
             // keep listening to incoming messages
