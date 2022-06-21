@@ -51,7 +51,6 @@ public class ClientSocket {
         Object reply = null;
         try{
             reply = in.readObject();
-            System.out.println(reply.getClass());
         } catch (IOException | ClassNotFoundException ex) {
             System.err.println("Error receiving socket message");
         }

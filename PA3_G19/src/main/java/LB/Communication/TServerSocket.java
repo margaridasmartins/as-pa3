@@ -31,9 +31,9 @@ public class TServerSocket extends Thread{
     public void run(){
     
         while(true){
-            Socket clientSocket;
+            ClientSocket clientSocket;
             try {
-                clientSocket = serverSocket.accept();
+                clientSocket = new ClientSocket(serverSocket.accept());
             
                 TServerHandler socket = new TServerHandler(clientSocket, monitorSocket, lb);
                 socket.start();

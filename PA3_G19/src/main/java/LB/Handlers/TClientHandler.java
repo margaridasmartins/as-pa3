@@ -43,9 +43,8 @@ public class TClientHandler extends Thread{
         while (true) {
             // keep listening to incoming messages
             if ((message = (Object) socket.getMessage()) != null) {
-                System.out.println(message.getClass());
+
                 Message m = (Message) message;
-                System.out.println(message.getClass());
                 switch(m.code()){
                     
                     // HB message -> HB|LBID
