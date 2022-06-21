@@ -4,8 +4,13 @@
  */
 package Server;
 
+import Communication.ClientSocket;
+import Server.Communication.TServerSocket;
+import Server.Entities.Server;
+import Server.Handlers.TClientHandler;
 import Server.GUI.ConfigurationGUI;
 import Server.GUI.GUI;
+import java.io.IOException;
 
 /**
  *
@@ -20,7 +25,7 @@ public class PServer {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         
         // Configuration GUI
         ConfigurationGUI configurationGUI =  new ConfigurationGUI();
@@ -39,6 +44,22 @@ public class PServer {
        GUI gui = new GUI();
        gui.setServerInformation(portNumber, monitorPortNumber);
        gui.setVisible(true);
+       
+
+       ClientSocket monitorSocket = new ClientSocket(monitorPortNumber, "127.0.0.1");
+       
+       // Handle monitor messages
+       TClientHandler monitorHandler = new TClientHandler(monitorSocket, portNumber);
+       monitorHandler.start();
+       
+       Server server = new Server(monitorSocket, gui);
+       
+       // Create Server
+       TServerSocket serverSocket = new TServerSocket(portNumber, server);
+       serverSocket.start();
+       
+       
+       
         
     }
     

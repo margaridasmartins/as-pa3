@@ -4,6 +4,7 @@
  */
 package LB.Entities;
 
+import Entities.Request;
 import java.util.concurrent.locks.ReentrantLock;
 import Communication.ClientSocket;
 import Utils.ServerStatusMessage;

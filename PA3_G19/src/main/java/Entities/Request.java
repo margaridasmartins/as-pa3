@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package LB.Entities;
+package Entities;
 
 /**
  *
@@ -15,6 +15,7 @@ public class Request {
     private  int serverID;
     private final int nIterations;
     private final int deadline;
+    private double pi;
     
     
     
@@ -28,7 +29,7 @@ public class Request {
         
     }
     
-     public int clientID() {
+    public int clientID() {
         return clientID;
     }
     
@@ -54,5 +55,13 @@ public class Request {
 
     public int deadline() {
         return deadline;
+    }
+    
+    public double pi(){
+        return pi;
+    }
+    
+    public void pi(double pi){
+        this.pi = pi;
     }
 }

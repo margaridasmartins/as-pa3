@@ -8,7 +8,7 @@ import LB.GUI.GUI;
 import Utils.CodeMessages;
 import Communication.ClientSocket;
 import LB.Entities.LoadBalancer;
-import LB.Entities.Request;
+import Entities.Request;
 import Utils.Message;
 import Utils.RequestMessage;
 import java.io.ObjectInputStream;

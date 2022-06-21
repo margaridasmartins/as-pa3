@@ -9,7 +9,7 @@ import Utils.PrimaryMessage;
 import Utils.HeartBeatMessage;
 import Utils.HelloMessage;
 import LB.Entities.LoadBalancer;
-import LB.Entities.Request;
+import Entities.Request;
 import LB.Entities.Server;
 import LB.GUI.GUI;
 import Utils.Message;
@@ -75,7 +75,8 @@ public class TClientHandler extends Thread{
                             Server s = lb.getBestServer();
                             
                             RequestMessage rm = new RequestMessage(CodeMessages.REQUEST, r.clientID(),
-                            r.requestID(), s.getServerId(), 0, r.nIterations(), 0, r.deadline(), 0);
+                            r.requestID(), s.getServerId(), 0, r.nIterations(), 0, r.deadline(),0);
+
                             
                             s.getSocket().sendMessage(rm);
                             
