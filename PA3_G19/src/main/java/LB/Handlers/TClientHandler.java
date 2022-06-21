@@ -99,6 +99,18 @@ public class TClientHandler extends Thread{
                             lb.setPrimary();
                             
                         }
+                        break;
+                    case REQUEST: {
+
+                        RequestMessage rm = (RequestMessage) message;
+
+                        // Forward request to monitor
+                        socket.sendMessage(new Message(CodeMessages.STATUS));
+
+                        // Add request
+                        lb.addRequest(new Request(rm.clientID(), rm.requestID(), rm.serverID(), rm.nIterations(), rm.deadline()));
+
+                    }
                 }
             }
             else{

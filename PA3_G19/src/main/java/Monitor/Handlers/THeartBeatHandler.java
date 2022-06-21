@@ -21,10 +21,10 @@ public class THeartBeatHandler extends Thread{
     private ClientSocket socket;
     private int ID;
     
-    public THeartBeatHandler(ClientSocket socket, Monitor monitor){
+    public THeartBeatHandler(ClientSocket socket, Monitor monitor, int ID){
         this.monitor = monitor;
         this.socket = socket;
-        this.ID = socket.getPort();
+        this.ID = ID;
     }
     
     @Override
@@ -38,6 +38,7 @@ public class THeartBeatHandler extends Thread{
                     monitor.removeHeartBeat(ID);
                 }
                 else{
+                    System.out.println("SET DOWN " + ID);
                     monitor.setDown(ID);
                     break;
                 }
