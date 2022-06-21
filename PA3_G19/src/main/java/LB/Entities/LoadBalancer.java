@@ -89,8 +89,7 @@ public class LoadBalancer {
                     si.setNI(s.totalNIterations());
                     si.setNJobs(s.nRequests());
                     exists = true;
-                    
-                    if(bNJ<s.nRequests() || (bNJ==s.nRequests() && bNI< s.totalNIterations())){
+                    if(bNJ>s.nRequests() || (bNJ==s.nRequests() && bNI>s.totalNIterations())){
                     
                         bestServer = si;
                         bNJ = s.nRequests();
@@ -107,12 +106,14 @@ public class LoadBalancer {
         
         // add new ones
         for(ServerStatusMessage s : status){
+            System.out.println(s.serverID());
             if(!servers.containsKey(s.serverID())){
                 Server si = addServer(s.serverID());
-                si.setNI(s.nRequests());
+                si.setNI(s.totalNIterations());
                 si.setNJobs(s.nRequests());
-                
-                if(bNJ<s.nRequests() || (bNJ==s.nRequests() && bNI< s.totalNIterations())){
+                System.out.println(s.nRequests());
+                System.out.println(s.totalNIterations());
+                if(bNJ>s.nRequests() || (bNJ==s.nRequests() && bNI>s.totalNIterations())){
                     
                     bestServer = si;
                     bNJ = s.nRequests();
