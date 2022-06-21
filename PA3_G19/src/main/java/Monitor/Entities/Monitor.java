@@ -72,7 +72,6 @@ public class Monitor {
     }
     
     public List<RequestMessage> getServerRequests(int serverID) {
-        System.out.println(serverID);
         return new ArrayList<>(serversRequests.get(serverID).values());
     }
 
