@@ -83,7 +83,7 @@ public class Monitor {
         // Server Down
         if(serversInfo.containsKey(ID)){
             serversInfo.remove(ID);
-            for(RequestMessage rm : serversRequests.get(ID).values()){
+            for(RequestMessage rm : new ArrayList<>(serversRequests.get(ID).values())){
                 sockets.get(loadBalancers[0]).sendMessage(rm);
             }
             serversRequests.remove(ID);
