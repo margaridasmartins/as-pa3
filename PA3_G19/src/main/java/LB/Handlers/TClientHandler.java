@@ -98,7 +98,6 @@ public class TClientHandler extends Thread{
                             // setPrimary
                             lb.setPrimary();
                             
-                            this.socket = new ClientSocket(pm.ID(), "127.0.0.1");
                         }
                 }
             }
@@ -110,5 +109,9 @@ public class TClientHandler extends Thread{
         
     }
     
+    public void setNewSocket(ClientSocket s)
+    {
+        this.socket = s;
+    }
     
 }

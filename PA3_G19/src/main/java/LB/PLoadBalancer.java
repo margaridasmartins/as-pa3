@@ -67,6 +67,9 @@ public class PLoadBalancer {
             }
        }
        
+       // Fist loadbalancer should connect to the monitor at the respective port
+       monitorSocket = new ClientSocket(monitorPortNumber, "127.0.0.1");
+       monitorHandler.setNewSocket(monitorSocket);
        // LB is primary so it can start accepting Client messages
        TServerSocket  serverSocket = new TServerSocket(lb.getLoadBalencerID(), monitorSocket, lb);
        serverSocket.start();
