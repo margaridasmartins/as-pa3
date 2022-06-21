@@ -30,31 +30,23 @@ public class GUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        statusLabel = new javax.swing.JLabel();
         portNumberLabel = new javax.swing.JLabel();
         monitorPortNumberLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
-        jLabel1.setText("Monitor");
+        jLabel1.setText("Server");
 
         jLabel2.setText("Port");
 
         jLabel3.setText("Monitor Port");
-
-        jLabel4.setText("Status");
-
-        statusLabel.setText("Primary");
 
         portNumberLabel.setText("XXXX");
 
@@ -75,7 +67,7 @@ public class GUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Port", "Status", "Requests"
+                "Client ID", "Request ID", "NI", "Deadline"
             }
         ) {
             Class[] types = new Class [] {
@@ -95,41 +87,14 @@ public class GUI extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jTabbedPane1.addTab("Load Balancers", jScrollPane1);
+        jTabbedPane1.addTab("Requests", jScrollPane1);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Port", "Status", "Requests"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(jTable3);
-
-        jTabbedPane1.addTab("Servers", jScrollPane2);
-
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Req. Pending", "Req. Being Processed", "Req. Rejected", "Req. Processed"
+                "Client ID", "Request ID", "NI", "Deadline", "Pi"
             }
         ) {
             Class[] types = new Class [] {
@@ -147,9 +112,9 @@ public class GUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane5.setViewportView(jTable5);
+        jScrollPane3.setViewportView(jTable2);
 
-        jTabbedPane1.addTab("Clients", jScrollPane5);
+        jTabbedPane1.addTab("Replies", jScrollPane3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -166,10 +131,7 @@ public class GUI extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(portNumberLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(monitorPortNumberLabel, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(436, 436, 436)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(statusLabel))
+                        .addGap(529, 529, 529))
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -193,8 +155,6 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addGap(6, 6, 6)
                         .addComponent(jLabel3))
-                    .addComponent(jLabel4)
-                    .addComponent(statusLabel)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(portNumberLabel)
                         .addGap(6, 6, 6)
@@ -213,13 +173,12 @@ public class GUI extends javax.swing.JFrame {
 
     // Terminate Load Balancer
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       //PLoadBalancer.terminate();
+       PServer.terminate();
     }//GEN-LAST:event_jButton1ActionPerformed
     
-    public void setLoadBalancerInformation(int portNumber, int monitorPortNumber, String role){
+    public void setServerInformation(int portNumber, int monitorPortNumber){
         portNumberLabel.setText(Integer.toString(portNumber));
         monitorPortNumberLabel.setText(Integer.toString(monitorPortNumber));
-        statusLabel.setText(role);
     }
     /**
      * @param args the command line arguments
@@ -264,17 +223,12 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable5;
+    private javax.swing.JTable jTable2;
     private javax.swing.JLabel monitorPortNumberLabel;
     private javax.swing.JLabel portNumberLabel;
-    private javax.swing.JLabel statusLabel;
     // End of variables declaration//GEN-END:variables
 }

@@ -36,10 +36,7 @@
                           <Component id="portNumberLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="monitorPortNumberLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="436" max="-2" attributes="0"/>
-                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="statusLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="529" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jTabbedPane1" min="-2" pref="663" max="-2" attributes="0"/>
               </Group>
@@ -72,8 +69,6 @@
                       <EmptySpace min="6" pref="6" max="6" attributes="0"/>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jLabel4" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="statusLabel" alignment="2" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="2" attributes="0">
                       <Component id="portNumberLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="6" pref="6" max="6" attributes="0"/>
@@ -95,7 +90,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Liberation Sans" size="18" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Monitor"/>
+        <Property name="text" type="java.lang.String" value="Server"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
@@ -106,16 +101,6 @@
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
         <Property name="text" type="java.lang.String" value="Monitor Port"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel4">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Status"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="statusLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Primary"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="portNumberLabel">
@@ -153,8 +138,8 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Load Balancers">
-                <Property name="tabTitle" type="java.lang.String" value="Load Balancers"/>
+              <JTabbedPaneConstraints tabName="Requests">
+                <Property name="tabTitle" type="java.lang.String" value="Requests"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -165,61 +150,39 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="4" rowCount="0">
-                    <Column editable="false" title="ID" type="java.lang.Integer"/>
-                    <Column editable="false" title="Port" type="java.lang.Integer"/>
-                    <Column editable="false" title="Status" type="java.lang.Integer"/>
-                    <Column editable="false" title="Requests" type="java.lang.Integer"/>
+                    <Column editable="false" title="Client ID" type="java.lang.Integer"/>
+                    <Column editable="false" title="Request ID" type="java.lang.Integer"/>
+                    <Column editable="false" title="NI" type="java.lang.Integer"/>
+                    <Column editable="false" title="Deadline" type="java.lang.Integer"/>
                   </Table>
                 </Property>
               </Properties>
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+        <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Servers">
-                <Property name="tabTitle" type="java.lang.String" value="Servers"/>
+              <JTabbedPaneConstraints tabName="Replies">
+                <Property name="tabTitle" type="java.lang.String" value="Replies"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="jTable3">
-              <Properties>
-                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="0">
-                    <Column editable="false" title="ID" type="java.lang.Integer"/>
-                    <Column editable="false" title="Port" type="java.lang.Integer"/>
-                    <Column editable="false" title="Status" type="java.lang.Integer"/>
-                    <Column editable="false" title="Requests" type="java.lang.Integer"/>
-                  </Table>
-                </Property>
-              </Properties>
-            </Component>
-          </SubComponents>
-        </Container>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane5">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Clients">
-                <Property name="tabTitle" type="java.lang.String" value="Clients"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JTable" name="jTable5">
+            <Component class="javax.swing.JTable" name="jTable2">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="5" rowCount="0">
-                    <Column editable="false" title="ID" type="java.lang.Integer"/>
-                    <Column editable="false" title="Req. Pending" type="java.lang.Integer"/>
-                    <Column editable="false" title="Req. Being Processed" type="java.lang.Integer"/>
-                    <Column editable="false" title="Req. Rejected" type="java.lang.Integer"/>
-                    <Column editable="false" title="Req. Processed" type="java.lang.Integer"/>
+                    <Column editable="false" title="Client ID" type="java.lang.Integer"/>
+                    <Column editable="false" title="Request ID" type="java.lang.Integer"/>
+                    <Column editable="false" title="NI" type="java.lang.Integer"/>
+                    <Column editable="false" title="Deadline" type="java.lang.Integer"/>
+                    <Column editable="false" title="Pi" type="java.lang.Integer"/>
                   </Table>
                 </Property>
               </Properties>
