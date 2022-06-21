@@ -101,6 +101,7 @@ public class Monitor {
 
                 THeartBeatHandler hbsocket = new THeartBeatHandler(sockets.get(loadBalancers[0]), this, ID);
                 hbsocket.start();
+                gui.setLBStatus("UP");
             } else {
                 loadBalancers[1] = 0;
                 sockets.remove(ID);
