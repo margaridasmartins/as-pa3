@@ -67,7 +67,8 @@ public class PLoadBalancer {
             }
         }
         
-        System.out.println("port " + lb.getLoadBalencerID());
+        gui.setLoadBalancerStatus("Primary");
+        gui.setLoadBalancerInformation(lb.getLoadBalencerID(), monitorPortNumber);
 
         // LB is primary so it can start accepting Client messages
         TServerSocket serverSocket = new TServerSocket(lb.getLoadBalencerID(), monitorSocket, lb);

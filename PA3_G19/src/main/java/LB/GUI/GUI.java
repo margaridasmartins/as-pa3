@@ -63,7 +63,7 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel4.setText("Status");
 
-        statusLabel.setText("Primary");
+        statusLabel.setText("Secondary");
 
         portNumberLabel.setText("5001");
 
@@ -173,6 +173,10 @@ public class GUI extends javax.swing.JFrame {
     public void setLoadBalancerInformation(int portNumber, int monitorPortNumber){
         portNumberLabel.setText(Integer.toString(portNumber));
         monitorPortNumberLabel.setText(Integer.toString(monitorPortNumber));
+    }
+    
+    public void setLoadBalancerStatus(String status){
+        statusLabel.setText(status);
     }
     
     public void addRequest(int clientId, int requestId, int serverId, int ni, int deadline){

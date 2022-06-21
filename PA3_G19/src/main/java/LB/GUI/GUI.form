@@ -115,7 +115,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="statusLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Primary"/>
+        <Property name="text" type="java.lang.String" value="Secondary"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="portNumberLabel">
