@@ -27,7 +27,7 @@ public class TClientHandler extends Thread{
         Message inputMessage;
         
         // Hello to Monitor
-        socket.sendMessage(new HelloMessage(serverID, "S"));
+        socket.sendMessage(new HelloMessage(serverID, "S", null));
         
         while (true) {
             // keep listening to incoming messages
@@ -42,7 +42,7 @@ public class TClientHandler extends Thread{
                             socket.sendMessage(new HeartBeatMessage(serverID));
                         }
                         break;
-                    // LB HELLO message from monitor -> HELLO|[P or S]
+                    // Received request from LoadBalencer
                     case REQUEST:
                         {
                             

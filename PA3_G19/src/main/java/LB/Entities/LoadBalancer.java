@@ -5,10 +5,12 @@
 package LB.Entities;
 
 import java.util.concurrent.locks.ReentrantLock;
-import LB.Communication.ClientSocket;
+import Communication.ClientSocket;
+import Utils.ServerStatusMessage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -21,7 +23,7 @@ public class LoadBalancer {
     private HashMap<Integer,Server> servers;
     private Server bestServer; 
     
-    private LinkedList<String> requests;
+    private LinkedList<Request> requests;
     
     private int lbId;
     
@@ -62,7 +64,6 @@ public class LoadBalancer {
         // new server, needs to create a new connection
         // Fist loadbalancer should connect to the monitor at the respective port
         ClientSocket serverSocket = new ClientSocket(serverId, "127.0.0.1");
-        serverSocket.creatSocket();
         
         Server s = new Server(serverId, serverSocket);
         
@@ -71,25 +72,60 @@ public class LoadBalancer {
         return s;
     }
     
-    public void updateServer(int serverId, int njobs, int ni){
-    
-        Server s;
-        if(!hasServer(serverId)){
-            s = addServer(serverId);
-        }
-        else{
-            s = getServer(serverId);
+    public void updateServers(List<ServerStatusMessage> status){
+        
+        int bNI = 100; // max ni slhoud not be more than 20
+        int bNJ = 10; // servers cannot have more that 5 requests
+        
+        // delete and update unexisting servers
+        for(int serverID : servers.keySet()){
+            boolean exists = false;
+            for(ServerStatusMessage s : status){
+                if(s.serverID() == serverID){
+                    Server si = getServer(serverID);
+                    si.setNI(s.totalNIterations());
+                    si.setNJobs(s.nRequests());
+                    exists = true;
+                    
+                    if(bNJ<s.nRequests() || (bNJ==s.nRequests() && bNI< s.totalNIterations())){
+                    
+                        bestServer = si;
+                        bNJ = s.nRequests();
+                        bNI = s.totalNIterations();
+                    }
+                }
+            }
+            
+            if(!exists){
+                deleteServer(serverID);
+            }
+            
         }
         
-        s.setNI(ni);
-        s.setNJobs(njobs);
+        // add new ones
+        for(ServerStatusMessage s : status){
+            if(!servers.containsKey(s.serverID())){
+                Server si = addServer(s.serverID());
+                si.setNI(s.nRequests());
+                si.setNJobs(s.nRequests());
+                
+                if(bNJ<s.nRequests() || (bNJ==s.nRequests() && bNI< s.totalNIterations())){
+                    
+                    bestServer = si;
+                    bNJ = s.nRequests();
+                    bNI = s.totalNIterations();
+                }
+            }
+        }
+    
+       
     }
     
     public Server getBestServer(){
         return bestServer;
     }
     
-    public void addRequest(String request){
+    public void addRequest(Request request){
         rl.lock();
         try {
             requests.add(request);
@@ -99,8 +135,8 @@ public class LoadBalancer {
         
     }
     
-    public String getFirstRequest(){
-        String request;
+    public Request getFirstRequest(){
+        Request request;
         
         rl.lock();
         try {
@@ -113,17 +149,7 @@ public class LoadBalancer {
     
     public void deleteServer(int serverId){
         servers.remove(serverId);
-    }
-
-    public void deleteNonExistingServers(ArrayList<Integer> existingServers) {
-        for(Integer serverId : servers.keySet()){
-        
-            if(!existingServers.contains(serverId)){
-                servers.remove(serverId);
-            }
-        }
-    }
-    
+    }  
     
 
 }

@@ -4,7 +4,7 @@
  */
 package LB.Entities;
 
-import LB.Communication.ClientSocket;
+import Communication.ClientSocket;
 
 /**
  *

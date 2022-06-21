@@ -4,6 +4,7 @@
  */
 package LB.Communication;
 import LB.Entities.LoadBalancer;
+import Communication.ClientSocket;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

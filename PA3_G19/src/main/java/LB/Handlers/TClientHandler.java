@@ -3,11 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package LB.Handlers;
-import LB.Communication.ClientSocket;
+import Communication.ClientSocket;
 import Utils.CodeMessages;
+import Utils.PrimaryMessage;
+import Utils.HeartBeatMessage;
+import Utils.HelloMessage;
 import LB.Entities.LoadBalancer;
+import LB.Entities.Request;
 import LB.Entities.Server;
 import LB.GUI.GUI;
+import Utils.Message;
+import Utils.RequestMessage;
 import java.util.ArrayList;
 
 /**
@@ -29,75 +35,64 @@ public class TClientHandler extends Thread{
     @Override
     public void run(){
     
-        String inputLine;
+        Message message;
         
         // Hello to Monitor
-        socket.sendMessage(CodeMessages.HELLO.name() + "|" + "LB" + lb.getLoadBalencerID());
+        socket.sendMessage(new HelloMessage(lb.getLoadBalencerID(),"LB", null));
         
         while (true) {
             // keep listening to incoming messages
-            if ((inputLine = socket.getMessage()) != null) {
+            if ((message = socket.getMessage()) != null) {
                 
-                String[] clientMessage = inputLine.split("|");
                 
-                switch(CodeMessages.valueOf(clientMessage[0])){
+                switch(message.code()){
                     
                     // HB message -> HB|LBID
                     case HEARTBEAT:
                         {
-                            String hbMessage = CodeMessages.HEARTBEAT.name() + "|" + lb.getLoadBalencerID();
-                            socket.sendMessage(hbMessage);
+                            socket.sendMessage(new HeartBeatMessage(lb.getLoadBalencerID()));
                         }
                         break;
                     // LB HELLO message from monitor -> HELLO|[P or S]
                     case HELLO:
                         {
-                            if(clientMessage[1].equals("P")){
-                                
+                            HelloMessage hello = (HelloMessage) message;
+                            if(hello.function().equals("P")){                     
                                 // setPrimary
-                                lb.setPrimary();
-                                
+                                lb.setPrimary();         
                             }
                         }
                         break;
                     // SERVERs DETAILS
                     case STATUS:
                         {
-                            // Update serverStatus
-                            int nservers = Integer.getInteger(clientMessage[1]);
+                            // Update serverStatus                  
                             
-                            ArrayList<Integer> existingServers = new ArrayList<>();
-                            
-                            int j = 2;
-                            for(int i =0; i<nservers; i++){
-                                existingServers.add(Integer.getInteger(clientMessage[j]));
-                                lb.updateServer(Integer.getInteger(clientMessage[j]),
-                                        Integer.getInteger(clientMessage[++j]),
-                                        Integer.getInteger(clientMessage[++j]));
-                                j++;
-                            }
-                            
-                            lb.deleteNonExistingServers(existingServers);
+                            lb.updateServers(message.serversStatus());
                             
                             // Choose server and  forward request
-                            String r = lb.getFirstRequest();
+                            Request r = lb.getFirstRequest();
                             Server s = lb.getBestServer();
                             
-                            s.getSocket().sendMessage(r);
+                            RequestMessage rm = new RequestMessage(CodeMessages.REQUEST, r.clientID(),
+                            r.requestID(), s.getServerId(), 0, r.nIterations(), 0, r.deadline());
                             
-                            String[] request = r.split("|");
+                            s.getSocket().sendMessage(rm);
+                            
+                            //forward also to monitor
+                            socket.sendMessage(rm);
                             
                             // Update GUI
-                            gui.addRequest(Integer.getInteger(request[1]), 
-                                    Integer.getInteger(request[2]), s.getServerId(),
-                                    Integer.getInteger(request[5]) , Integer.getInteger(request[7]));
+                            gui.addRequest(r.clientID(), r.requestID(), s.getServerId(),
+                                    r.nIterations(), r.deadline());
                         }
                         break;
                     // Primary LoadBalancer is down need to start as primary
                     case PRIMARY:  
                         {
+                            PrimaryMessage pm = (PrimaryMessage) message;
                             // update Port
-                            lb.setLoadBalencerID(Integer.getInteger(clientMessage[1]));
+                            lb.setLoadBalencerID(pm.ID());
                             
                             // setPrimary
                             lb.setPrimary();

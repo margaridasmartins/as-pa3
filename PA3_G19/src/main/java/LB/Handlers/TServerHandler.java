@@ -6,13 +6,15 @@ package LB.Handlers;
 
 import LB.GUI.GUI;
 import Utils.CodeMessages;
-import LB.Communication.ClientSocket;
+import Communication.ClientSocket;
 import LB.Entities.LoadBalancer;
-
-import java.io.BufferedReader;
+import LB.Entities.Request;
+import Utils.Message;
+import Utils.RequestMessage;
+import java.io.ObjectInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
+
 
 /**
  *
@@ -33,25 +35,28 @@ public class TServerHandler extends Thread {
     @Override
     public void run() {
 
-        BufferedReader in = null;
+        ObjectInputStream in = null;
+        
         try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String inputLine;
+            in =  new ObjectInputStream(socket.getInputStream());
+            Message message = null;
             while (true) {
                 // keep listening to incoming messages
-                if ((inputLine = in.readLine()) != null) {
+                if ((message = (Message)in.readObject()) != null) {
 
-                    String[] clientMessage = inputLine.split("|");
-
-                    switch (CodeMessages.valueOf(clientMessage[0])) {
+                   
+                    switch (message.code()) {
 
                         // Request message -> REQUEST | client id | request id | 00 | 01 | number of iterations | 00 | deadline |
                         case REQUEST: {
+                            
+                            RequestMessage rm = (RequestMessage) message;
+                            
                             // Forward request to monitor
-                            monitorSocket.sendMessage(inputLine);
+                            monitorSocket.sendMessage(new Message(CodeMessages.STATUS));
 
                             // Add request
-                            lb.addRequest(inputLine);
+                            lb.addRequest(new Request(rm.clientID(), rm.requestID(), rm.serverID(), rm.nIterations(), rm.deadline()));
 
                         }
                         break;
@@ -61,6 +66,8 @@ public class TServerHandler extends Thread {
             }
         } catch (IOException ex) {
             System.err.println("Socket error");
+        } catch (ClassNotFoundException ex) {
+           System.err.println(ex);
         } finally {
             try {
                 in.close();

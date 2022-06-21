@@ -15,12 +15,10 @@ import Client.Handlers.TReplyHandler;
 
 public class TServerSocket extends Thread{
     
-    private final int portNumber;
     private final ServerSocket serverSocket;
     private final GUI gui;
     
-    public TServerSocket(int portNumber, GUI gui) throws IOException{
-        this.portNumber  = portNumber;       
+    public TServerSocket(int portNumber, GUI gui) throws IOException{     
         this.serverSocket = new ServerSocket(portNumber);
         this.gui = gui;
     }

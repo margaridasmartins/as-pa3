@@ -5,7 +5,9 @@
 package Client.GUI;
 
 import Client.PClient;
-import Client.Communication.ClientSocket;
+import Communication.ClientSocket;
+import Utils.CodeMessages;
+import Utils.RequestMessage;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -17,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 public class GUI extends javax.swing.JFrame {
 
     private ClientSocket socket;
+    private static int requestID = 0;
 
     /**
      * Creates new form GUI
@@ -274,15 +277,20 @@ public class GUI extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int ni = (Integer) numberIterations.getValue();
         int dline = (Integer) deadline.getValue();
+        GUI.requestID += 1;
+        int reqId = GUI.requestID;
         
-        int reqId = socket.sendRequest(ni, dline);
+        socket.sendMessage(new RequestMessage(CodeMessages.REQUEST, Integer.getInteger(clientPortNumber.getText()),
+        reqId, 0, 0, ni, 0, dline));
+
+        
         
         DefaultTableModel model = (DefaultTableModel) requestTable.getModel();
         model.addRow(new Object[]{reqId, ni, dline});
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    public void addReply(String requestId, String serverId, String ni, String pi, String deadline){
+    public void addReply(int requestId, int serverId, int ni, double pi, int deadline){
         DefaultTableModel model = (DefaultTableModel) repliesTable.getModel();
         model.addRow(new Object[]{requestId, serverId, ni, pi, deadline});
     }
