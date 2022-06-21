@@ -42,7 +42,7 @@ public class TClientHandler extends Thread{
                             socket.sendMessage(new HeartBeatMessage(serverID));
                         }
                         break;
-                    // LB HELLO message from monitor -> HELLO|[P or S]
+                    // Received request from LoadBalencer
                     case REQUEST:
                         {
                             

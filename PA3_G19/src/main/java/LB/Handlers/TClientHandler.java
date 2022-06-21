@@ -9,9 +9,11 @@ import Utils.PrimaryMessage;
 import Utils.HeartBeatMessage;
 import Utils.HelloMessage;
 import LB.Entities.LoadBalancer;
+import LB.Entities.Request;
 import LB.Entities.Server;
 import LB.GUI.GUI;
 import Utils.Message;
+import Utils.RequestMessage;
 import java.util.ArrayList;
 
 /**
@@ -64,34 +66,25 @@ public class TClientHandler extends Thread{
                     // SERVERs DETAILS
                     case STATUS:
                         {
-                            // Update serverStatus
-                            int nservers = Integer.getInteger(clientMessage[1]);
+                            // Update serverStatus                  
                             
-                            ArrayList<Integer> existingServers = new ArrayList<>();
-                            
-                            int j = 2;
-                            for(int i =0; i<nservers; i++){
-                                existingServers.add(Integer.getInteger(clientMessage[j]));
-                                lb.updateServer(Integer.getInteger(clientMessage[j]),
-                                        Integer.getInteger(clientMessage[++j]),
-                                        Integer.getInteger(clientMessage[++j]));
-                                j++;
-                            }
-                            
-                            lb.deleteNonExistingServers(existingServers);
+                            lb.updateServers(message.serversStatus());
                             
                             // Choose server and  forward request
-                            String r = lb.getFirstRequest();
+                            Request r = lb.getFirstRequest();
                             Server s = lb.getBestServer();
                             
-                            s.getSocket().sendMessage(r);
+                            RequestMessage rm = new RequestMessage(CodeMessages.REQUEST, r.clientID(),
+                            r.requestID(), s.getServerId(), 0, r.nIterations(), 0, r.deadline());
                             
-                            String[] request = r.split("|");
+                            s.getSocket().sendMessage(rm);
+                            
+                            //forward also to monitor
+                            socket.sendMessage(rm);
                             
                             // Update GUI
-                            gui.addRequest(Integer.getInteger(request[1]), 
-                                    Integer.getInteger(request[2]), s.getServerId(),
-                                    Integer.getInteger(request[5]) , Integer.getInteger(request[7]));
+                            gui.addRequest(r.clientID(), r.requestID(), s.getServerId(),
+                                    r.nIterations(), r.deadline());
                         }
                         break;
                     // Primary LoadBalancer is down need to start as primary
