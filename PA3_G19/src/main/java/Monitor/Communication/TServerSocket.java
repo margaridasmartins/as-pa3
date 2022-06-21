@@ -5,6 +5,7 @@
 package Monitor.Communication;
 
 import Communication.ClientSocket;
+import Monitor.Entities.Monitor;
 import Monitor.GUI.GUI;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -19,11 +20,13 @@ public class TServerSocket extends Thread {
     private final int portNumber;
     private final ServerSocket serverSocket;
     private final GUI gui;
+    private final Monitor monitor;
 
     public TServerSocket(int portNumber, Monitor monitor, GUI gui) throws IOException {
         this.gui = gui;
         this.portNumber = portNumber;
         this.serverSocket = new ServerSocket(portNumber);
+        this.monitor = monitor;
     }
 
     @Override

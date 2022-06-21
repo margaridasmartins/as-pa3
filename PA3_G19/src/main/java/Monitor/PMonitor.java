@@ -5,6 +5,7 @@
 package Monitor;
 
 import Monitor.Communication.TServerSocket;
+import Monitor.Entities.Monitor;
 import Monitor.GUI.ConfigurationGUI;
 import Monitor.GUI.GUI;
 import java.io.IOException;
