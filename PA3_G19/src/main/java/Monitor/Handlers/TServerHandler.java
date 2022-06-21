@@ -40,7 +40,7 @@ public class TServerHandler extends Thread {
 
                 switch (msg.code()) {
                     case HELLO:
-                        if (msg.type() == "LB") {
+                        if (msg.type().equals("LB")) {
                             /* Load Balancer HELLO */
                             if (monitor.hasPrimaryLB()) {
                                 socket.sendMessage(new Message(HELLO).type("S"));
