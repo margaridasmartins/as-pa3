@@ -52,8 +52,11 @@ public class TServerHandler extends Thread {
                             monitor.setLBUp();
                             socket.sendMessage(new HelloMessage(0, null, "P"));
                         } else {
+                            
+                            HelloMessage hm = (HelloMessage) msg;
+                            
                             /* Server HELLO */
-                            monitor.addServer(m.port());
+                            monitor.addServer(hm.ID());
                         }
                         break;
                     case STATUS:

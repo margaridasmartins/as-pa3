@@ -67,7 +67,6 @@ public class TClientHandler extends Thread{
                     case STATUS:
                         {
                             // Update serverStatus                  
-                            System.out.println(m.serversStatus().get(0));
                             lb.updateServers(m.serversStatus());
                             
                             // Choose server and  forward request

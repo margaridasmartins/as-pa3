@@ -292,7 +292,7 @@ public class GUI extends javax.swing.JFrame {
 
     public void addReply(int requestId, int serverId, int ni, double pi, int deadline){
         DefaultTableModel model = (DefaultTableModel) repliesTable.getModel();
-        model.addRow(new Object[]{requestId, serverId, ni, pi, deadline});
+        model.addRow(new Object[]{requestId, serverId, ni,  deadline, pi});
     }
     
     public void setClientInformation(int portNumber, int loadBPortNumber){

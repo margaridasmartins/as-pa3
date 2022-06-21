@@ -29,9 +29,9 @@ public class Server {
     public Server(ClientSocket socket, GUI gui){
         workers = new TWorker[3];
         
-        workers[0] = new TWorker(1, this);
-        workers[1]= new TWorker(2, this);
-        workers[2] = new TWorker(3, this);
+        workers[0] = new TWorker(0, this);
+        workers[1]= new TWorker(1, this);
+        workers[2] = new TWorker(2, this);
         
         workers[0].start();
         workers[1].start();
