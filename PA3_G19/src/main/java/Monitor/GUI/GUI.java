@@ -317,9 +317,9 @@ public class GUI extends javax.swing.JFrame {
      *
      * @param object server id
      */
-    private void jButtonServerInfoActionPerformed(Integer object) {
-        jLabelTitleServer.setText("Server " + object + " Requests");
-        loadServerRequests(object);
+    private void jButtonServerInfoActionPerformed(Integer serverID) {
+        jLabelTitleServer.setText("Server " + serverID + " Requests");
+        loadServerRequests(serverID);
         jLayeredPaneServerRequests.setLayer(jPanelServer, 2);
         jLayeredPaneServerRequests.setLayer(jPanelBase, 0);
         jLayeredPaneServerRequests.repaint();
@@ -371,9 +371,8 @@ public class GUI extends javax.swing.JFrame {
             int row = e.getY() / table.getRowHeight();
             if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0) {
                 if (((String) table.getValueAt(row, 1)).equals("UP")) {
-                    String value = (String) table.getValueAt(row, 0);
-                    String[] values = value.split("\\s+");
-                    jButtonServerInfoActionPerformed(Integer.parseInt(values[1]));
+                    Integer value = (Integer)table.getValueAt(row, 0);
+                    jButtonServerInfoActionPerformed(value);
                 }
             }
         }
