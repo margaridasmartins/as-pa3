@@ -41,7 +41,7 @@ public class PMonitor {
 
         // Start main GUI
         GUI gui = new GUI();
-        gui.setLoadBalancerInformation(portNumber, heartbeatThreshold);
+        gui.setMonitorInformation(portNumber, heartbeatThreshold);
         gui.setVisible(true);
         
         Monitor monitor = new Monitor(gui, heartbeatThreshold);

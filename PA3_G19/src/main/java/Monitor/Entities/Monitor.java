@@ -68,6 +68,7 @@ public class Monitor {
     public void setLBUp(int ID) {
         if (loadBalancers[0] == 0) {
             loadBalancers[0] = ID;
+            gui.setLBStatus("UP");
         } else {
             loadBalancers[1] = ID;
         }
@@ -89,6 +90,8 @@ public class Monitor {
             gui.setServerDown(ID);
         } else {
             if (loadBalancers[0] == ID) {
+                gui.setLBStatus("DOWN");
+
                 PrimaryMessage pm = new PrimaryMessage(ID);
                 sockets.get(loadBalancers[0]).closeSocket();
                 sockets.get(loadBalancers[1]).sendMessage(pm);

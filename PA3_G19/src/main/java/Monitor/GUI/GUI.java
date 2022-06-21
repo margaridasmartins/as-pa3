@@ -50,17 +50,23 @@ public class GUI extends javax.swing.JFrame {
         jPanelBase = new javax.swing.JPanel();
         jButtonEnd = new javax.swing.JButton();
         jTabbedPane = new javax.swing.JTabbedPane();
-        jScrollPaneServer = new javax.swing.JScrollPane();
-        jTableServer = new javax.swing.JTable();
         jScrollPaneLB = new javax.swing.JScrollPane();
         jTableLB = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTableClients = new javax.swing.JTable();
+        jScrollPaneServer = new javax.swing.JScrollPane();
+        jTableServer = new javax.swing.JTable();
         jPanelServer = new javax.swing.JPanel();
         jButtonBack = new javax.swing.JButton();
         jLabelTitleServer = new javax.swing.JLabel();
         jScrollPaneRequests = new javax.swing.JScrollPane();
         jTableRequests = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        monitorPortNumberLabel = new javax.swing.JLabel();
+        heartbeat = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        LBStatus = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -75,39 +81,6 @@ public class GUI extends javax.swing.JFrame {
                 jButtonEndActionPerformed(evt);
             }
         });
-
-        jTableServer.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Server ID", "State", "N. of Requests", "Requests"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTableServer.setColumnSelectionAllowed(true);
-        jTableServer.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTableServerMouseClicked(evt);
-            }
-        });
-        jScrollPaneServer.setViewportView(jTableServer);
-        jTableServer.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        if (jTableServer.getColumnModel().getColumnCount() > 0) {
-            jTableServer.getColumnModel().getColumn(3).setCellRenderer(new TableButtonRenderer());
-        }
-        jTableServer.setName("Server");
-        jTableServer.setRowHeight(35);
-        jTableServer.addMouseListener(new JTableButtonMouseListener(jTableServer));
-
-        jTabbedPane.addTab("Server", jScrollPaneServer);
 
         jTableLB.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -156,13 +129,46 @@ public class GUI extends javax.swing.JFrame {
 
         jTabbedPane.addTab("Clients", jScrollPane5);
 
+        jTableServer.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Server ID", "State", "N. of Requests", "Requests"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableServer.setColumnSelectionAllowed(true);
+        jTableServer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableServerMouseClicked(evt);
+            }
+        });
+        jScrollPaneServer.setViewportView(jTableServer);
+        jTableServer.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (jTableServer.getColumnModel().getColumnCount() > 0) {
+            jTableServer.getColumnModel().getColumn(3).setCellRenderer(new TableButtonRenderer());
+        }
+        jTableServer.setName("Server");
+        jTableServer.setRowHeight(35);
+        jTableServer.addMouseListener(new JTableButtonMouseListener(jTableServer));
+
+        jTabbedPane.addTab("Server", jScrollPaneServer);
+
         javax.swing.GroupLayout jPanelBaseLayout = new javax.swing.GroupLayout(jPanelBase);
         jPanelBase.setLayout(jPanelBaseLayout);
         jPanelBaseLayout.setHorizontalGroup(
             jPanelBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBaseLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
+                .addComponent(jTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(jPanelBaseLayout.createSequentialGroup()
                 .addGap(245, 245, 245)
@@ -218,7 +224,7 @@ public class GUI extends javax.swing.JFrame {
             jPanelServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelServerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPaneRequests, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
+                .addComponent(jScrollPaneRequests, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelServerLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -248,54 +254,98 @@ public class GUI extends javax.swing.JFrame {
         jLayeredPaneServerRequests.setLayout(jLayeredPaneServerRequestsLayout);
         jLayeredPaneServerRequestsLayout.setHorizontalGroup(
             jLayeredPaneServerRequestsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelBase, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanelBase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jLayeredPaneServerRequestsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanelServer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jLayeredPaneServerRequestsLayout.setVerticalGroup(
             jLayeredPaneServerRequestsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPaneServerRequestsLayout.createSequentialGroup()
-                .addGap(0, 62, Short.MAX_VALUE)
+                .addContainerGap(118, Short.MAX_VALUE)
                 .addComponent(jPanelBase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jLayeredPaneServerRequestsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPaneServerRequestsLayout.createSequentialGroup()
-                    .addGap(0, 66, Short.MAX_VALUE)
+                    .addGap(0, 94, Short.MAX_VALUE)
                     .addComponent(jPanelServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
+
+        jLabel3.setText("Heatbeat Threshold");
+
+        monitorPortNumberLabel.setText("XXXX");
+
+        heartbeat.setText("YYYY");
+
+        jLabel4.setText("Port Number");
+
+        jLabel1.setText("Load Balancer Status");
+
+        LBStatus.setText("----");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(270, Short.MAX_VALUE)
+                .addContainerGap(285, Short.MAX_VALUE)
                 .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(260, 260, 260))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(monitorPortNumberLabel)
+                    .addComponent(heartbeat, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLayeredPaneServerRequests, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(jLayeredPaneServerRequests, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(311, 311, 311)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(123, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(516, 516, 516)
+                    .addComponent(LBStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(16, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(267, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(monitorPortNumberLabel)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(heartbeat))
+                .addContainerGap(250, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLayeredPaneServerRequests, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(jLayeredPaneServerRequests, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(72, 72, 72)
+                    .addComponent(jLabel1)
+                    .addContainerGap(258, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(74, 74, 74)
+                    .addComponent(LBStatus)
+                    .addContainerGap(256, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * End button action.
-     *
-     * @param evt event
-     */
-    private void jButtonEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEndActionPerformed
-        //monitor.closeSockets();
-        System.exit(0);
-    }//GEN-LAST:event_jButtonEndActionPerformed
 
     /**
      * Back button event.
@@ -309,8 +359,17 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jTableServerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableServerMouseClicked
-
     }//GEN-LAST:event_jTableServerMouseClicked
+
+    /**
+     * End button action.
+     *
+     * @param evt event
+     */
+    private void jButtonEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEndActionPerformed
+        //monitor.closeSockets();
+        System.exit(0);
+    }//GEN-LAST:event_jButtonEndActionPerformed
 
     /**
      * View server requests button action.
@@ -325,9 +384,13 @@ public class GUI extends javax.swing.JFrame {
         jLayeredPaneServerRequests.repaint();
     }
 
-    public void setLoadBalancerInformation(int portNumber, int heartbeatThreshold) {
-        // TODO:
-        return;
+    public void setMonitorInformation(int portNumber, int heartbeatThreshold) {
+        monitorPortNumberLabel.setText("" + portNumber);
+        heartbeat.setText("" + heartbeatThreshold);
+    }
+    
+    public void setLBStatus(String status) {
+        LBStatus.setText(status);
     }
 
     /**
@@ -371,7 +434,7 @@ public class GUI extends javax.swing.JFrame {
             int row = e.getY() / table.getRowHeight();
             if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0) {
                 if (((String) table.getValueAt(row, 1)).equals("UP")) {
-                    Integer value = (Integer)table.getValueAt(row, 0);
+                    Integer value = (Integer) table.getValueAt(row, 0);
                     jButtonServerInfoActionPerformed(value);
                 }
             }
@@ -395,7 +458,7 @@ public class GUI extends javax.swing.JFrame {
         for (RequestMessage request : monitor.getServerRequests(serverID)) {
             exists = false;
             for (int i = 0; i < model.getRowCount(); i++) {
-                if ((Integer)model.getValueAt(i, 0) == request.requestID()) {
+                if ((Integer) model.getValueAt(i, 0) == request.requestID()) {
                     exists = true;
                 }
             }
@@ -453,7 +516,7 @@ public class GUI extends javax.swing.JFrame {
         model = (DefaultTableModel) jTableServer.getModel();
         model.addRow(new Object[]{serverID, "UP", 0});
     }
-    
+
     /**
      * Update client table.
      *
@@ -471,7 +534,7 @@ public class GUI extends javax.swing.JFrame {
         model = (DefaultTableModel) jTableClients.getModel();
         boolean exists = false;
         for (int i = 0; i < model.getRowCount(); i++) {
-            if ((Integer)model.getValueAt(i, 0) == clientID) {
+            if ((Integer) model.getValueAt(i, 0) == clientID) {
                 model.setValueAt(pending, i, 1);
                 model.setValueAt(beingProcessed, i, 2);
                 model.setValueAt(rejected, i, 3);
@@ -499,7 +562,7 @@ public class GUI extends javax.swing.JFrame {
         DefaultTableModel model;
         model = (DefaultTableModel) jTableServer.getModel();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if ((Integer)model.getValueAt(i, 0) == serverID) {
+            if ((Integer) model.getValueAt(i, 0) == serverID) {
                 model.setValueAt("DOWN", i, 1);
             }
         }
@@ -521,7 +584,7 @@ public class GUI extends javax.swing.JFrame {
         DefaultTableModel model;
         model = (DefaultTableModel) jTableServer.getModel();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if ((Integer)model.getValueAt(i, 0) == serverID) {
+            if ((Integer) model.getValueAt(i, 0) == serverID) {
                 model.setValueAt(nRequests, i, 2);
             }
         }
@@ -612,8 +675,13 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel LBStatus;
+    private javax.swing.JLabel heartbeat;
     private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonEnd;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JLabel jLabelTitleServer;
     private javax.swing.JLayeredPane jLayeredPaneServerRequests;
@@ -628,5 +696,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JTable jTableLB;
     private javax.swing.JTable jTableRequests;
     private javax.swing.JTable jTableServer;
+    private javax.swing.JLabel monitorPortNumberLabel;
     // End of variables declaration//GEN-END:variables
 }

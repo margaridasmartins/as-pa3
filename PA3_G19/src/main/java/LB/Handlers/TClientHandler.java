@@ -59,7 +59,8 @@ public class TClientHandler extends Thread{
                             HelloMessage hello = (HelloMessage) message;
                             if(hello.function().equals("P")){                     
                                 // setPrimary
-                                lb.setPrimary();         
+                                lb.setPrimary();    
+                                gui.setPrimary();
                             }
                         }
                         break;
@@ -97,7 +98,7 @@ public class TClientHandler extends Thread{
                             
                             // setPrimary
                             lb.setPrimary();
-                            
+                            gui.setPrimary();
                         }
                         break;
                     case REQUEST: {
