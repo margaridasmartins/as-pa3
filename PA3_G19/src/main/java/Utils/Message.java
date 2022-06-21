@@ -16,8 +16,6 @@ public class Message implements Serializable {
     /* Message code. */
     CodeMessages code;
     
-    /* Number of servers. */
-    int nServers;
     /* Requests being processed by a server. */
     List<ServerStatusMessage> serversStatus;
 
@@ -37,15 +35,6 @@ public class Message implements Serializable {
 
     public CodeMessages code() {
         return code;
-    }
-    
-    public Message nServers(int nServers) {
-        this.nServers = nServers;
-        return this;
-    }
-    
-    public int nServers() {
-        return nServers;
     }
     
     public Message serversStatus(List<ServerStatusMessage> serversStatus) {

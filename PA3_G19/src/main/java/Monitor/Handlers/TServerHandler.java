@@ -10,6 +10,8 @@ import Monitor.GUI.GUI;
 import static Utils.CodeMessages.*;
 import Utils.Message;
 import Utils.RequestMessage;
+import Utils.ServerStatusMessage;
+import java.util.List;
 
 /**
  *
@@ -37,20 +39,31 @@ public class TServerHandler extends Thread {
             if ((msg = socket.getMessage()) != null) {
 
                 switch (msg.code()) {
-                    case HELLO: {
-                        if (monitor.hasPrimaryLB()) {
-                            socket.sendMessage(new Message(HELLO).type("S"));
+                    case HELLO:
+                        if (msg.type().equals("LB")) {
+                            /* Load Balancer HELLO */
+                            if (monitor.hasPrimaryLB()) {
+                                socket.sendMessage(new Message(HELLO).type("S"));
+                            }
+                            monitor.setLBUp();
+                            socket.sendMessage(new Message(HELLO).type("P"));
+                        } else {
+                            /* Server HELLO */
+                            monitor.addServer(msg.port());
                         }
-                        socket.sendMessage(new Message(HELLO).type("P"));
-                        
-                    }
-                    case REPLY: {
+                        break;
+                    case STATUS:
+                        List<ServerStatusMessage> serversStatus = monitor.getServersStatus();
+                        Message res = new Message(STATUS)
+                                .serversStatus(serversStatus);
+                        socket.sendMessage(res);
+                        break;
+                    case FORWARD:
                         monitor.forwardingRequest((RequestMessage)msg);
-                    }
-                    case FORWARD: {
-                        // TODO Handle Request
-                    }
-                    break;
+                        break;
+                    case REPLY:
+                        monitor.replyingRequest((RequestMessage)msg);
+                        break;
                 }
             }
 

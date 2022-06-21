@@ -76,6 +76,7 @@ public class TClientHandler extends Thread{
                             
                             RequestMessage rm = new RequestMessage(CodeMessages.REQUEST, r.clientID(),
                             r.requestID(), s.getServerId(), 0, r.nIterations(), 0, r.deadline(),0);
+
                             
                             s.getSocket().sendMessage(rm);
                             

@@ -48,6 +48,27 @@ public class Monitor {
     public boolean hasPrimaryLB() {
         return hasPrimaryLB;
     }
+    
+    public void setLBUp() {
+        hasPrimaryLB = true;
+    }
+    
+    /**
+     * Add a new server available to receive requests from the LB.
+     * @param port  the server ID/port
+     */
+    public void addServer(int port) {
+        try {
+            rl.lock();
+            serversInfo.getOrDefault(port, new ServerRequestsInfo());
+        } finally {
+            rl.unlock();
+        }
+    }
+    
+    public List<RequestMessage> getServerRequests(int serverID) {
+        return (List<RequestMessage>) serversRequests.get(serverID).values();
+    }
 
     /**
      * Lock the monitor status and update it according to the forwarded request.
