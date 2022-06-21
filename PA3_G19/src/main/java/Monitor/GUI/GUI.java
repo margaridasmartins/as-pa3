@@ -469,7 +469,7 @@ public class GUI extends javax.swing.JFrame {
         DefaultTableModel model;
         model = (DefaultTableModel) jTableServer.getModel();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (((String) model.getValueAt(i, 0)).equals(serverID)) {
+            if ((Integer)model.getValueAt(i, 0) == serverID) {
                 model.setValueAt("DOWN", i, 1);
             }
         }
@@ -491,7 +491,7 @@ public class GUI extends javax.swing.JFrame {
         DefaultTableModel model;
         model = (DefaultTableModel) jTableServer.getModel();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (((String) model.getValueAt(i, 0)).equals(serverID)) {
+            if ((Integer)model.getValueAt(i, 0) == serverID) {
                 model.setValueAt(nRequests, i, 2);
             }
         }
