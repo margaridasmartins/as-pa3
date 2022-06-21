@@ -281,7 +281,7 @@ public class GUI extends javax.swing.JFrame {
         int reqId = GUI.requestID;
         
         socket.sendMessage(new RequestMessage(CodeMessages.REQUEST, Integer.getInteger(clientPortNumber.getText()),
-        reqId, 0, 0, ni, 0, dline));
+        reqId, 0, 0, ni, 0, dline,0));
 
         
         

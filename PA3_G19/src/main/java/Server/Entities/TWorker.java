@@ -15,21 +15,22 @@ public class TWorker extends Thread{
     
     public static final double PI = 3.1415926589793;
     
+    private final int ID;
+    private final Server server;
     private final ReentrantLock rl;
     private final Condition cWork;
-    private final Condition cfinishWork;
     
     private boolean hasWork=false;
-    private boolean finishWork=false;
     
     private int ni;
     
-    private double pi;
     
-    public TWorker(){
+    public TWorker(int ID, Server server){
+        this.ID = ID;
+        this.server = server;
         rl = new ReentrantLock();
         cWork = rl.newCondition();
-        cfinishWork = rl.newCondition();
+
     }
     
     @Override
@@ -44,12 +45,11 @@ public class TWorker extends Thread{
                 // Has work, will calculate pi 
                 Thread.sleep(ni*5000);
                 
-                pi = Math.round(PI* Math.pow(10,ni))/Math.pow(10, ni);
-                
-                this.finishWork=true;
-                cfinishWork.signal();
+                double pi = Math.round(PI* Math.pow(10,ni))/Math.pow(10, ni);
                 
                 this.hasWork = false;
+                
+                server.result(ID, pi);
                 
             } catch (InterruptedException ex) {
                 System.err.println(ex);
@@ -61,18 +61,12 @@ public class TWorker extends Thread{
        
     }
     
-    public double newWork(int ni) throws InterruptedException{
+    public void newWork(int ni) throws InterruptedException{
         try{
             rl.lock();
             this.ni = ni;
             this.hasWork = true;
-            this.finishWork = false;
             cWork.signal();
-            
-            while(!finishWork)
-                cfinishWork.await();
-            
-            return pi;
         }
         finally{
             rl.unlock();
