@@ -9,6 +9,7 @@ import Monitor.Entities.Monitor;
 import Monitor.GUI.GUI;
 import static Utils.CodeMessages.*;
 import Utils.Message;
+import Utils.RequestMessage;
 
 /**
  *
@@ -17,15 +18,16 @@ import Utils.Message;
 public class TServerHandler extends Thread {
 
     private final ClientSocket socket;
-    private final GUI gui;
     private final Monitor monitor;
 
-    public TServerHandler(ClientSocket socket, Monitor monitor, GUI gui) {
-        this.gui = gui;
+    public TServerHandler(ClientSocket socket, Monitor monitor) {
         this.socket = socket;
         this.monitor = monitor;
     }
 
+    /**
+     * Handle messages received in a loop.
+     */
     @Override
     public void run() {
 
@@ -42,9 +44,8 @@ public class TServerHandler extends Thread {
                         socket.sendMessage(new Message(HELLO).type("P"));
                         
                     }
-                    // Request message -> REQUEST | client id | request id | 00 | 01 | number of iterations | 00 | deadline |
                     case REPLY: {
-                        // TODO Handle Request
+                        monitor.forwardingRequest((RequestMessage)msg);
                     }
                     case FORWARD: {
                         // TODO Handle Request

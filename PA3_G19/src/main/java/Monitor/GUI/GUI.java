@@ -52,6 +52,8 @@ public class GUI extends javax.swing.JFrame {
         jTableServer = new javax.swing.JTable();
         jScrollPaneLB = new javax.swing.JScrollPane();
         jTableLB = new javax.swing.JTable();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTable5 = new javax.swing.JTable();
         jPanelServer = new javax.swing.JPanel();
         jButtonBack = new javax.swing.JButton();
         jLabelTitleServer = new javax.swing.JLabel();
@@ -108,6 +110,33 @@ public class GUI extends javax.swing.JFrame {
         jScrollPaneLB.setViewportView(jTableLB);
 
         jTabbedPane.addTab("Load Balancer", jScrollPaneLB);
+
+        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Req. Pending", "Req. Being Processed", "Req. Rejected", "Req. Processed"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(jTable5);
+
+        jTabbedPane.addTab("Clients", jScrollPane5);
 
         javax.swing.GroupLayout jPanelBaseLayout = new javax.swing.GroupLayout(jPanelBase);
         jPanelBase.setLayout(jPanelBaseLayout);
@@ -601,10 +630,12 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLayeredPane jLayeredPaneServerRequests;
     private javax.swing.JPanel jPanelBase;
     private javax.swing.JPanel jPanelServer;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPaneLB;
     private javax.swing.JScrollPane jScrollPaneRequests;
     private javax.swing.JScrollPane jScrollPaneServer;
     private javax.swing.JTabbedPane jTabbedPane;
+    private javax.swing.JTable jTable5;
     private javax.swing.JTable jTableLB;
     private javax.swing.JTable jTableRequests;
     private javax.swing.JTable jTableServer;

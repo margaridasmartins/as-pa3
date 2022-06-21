@@ -19,7 +19,7 @@ public class Message implements Serializable {
     /* Number of servers. */
     int nServers;
     /* Requests being processed by a server. */
-    List<ServerInfoMessage> serversStatus;
+    List<ServerStatusMessage> serversStatus;
 
     /* Generic type for identification */
     String type;
@@ -48,12 +48,12 @@ public class Message implements Serializable {
         return nServers;
     }
     
-    public Message serversStatus(List<ServerInfoMessage> serversStatus) {
+    public Message serversStatus(List<ServerStatusMessage> serversStatus) {
         this.serversStatus = serversStatus;
         return this;
     }
     
-    public List<ServerInfoMessage> serversStatus() {
+    public List<ServerStatusMessage> serversStatus() {
         return serversStatus;
     }
     

@@ -12,7 +12,7 @@ import java.io.Serializable;
  *
  * @author leand
  */
-public class ServerInfoMessage implements Serializable {
+public class ServerStatusMessage implements Serializable {
     /* Server ID. */
     int serverID;
     /* Number of Requests. */
@@ -20,7 +20,7 @@ public class ServerInfoMessage implements Serializable {
     /* Total number of iterations. */
     int totalNIterations;
     
-    public ServerInfoMessage(int serverID, int nRequests, int totalNIterations) {
+    public ServerStatusMessage(int serverID, int nRequests, int totalNIterations) {
         this.serverID = serverID;
         this.nRequests = nRequests;
         this.totalNIterations = totalNIterations;
