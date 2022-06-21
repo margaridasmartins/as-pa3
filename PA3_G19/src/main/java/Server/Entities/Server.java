@@ -19,6 +19,7 @@ public class Server {
     private final Request[] pendingRequests;
     private int nPendingRequest = 0;
     private int ncurrentRequests = 0;
+    private int totalIt=0;
     private ClientSocket monitorSocket;
     private final TWorker[] workers;
     private final ReentrantLock rl;
@@ -50,7 +51,7 @@ public class Server {
     public void newRequest(Request r) throws InterruptedException{
         
         gui.addRequest(r);
-        if(nPendingRequest == 2 && ncurrentRequests== 3){
+        if(nPendingRequest == 2 && ncurrentRequests== 3 || totalIt>20 ){
             // send reject message
             ClientSocket s = new ClientSocket(r.clientID(), "127.0.0.1");
             
@@ -68,12 +69,14 @@ public class Server {
         else if(ncurrentRequests==3){
             pendingRequests[nPendingRequest] = r;
             nPendingRequest++;
+            totalIt+= r.nIterations();
         }
         else{
             
             for(int i=0; i<3; i++){
                 if(currentRequests[i] == null){
                     currentRequests[i] = r;
+                    totalIt+= r.nIterations();
                     workers[i].newWork(r.nIterations());
                     ncurrentRequests++;
                     break;
@@ -89,6 +92,8 @@ public class Server {
         try {
             Request r = currentRequests[workerId];
             
+            totalIt-= r.nIterations();
+            
             // send message to client
             ClientSocket s = new ClientSocket(r.clientID(), "127.0.0.1");
             
@@ -96,6 +101,8 @@ public class Server {
                     r.requestID(), r.serverID(), 0,r.nIterations(), result,r.deadline(),2);
             
             s.sendMessage(rm);
+            
+            
             
             monitorSocket.sendMessage(rm);
             
@@ -121,6 +128,7 @@ public class Server {
             }
         } finally {
             rl.unlock();
+            
         }
         
     }

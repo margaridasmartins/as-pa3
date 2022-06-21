@@ -86,6 +86,8 @@ public class LoadBalancer {
             boolean exists = false;
             for(ServerStatusMessage s : status){
                 if(s.serverID() == serverID){
+                    System.out.println(String.valueOf(s.totalNIterations()));
+                    System.out.println(String.valueOf(s.nRequests()));
                     Server si = getServer(serverID);
                     si.setNI(s.totalNIterations());
                     si.setNJobs(s.nRequests());
@@ -109,7 +111,8 @@ public class LoadBalancer {
         // add new ones
         for(ServerStatusMessage s : status){
             if(!servers.containsKey(s.serverID())){
-                System.out.println(String.valueOf(s.serverID()));
+                System.out.println(String.valueOf(s.totalNIterations()));
+                System.out.println(String.valueOf(s.nRequests()));
                 Server si = addServer(s.serverID());
                 si.setNI(s.totalNIterations());
                 si.setNJobs(s.nRequests());

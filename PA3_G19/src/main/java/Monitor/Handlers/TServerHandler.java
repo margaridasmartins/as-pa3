@@ -65,7 +65,7 @@ public class TServerHandler extends Thread {
                                 .serversStatus(serversStatus);
                         socket.sendMessage(res);
                         break;
-                    case FORWARD:
+                    case REQUEST:
                         monitor.forwardingRequest((RequestMessage)msg);
                         break;
                     case REPLY:
