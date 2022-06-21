@@ -55,7 +55,7 @@ public class ClientSocket {
         Object reply = null;
         try{
             reply = in.readObject();
-        } catch (IOException | ClassNotFoundException ex) {
+        } catch (NullPointerException | IOException | ClassNotFoundException ex) {
             System.err.println("Error receiving socket message");
         }
         return reply;
@@ -70,7 +70,7 @@ public class ClientSocket {
         try{
             out.reset();
             out.writeObject(obj);
-        } catch (IOException e) {
+        } catch (NullPointerException | IOException e) {
             System.err.println("Error sending message");
             return false;
         }
