@@ -24,7 +24,7 @@ public class LoadBalancer {
     private HashMap<Integer,Server> servers;
     private Server bestServer; 
     
-    private LinkedList<Request> requests;
+    private final LinkedList<Request> requests;
     
     private int lbId;
     
@@ -33,6 +33,8 @@ public class LoadBalancer {
     public  LoadBalancer(int lbId){
         this.lbId = lbId;
         this.rl = new ReentrantLock();
+        this.requests = new LinkedList<>();
+        this.servers = new HashMap<>();
     }
     
     public void setPrimary(){

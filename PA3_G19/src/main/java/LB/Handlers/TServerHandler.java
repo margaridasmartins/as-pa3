@@ -22,11 +22,11 @@ import java.net.Socket;
  */
 public class TServerHandler extends Thread {
 
-    private final Socket socket;
+    private final ClientSocket socket;
     private final ClientSocket monitorSocket;
     private final LoadBalancer lb;
 
-    public TServerHandler(Socket socket, ClientSocket monitorSocket, LoadBalancer lb) {
+    public TServerHandler(ClientSocket socket, ClientSocket monitorSocket, LoadBalancer lb) {
         this.socket = socket;
         this.monitorSocket = monitorSocket;
         this.lb = lb;
@@ -34,48 +34,33 @@ public class TServerHandler extends Thread {
 
     @Override
     public void run() {
-
-        ObjectInputStream in = null;
         
-        try {
-            in =  new ObjectInputStream(socket.getInputStream());
-            Object message = null;
-            while (true) {
-                // keep listening to incoming messages
-                if ((message = in.readObject()) != null) {
+        
+        Object message = null;
+        while (true) {
+            // keep listening to incoming messages
+            if ((message = socket.getMessage()) != null) {
 
-                    Message m = (Message) message;
-                    switch (m.code()) {
+                Message m = (Message) message;
+                switch (m.code()) {
 
-                        // Request message -> REQUEST | client id | request id | 00 | 01 | number of iterations | 00 | deadline |
-                        case REQUEST: {
-                            
-                            RequestMessage rm = (RequestMessage) message;
-                            
-                            // Forward request to monitor
-                            monitorSocket.sendMessage(new Message(CodeMessages.STATUS));
+                    // Request message -> REQUEST | client id | request id | 00 | 01 | number of iterations | 00 | deadline |
+                    case REQUEST: {
 
-                            // Add request
-                            lb.addRequest(new Request(rm.clientID(), rm.requestID(), rm.serverID(), rm.nIterations(), rm.deadline()));
+                        RequestMessage rm = (RequestMessage) message;
 
-                        }
-                        break;
+                        // Forward request to monitor
+                        monitorSocket.sendMessage(new Message(CodeMessages.STATUS));
+
+                        // Add request
+                        lb.addRequest(new Request(rm.clientID(), rm.requestID(), rm.serverID(), rm.nIterations(), rm.deadline()));
+
                     }
+                    break;
                 }
+            }
 
-            }
-        } catch (IOException ex) {
-            System.err.println("Socket error");
-        } catch (ClassNotFoundException ex) {
-           System.err.println(ex);
-        } finally {
-            try {
-                in.close();
-            } catch (IOException ex) {
-                System.err.println("Socket error");
-            }
         }
-
-    }
+    } 
 
 }

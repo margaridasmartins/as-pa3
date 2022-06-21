@@ -51,7 +51,7 @@ public class ConfigurationGUI extends javax.swing.JFrame {
             }
         });
 
-        monitorPort.setModel(new javax.swing.SpinnerNumberModel(5001, 1, 10000, 1));
+        monitorPort.setModel(new javax.swing.SpinnerNumberModel(5000, 1, 10000, 1));
 
         jLabel3.setText("Port");
 
