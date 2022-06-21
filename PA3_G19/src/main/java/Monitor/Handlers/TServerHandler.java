@@ -47,7 +47,9 @@ public class TServerHandler extends Thread {
                             if (monitor.hasPrimaryLB()) {
                                 socket.sendMessage(new HelloMessage(0, null, "S"));
                             }
-                            monitor.setLBUp();
+                            
+                            HelloMessage hm = (HelloMessage) msg;
+                            monitor.setLBUp(hm.ID());
                             socket.sendMessage(new HelloMessage(0, null, "P"));
                         } else {
                             

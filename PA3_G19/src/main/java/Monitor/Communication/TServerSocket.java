@@ -39,6 +39,8 @@ public class TServerSocket extends Thread {
                 TServerHandler socket = new TServerHandler(clientSocket, monitor);
                 socket.start();
                 
+                monitor.addSocket( portNumber, clientSocket);
+                
                 THeartBeatHandler hbsocket = new THeartBeatHandler(clientSocket, monitor);
                 hbsocket.start();
 
