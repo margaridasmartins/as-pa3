@@ -66,7 +66,7 @@ public class TClientHandler extends Thread{
                             // Update serverStatus
                             int nservers = Integer.getInteger(clientMessage[1]);
                             
-                            ArrayList<Integer> existingServers = new ArrayList<Integer>();
+                            ArrayList<Integer> existingServers = new ArrayList<>();
                             
                             int j = 2;
                             for(int i =0; i<nservers; i++){
