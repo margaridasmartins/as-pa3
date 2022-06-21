@@ -52,10 +52,10 @@ public class GUI extends javax.swing.JFrame {
         jTabbedPane = new javax.swing.JTabbedPane();
         jScrollPaneLB = new javax.swing.JScrollPane();
         jTableLB = new javax.swing.JTable();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jTableClients = new javax.swing.JTable();
         jScrollPaneServer = new javax.swing.JScrollPane();
         jTableServer = new javax.swing.JTable();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTableClients = new javax.swing.JTable();
         jPanelServer = new javax.swing.JPanel();
         jButtonBack = new javax.swing.JButton();
         jLabelTitleServer = new javax.swing.JLabel();
@@ -102,33 +102,6 @@ public class GUI extends javax.swing.JFrame {
 
         jTabbedPane.addTab("Load Balancer", jScrollPaneLB);
 
-        jTableClients.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Req. Pending", "Req. Being Processed", "Req. Rejected", "Req. Processed"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane5.setViewportView(jTableClients);
-
-        jTabbedPane.addTab("Clients", jScrollPane5);
-
         jTableServer.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -161,6 +134,33 @@ public class GUI extends javax.swing.JFrame {
         jTableServer.addMouseListener(new JTableButtonMouseListener(jTableServer));
 
         jTabbedPane.addTab("Server", jScrollPaneServer);
+
+        jTableClients.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Req. Pending", "Req. Being Processed", "Req. Rejected", "Req. Processed"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(jTableClients);
+
+        jTabbedPane.addTab("Clients", jScrollPane5);
 
         javax.swing.GroupLayout jPanelBaseLayout = new javax.swing.GroupLayout(jPanelBase);
         jPanelBase.setLayout(jPanelBaseLayout);
