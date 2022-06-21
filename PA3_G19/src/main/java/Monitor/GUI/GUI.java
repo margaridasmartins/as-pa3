@@ -83,7 +83,15 @@ public class GUI extends javax.swing.JFrame {
             new String [] {
                 "Server ID", "State", "N. of Requests", "Requests"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTableServer.setColumnSelectionAllowed(true);
         jTableServer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -108,7 +116,15 @@ public class GUI extends javax.swing.JFrame {
             new String [] {
                 "Request ID", "Client ID", "Server ID", "IN", "DeadLine"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPaneLB.setViewportView(jTableLB);
 
         jTabbedPane.addTab("Load Balancer", jScrollPaneLB);
@@ -185,7 +201,15 @@ public class GUI extends javax.swing.JFrame {
             new String [] {
                 "Request", "Client", "Nº of Iterations", "DeadLine"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPaneRequests.setViewportView(jTableRequests);
 
         javax.swing.GroupLayout jPanelServerLayout = new javax.swing.GroupLayout(jPanelServer);
