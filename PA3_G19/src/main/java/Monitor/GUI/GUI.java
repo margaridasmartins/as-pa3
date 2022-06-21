@@ -1,4 +1,3 @@
-
 package Monitor.GUI;
 
 import Monitor.Entities.Monitor;
@@ -14,14 +13,16 @@ import Utils.RequestMessage;
 
 /**
  * Monitor graphical interface.
+ *
  * @author Rafael Sá (104552), Luís Laranjeira (81526)
  */
 public class GUI extends javax.swing.JFrame {
-    
+
     private Monitor monitor;
 
     /**
      * Creates new form Monitor_GUI.
+     *
      * @param port monitor server port
      * @param hostname load balancer host name
      * @param lbPort load balancer port
@@ -30,7 +31,7 @@ public class GUI extends javax.swing.JFrame {
     public GUI(/*int port, String hostname, int lbPort, int heartbeatThreshold*/) {
         initComponents();
     }
-    
+
     public void setMonitor(Monitor monitor) {
         this.monitor = monitor;
     }
@@ -182,7 +183,7 @@ public class GUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Request", "Client", "Nº of Iterations", "Current Iteration"
+                "Request", "Client", "Nº of Iterations", "DeadLine"
             }
         ));
         jScrollPaneRequests.setViewportView(jTableRequests);
@@ -264,6 +265,7 @@ public class GUI extends javax.swing.JFrame {
 
     /**
      * End button action.
+     *
      * @param evt event
      */
     private void jButtonEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEndActionPerformed
@@ -273,6 +275,7 @@ public class GUI extends javax.swing.JFrame {
 
     /**
      * Back button event.
+     *
      * @param evt event
      */
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
@@ -284,28 +287,29 @@ public class GUI extends javax.swing.JFrame {
     private void jTableServerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableServerMouseClicked
 
     }//GEN-LAST:event_jTableServerMouseClicked
-    
+
     /**
      * View server requests button action.
+     *
      * @param object server id
      */
-    private void jButtonServerInfoActionPerformed(Integer object) {    
+    private void jButtonServerInfoActionPerformed(Integer object) {
         jLabelTitleServer.setText("Server " + object + " Requests");
         loadServerRequests(object);
         jLayeredPaneServerRequests.setLayer(jPanelServer, 2);
         jLayeredPaneServerRequests.setLayer(jPanelBase, 0);
         jLayeredPaneServerRequests.repaint();
-    } 
+    }
 
     public void setLoadBalancerInformation(int portNumber, int heartbeatThreshold) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    
     /**
-    * Custom List Item Renderer.
-    */
+     * Custom List Item Renderer.
+     */
     class TableButtonRenderer extends DefaultTableCellRenderer {
+
         private static final long serialVersionUID = -7799441088157759804L;
         private JButton button;
 
@@ -314,154 +318,167 @@ public class GUI extends javax.swing.JFrame {
 
         @Override
         public Component getTableCellRendererComponent(
-                JTable table, 
+                JTable table,
                 Object value,
                 boolean isSelected,
                 boolean hasFocus,
                 int row,
                 int col) {
-            
+
             button = new JButton();
-            button.setText("View Server Requests");        
+            button.setText("View Server Requests");
             return button;
         }
-        
+
     }
-    
+
     public class JTableButtonMouseListener extends MouseAdapter {
-      private final JTable table;
 
-      public JTableButtonMouseListener(JTable table) {
-        this.table = table;
-      }
+        private final JTable table;
 
-      @Override public void mouseClicked(MouseEvent e) {
-        int column = table.getColumnModel().getColumnIndexAtX(e.getX());
-        int row = e.getY()/table.getRowHeight(); 
-        if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0) {
-            if(((String)table.getValueAt(row, 1)).equals("UP")){
-                String value = (String)table.getValueAt(row, 0);
-                String[] values = value.split("\\s+");
-                jButtonServerInfoActionPerformed(Integer.parseInt(values[1]));
+        public JTableButtonMouseListener(JTable table) {
+            this.table = table;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int column = table.getColumnModel().getColumnIndexAtX(e.getX());
+            int row = e.getY() / table.getRowHeight();
+            if (row < table.getRowCount() && row >= 0 && column < table.getColumnCount() && column >= 0) {
+                if (((String) table.getValueAt(row, 1)).equals("UP")) {
+                    String value = (String) table.getValueAt(row, 0);
+                    String[] values = value.split("\\s+");
+                    jButtonServerInfoActionPerformed(Integer.parseInt(values[1]));
+                }
             }
         }
-      }
     }
-    
+
     /**
      * Load requests being handled by a server to the table.
+     *
      * @param id server id
      */
-    private synchronized void loadServerRequests(Integer serverID){
+    private synchronized void loadServerRequests(Integer serverID) {
+        if (monitor == null) {
+            return;
+        }
         DefaultTableModel model;
         model = (DefaultTableModel) jTableRequests.getModel();
         cleanTable(model);
-        
+
         boolean exists;
         for (RequestMessage request : monitor.getServerRequests(serverID)) {
             exists = false;
             for (int i = 0; i < model.getRowCount(); i++) {
-                if (((String)model.getValueAt(i, 0)).equals("Request " + request.requestID())) {
+                if (((String) model.getValueAt(i, 0)).equals(request.requestID())) {
                     exists = true;
                 }
             }
-            if(!exists)
-                model.addRow(new Object[]{"Request " + request.requestID(), "Client " + request.clientID(), request.nIterations(), request.requestCode()});
+            if (!exists) {
+                model.addRow(new Object[]{request.requestID(), request.clientID(), request.nIterations(), request.requestCode()});
+            }
         }
     }
-    
+
     /**
      * Clean server requests table.
+     *
      * @param model table model
      */
-    private synchronized void cleanTable(DefaultTableModel model){
-        for(int i = model.getRowCount() - 1; i >= 0; i--){
+    private synchronized void cleanTable(DefaultTableModel model) {
+        for (int i = model.getRowCount() - 1; i >= 0; i--) {
             model.removeRow(i);
         }
     }
-    
+
     /**
      * Remove request from requests table.
-     * @param requestId request id
+     *
+     * @param requestID request id
      */
-    public synchronized void removeRequestFromRequestTable(int requestId){
+    public synchronized void removeRequestFromRequestTable(int requestID) {
         if (!SwingUtilities.isEventDispatchThread()) {
             SwingUtilities.invokeLater(() -> {
-                removeRequestFromRequestTable(requestId);
+                removeRequestFromRequestTable(requestID);
             });
             return;
         }
         DefaultTableModel model;
         model = (DefaultTableModel) jTableRequests.getModel();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (((String)model.getValueAt(i, 0)).equals("Request " + requestId)) {
+            if (((String) model.getValueAt(i, 0)).equals(requestID)) {
                 model.removeRow(i);
             }
         }
     }
-    
+
     /**
      * Add a new server to the table.
-     * @param serverId server id
+     *
+     * @param serverID server id
      */
-    public synchronized void addServerToTable(int serverId){
+    public synchronized void addServerToTable(int serverID) {
         if (!SwingUtilities.isEventDispatchThread()) {
             SwingUtilities.invokeLater(() -> {
-                addServerToTable(serverId);
+                addServerToTable(serverID);
             });
             return;
         }
         DefaultTableModel model;
         model = (DefaultTableModel) jTableServer.getModel();
-        model.addRow(new Object[]{"Server " + serverId, "UP", 0});
+        model.addRow(new Object[]{serverID, "UP", 0});
     }
-    
+
     /**
      * Set server down on GUI.
-     * @param serverId server id
+     *
+     * @param serverID server id
      */
-    public synchronized void setServerDown(int serverId){
+    public synchronized void setServerDown(int serverID) {
         if (!SwingUtilities.isEventDispatchThread()) {
             SwingUtilities.invokeLater(() -> {
-                setServerDown(serverId);
+                setServerDown(serverID);
             });
             return;
         }
         DefaultTableModel model;
         model = (DefaultTableModel) jTableServer.getModel();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (((String)model.getValueAt(i, 0)).equals("Server " + serverId)) {
+            if (((String) model.getValueAt(i, 0)).equals(serverID)) {
                 model.setValueAt("DOWN", i, 1);
             }
         }
     }
-    
+
     /**
      * Set the number of requests that a server is handling.
-     * @param serverId server id
-     * @param numRequests number of requests
+     *
+     * @param serverID server id
+     * @param nRequests number of requests
      */
-    public synchronized void setNumRequestsServer(int serverId, int numRequests){
+    public synchronized void setNRequestsServer(int serverID, int nRequests) {
         if (!SwingUtilities.isEventDispatchThread()) {
             SwingUtilities.invokeLater(() -> {
-                setNumRequestsServer(serverId, numRequests);
+                setNRequestsServer(serverID, nRequests);
             });
             return;
-        } 
+        }
         DefaultTableModel model;
         model = (DefaultTableModel) jTableServer.getModel();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (((String)model.getValueAt(i, 0)).equals("Server " + serverId)) {
-                model.setValueAt(numRequests, i, 2);
+            if (((String) model.getValueAt(i, 0)).equals(serverID)) {
+                model.setValueAt(nRequests, i, 2);
             }
         }
     }
-    
+
     /**
      * Add a new request to the load balancer table.
+     *
      * @param request new request
      */
-    public synchronized void addRequestToLBTable(RequestMessage request){
+    public synchronized void addRequestToLBTable(RequestMessage request) {
         if (!SwingUtilities.isEventDispatchThread()) {
             SwingUtilities.invokeLater(() -> {
                 addRequestToLBTable(request);
@@ -470,122 +487,40 @@ public class GUI extends javax.swing.JFrame {
         }
         DefaultTableModel model;
         model = (DefaultTableModel) jTableLB.getModel();
-        model.addRow(new Object[]{"Request " + request.requestID(), "Client " + request.clientID(), "Not Assigned", request.nIterations(), "Pending"});
+        model.addRow(new Object[]{request.requestID(), request.clientID(), request.serverID(), request.nIterations(), request.deadline()});
     }
-    
-    /**
-     * Remove a request from a load balancer table.
-     * @param requestId id of the request to remove
-     */
-    public synchronized void removeRequestFromLBTable(int requestId){
-        if (!SwingUtilities.isEventDispatchThread()) {
-            SwingUtilities.invokeLater(() -> {
-                removeRequestFromLBTable(requestId);
-            });
-            return;
-        }
-        DefaultTableModel model;
-        model = (DefaultTableModel) jTableLB.getModel();
-        for (int i = 0; i < model.getRowCount(); i++) {
-            if (((String)model.getValueAt(i, 0)).equals("Request " + requestId)) {
-                model.removeRow(i);
-            }
-        }
-    }
-    
-    /**
-     * Set the server assigned to a given request on the GUI.
-     * @param requestId request id
-     * @param serverId server id
-     */
-    public synchronized void setRequestServer(int requestId, int serverId){
-        if (!SwingUtilities.isEventDispatchThread()) {
-            SwingUtilities.invokeLater(() -> {
-                setRequestServer(requestId, serverId);
-            });
-            return;
-        }
-        DefaultTableModel model;
-        model = (DefaultTableModel) jTableLB.getModel();
-        for (int i = 0; i < model.getRowCount(); i++) {
-            if (((String)model.getValueAt(i, 0)).equals("Request " + requestId)) {
-                model.setValueAt("Server " + serverId, i, 2);
-                model.setValueAt("In Queue", i, 4);
-            }
-        }
-    }
-    
-    /**
-     * Set the current iteration on a request being processed on the load balancer table.
-     * @param requestId request id
-     * @param iteration current iteration of a request
-     */
-    public synchronized void setCurrentIterationsRequestLBTable(int requestId, int iteration){
-        if (!SwingUtilities.isEventDispatchThread()) {
-            SwingUtilities.invokeLater(() -> {
-                setCurrentIterationsRequestLBTable(requestId, iteration);
-            });
-            return;
-        }
-        DefaultTableModel model;
-        model = (DefaultTableModel) jTableLB.getModel();
-        for (int i = 0; i < model.getRowCount(); i++) {
-            if (((String)model.getValueAt(i, 0)).equals("Request " + requestId)) {
-                model.setValueAt(iteration, i, 4);
-            }
-        }
-    }
-    
-    /**
-     * Set the current iteration on a request being processed on the requests table.
-     * @param requestId request id
-     * @param iteration current iteration of a request
-     */
-    public synchronized void setCurrentIterationsRequestTable(int requestId, int iteration){
-        if (!SwingUtilities.isEventDispatchThread()) {
-            SwingUtilities.invokeLater(() -> {
-                setCurrentIterationsRequestTable(requestId, iteration);
-            });
-            return;
-        }
-        DefaultTableModel model;
-        model = (DefaultTableModel) jTableRequests.getModel();
-        for (int i = 0; i < model.getRowCount(); i++) {
-            if (((String)model.getValueAt(i, 0)).equals("Request " + requestId)) {
-                model.setValueAt(iteration, i, 3);
-            }
-        }
-    }
-    
+
     /**
      * Add a new to the request table, if the server requests is being shown.
-     * @param requestId request id
-     * @param clientId client id
+     *
+     * @param requestID request id
+     * @param clientID client id
      * @param iterations number of iterations
      * @param current current state of the request
-     * @param serverId server id
+     * @param serverID server id
      */
-    public synchronized void addRequestToTableRequest(int requestId, int clientId, int iterations, String current, int serverId){
-         if (!SwingUtilities.isEventDispatchThread()) {
+    public synchronized void addRequestToTableRequest(RequestMessage request) {
+        if (!SwingUtilities.isEventDispatchThread()) {
             SwingUtilities.invokeLater(() -> {
-                addRequestToTableRequest(requestId, clientId, iterations, current, serverId);
+                addRequestToTableRequest(request);
             });
             return;
         }
-        if(jLabelTitleServer.getText().equals("Server " + serverId + " Requests")){
+        if (jLabelTitleServer.getText().equals("Server " + request.serverID() + " Requests")) {
             DefaultTableModel model;
             model = (DefaultTableModel) jTableRequests.getModel();
             boolean exists = false;
             for (int i = 0; i < model.getRowCount(); i++) {
-                if (((String)model.getValueAt(i, 0)).equals("Request " + requestId)) {
+                if (((String) model.getValueAt(i, 0)).equals(request.requestID())) {
                     exists = true;
                 }
             }
-            if(!exists)
-                model.addRow(new Object[]{"Request " + requestId, "Client " + clientId, iterations, current});
+            if (!exists) {
+                model.addRow(new Object[]{request.requestID(), request.clientID(), request.nIterations(), request.deadline()});
+            }
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */

@@ -19,6 +19,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author leand
  */
 public class Monitor {
+    
+    private final GUI gui;
 
     /* Status of every server by ID */
     private final HashMap<Integer, ServerRequestsInfo> serversInfo;
@@ -38,6 +40,7 @@ public class Monitor {
     private final ReentrantLock rl;
 
     public Monitor(GUI gui) {
+        this.gui = gui;
         serversInfo = new HashMap<>();
         serversRequests = new HashMap<>();
         clientsInfo = new HashMap<>();
@@ -61,6 +64,7 @@ public class Monitor {
         try {
             rl.lock();
             serversInfo.getOrDefault(port, new ServerRequestsInfo());
+            gui.addServerToTable(port);
         } finally {
             rl.unlock();
         }
@@ -89,6 +93,10 @@ public class Monitor {
             clientsInfo.getOrDefault(clientID, new ClientRequestsInfo())
                     .forwardingRequest();
             loadBalancerRequests.add(request);
+            
+            gui.addRequestToLBTable(request);
+            gui.addRequestToTableRequest(request);
+            gui.setNRequestsServer(serverID, serversRequests.get(serverID).size());
         } finally {
             rl.unlock();
         }
@@ -129,6 +137,8 @@ public class Monitor {
                     .replyingRequest();
             serversRequests.getOrDefault(serverID, new HashMap<>())
                     .remove(requestID);
+            
+            gui.setNRequestsServer(serverID, serversRequests.get(serverID).size());
         } finally {
             rl.unlock();
         }

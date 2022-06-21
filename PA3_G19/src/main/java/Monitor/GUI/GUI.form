@@ -355,7 +355,7 @@
                         <Column editable="true" title="Request" type="java.lang.Object"/>
                         <Column editable="true" title="Client" type="java.lang.Object"/>
                         <Column editable="true" title="N&#xba; of Iterations" type="java.lang.Object"/>
-                        <Column editable="true" title="Current Iteration" type="java.lang.Object"/>
+                        <Column editable="true" title="DeadLine" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
