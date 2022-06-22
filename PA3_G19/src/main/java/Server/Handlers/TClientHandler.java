@@ -8,19 +8,28 @@ import Utils.HelloMessage;
 import Utils.HeartBeatMessage;
 import Utils.Message;
 /**
- *
- * @author guids
+ * The representation of the TClientHandler.
  */
 public class TClientHandler extends Thread{
-    
+
+    /** The client socket */
     private final ClientSocket socket;
+    /** The server ID */
     private final int serverID;
-    
+
+    /**
+     * Create an instance of the TClientHandler.
+     * @param socket    the server instance
+     * @param serverID  the server ID
+     */
     public TClientHandler(ClientSocket socket, int serverID){
         this.socket = socket; 
         this.serverID = serverID;
     }
-    
+
+    /**
+     * Run thread and handle the client socket messages.
+     */
     @Override
     public void run(){
     

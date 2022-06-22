@@ -8,8 +8,7 @@ import Server.PServer;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
- * @author guids
+ * The representation of the GUI.
  */
 public class GUI extends javax.swing.JFrame {
 

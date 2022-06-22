@@ -6,28 +6,39 @@ package Utils;
  */
 
 /**
- *
- * @author leand
+ * The representation of the RequestMessage.
  */
 public class RequestMessage extends Message {
     
-    /* Client ID. */
+    /** Client ID. */
     int clientID;
-    /* Request ID. */
+    /** Request ID. */
     int requestID;
-    /* Server ID. */
+    /** Server ID. */
     int serverID;
-    /* Number of requests. */
+    /** Number of requests. */
     int nRequests;
-    /* Number of iterations. */
+    /** Number of iterations. */
     int nIterations;
-    /* Priority in number of seconds to handle the request. */
+    /** Priority in number of seconds to handle the request. */
     int deadline;
-    /* Value of pi calculated. */
+    /** Value of pi calculated. */
     double pi;
-    /* Request code. */
+    /** Request code. */
     int requestCode;
-    
+
+    /**
+     * Create an instance of RequestMessage.
+     * @param code  the code message
+     * @param clientID  the client ID
+     * @param requestID the request ID
+     * @param serverID  the server ID
+     * @param nRequests the number of requests
+     * @param nIterations   the number of iterations
+     * @param pi    the pi value
+     * @param deadline  the deadline
+     * @param requestCode   the request code
+     */
     public RequestMessage(CodeMessages code, 
             int clientID, int requestID, int serverID, int nRequests, 
             int nIterations, double pi, int deadline, int requestCode) {
@@ -41,6 +52,8 @@ public class RequestMessage extends Message {
         this.deadline = deadline;
         this.requestCode = requestCode;
     }
+
+    /* Getters and setters */
     
      public Message clientID(int clientID) {
         this.clientID = clientID;

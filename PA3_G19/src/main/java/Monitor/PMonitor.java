@@ -18,8 +18,11 @@ import java.util.logging.Logger;
  */
 public class PMonitor {
 
+    /** The monitor port number */
     private static int portNumber;
+    /** The monitor heartbeat threshold */
     private static int heartbeatThreshold;
+    /** The flag to start the GUI */
     private static boolean started = false;
 
     /**
@@ -51,13 +54,21 @@ public class PMonitor {
         TServerSocket serverSocket = new TServerSocket(portNumber, monitor);
         serverSocket.start();
     }
-    
+
+    /**
+     * Start monitor and its GUI after configuration.
+     * @param portNumber            the monitor port number
+     * @param heartBeatThreshold    the heartbeat threshold
+     */
     public static void startMonitor(int portNumber, int heartBeatThreshold){
         PMonitor.heartbeatThreshold = heartBeatThreshold;
         PMonitor.portNumber = portNumber;
         PMonitor.started = true;
     }
-    
+
+    /**
+     * Terminate monitor process and GUI.
+     */
     public static void terminate(){
         System.exit(0);
     }

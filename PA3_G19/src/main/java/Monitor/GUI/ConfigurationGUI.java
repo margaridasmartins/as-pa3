@@ -8,8 +8,7 @@ import Monitor.GUI.*;
 import Monitor.PMonitor;
 
 /**
- *
- * @author guids
+ *  GUI for the Monitor configuration.
  */
 public class ConfigurationGUI extends javax.swing.JFrame {
 

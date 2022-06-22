@@ -13,20 +13,29 @@ import java.net.ServerSocket;
 import Server.Handlers.TServerHandler;
 
 /**
- *
- * @author leand
+ * Representation of the TServerSocket.
  */
 public class TServerSocket extends Thread {
 
-
+    /** The server socket */
     private final ServerSocket serverSocket;
+    /** The server instance */
     private final Server server;
 
+    /**
+     * Create an instance of TServerSocket.
+     * @param portNumber        the port number
+     * @param server            the server instance
+     * @throws IOException      an exception
+     */
     public TServerSocket(int portNumber, Server server) throws IOException {
         this.serverSocket = new ServerSocket(portNumber);
         this.server = server;
     }
 
+    /**
+     * Run thread and handle sockets connection.
+     */
     @Override
     public void run() {
 

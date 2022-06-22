@@ -8,23 +8,30 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- *
- * @author guids
+ * Representation of the worker thread.
  */
 public class TWorker extends Thread{
-    
+
+    /** The value of PI */
     public static final double PI = 3.1415926589793;
-    
+    /** The worker ID */
     private final int ID;
+    /** The server instance */
     private final Server server;
+    /** The lock */
     private final ReentrantLock rl;
+    /** A lock work condition */
     private final Condition cWork;
-    
-    private boolean hasWork=false;
-    
+    /** Whether the worker has work */
+    private boolean hasWork = false;
+    /** The number of iterations */
     private int ni;
-    
-    
+
+    /**
+     * Create an instance of TWorker.
+     * @param ID    the worker ID
+     * @param server    the server instance
+     */
     public TWorker(int ID, Server server){
         this.ID = ID;
         this.server = server;
@@ -32,7 +39,10 @@ public class TWorker extends Thread{
         cWork = rl.newCondition();
 
     }
-    
+
+    /**
+     * Run thread to process request.
+     */
     @Override
     public void run() {
         while(true){
@@ -60,7 +70,12 @@ public class TWorker extends Thread{
         }
        
     }
-    
+
+    /**
+     * Handle new request to process.
+     * @param ni    the number of iterations
+     * @throws InterruptedException an exception
+     */
     public void newWork(int ni) throws InterruptedException{
         try{
             rl.lock();

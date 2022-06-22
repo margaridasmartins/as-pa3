@@ -13,8 +13,7 @@ import java.net.ServerSocket;
 import Monitor.Handlers.TServerHandler;
 
 /**
- *
- * @author leand
+ * Representation of TServerSocket.
  */
 public class TServerSocket extends Thread {
 
@@ -22,12 +21,21 @@ public class TServerSocket extends Thread {
     private final ServerSocket serverSocket;
     private final Monitor monitor;
 
+    /**
+     * Create instance of TServerSocket.
+     * @param portNumber    the port number
+     * @param monitor       the monitor instance
+     * @throws IOException  an exception related to IO
+     */
     public TServerSocket(int portNumber, Monitor monitor) throws IOException {
         this.portNumber = portNumber;
         this.serverSocket = new ServerSocket(portNumber);
         this.monitor = monitor;
     }
 
+    /**
+     * Run thread to accept socket connections.
+     */
     @Override
     public void run() {
 

@@ -14,21 +14,27 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author leand
+ * The representation of the TServerHandler.
  */
 public class TServerHandler extends Thread {
 
+    /** The client socket */
     private final ClientSocket socket;
+    /** The server instance */
     private final Server server;
 
+    /**
+     * Create an instance of the TServerHandler.
+     * @param socket    the client socket
+     * @param server    the server instance
+     */
     public TServerHandler(ClientSocket socket, Server server) {
         this.socket = socket;
         this.server = server;
     }
 
     /**
-     * Handle messages received in a loop.
+     * Run thread and handle messages received in client socket.
      */
     @Override
     public void run() {

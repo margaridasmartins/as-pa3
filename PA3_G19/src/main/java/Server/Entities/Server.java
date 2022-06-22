@@ -13,21 +13,34 @@ import Server.GUI.GUI;
 import Utils.Message;
 
 /**
- *
- * @author guids
+ * The representation of the Server.
  */
 public class Server {
 
+    /** The list of pending requests. */
     private final Request[] pendingRequests;
+    /** The number of pending requests */
     private int nPendingRequest = 0;
+    /** The number of current requests */
     private int ncurrentRequests = 0;
+    /** The total number of iterations */
     private int totalIt = 0;
+    /** The monitor socket */
     private ClientSocket monitorSocket;
+    /** The threads list with the server workers */
     private final TWorker[] workers;
+    /** The lock */
     private final ReentrantLock rl;
+    /** The gui */
     private final GUI gui;
+    /** The list of current requests */
     private final Request[] currentRequests;
 
+    /**
+     * Create an instance of Server.
+     * @param socket    the socket
+     * @param gui       the gui
+     */
     public Server(ClientSocket socket, GUI gui) {
         workers = new TWorker[3];
 
@@ -49,6 +62,11 @@ public class Server {
         this.gui = gui;
     }
 
+    /**
+     * Adds new request
+     * @param r     the request
+     * @throws InterruptedException an exception
+     */
     public void newRequest(Request r) throws InterruptedException {
         
         rl.lock();
@@ -91,6 +109,12 @@ public class Server {
         }
     }
 
+    /**
+     * Obtain results of process.
+     * @param workerId  the worker ID
+     * @param result    the result
+     * @throws InterruptedException an exception
+     */
     public void result(int workerId, double result) throws InterruptedException {
 
         rl.lock();

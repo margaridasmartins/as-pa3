@@ -12,23 +12,16 @@ import javax.swing.table.DefaultTableModel;
 import Utils.RequestMessage;
 
 /**
- * Monitor graphical interface.
- *
- * @author Rafael Sá (104552), Luís Laranjeira (81526)
+ * GUI for the Monitor.
  */
 public class GUI extends javax.swing.JFrame {
 
     private Monitor monitor;
 
     /**
-     * Creates new form Monitor_GUI.
-     *
-     * @param port monitor server port
-     * @param hostname load balancer host name
-     * @param lbPort load balancer port
-     * @param heartbeatThreshold heartbeat threshold
+     * Creates new form GUI.
      */
-    public GUI(/*int port, String hostname, int lbPort, int heartbeatThreshold*/) {
+    public GUI() {
         initComponents();
     }
 
@@ -374,7 +367,7 @@ public class GUI extends javax.swing.JFrame {
     /**
      * View server requests button action.
      *
-     * @param object server id
+     * @param serverID server id
      */
     private void jButtonServerInfoActionPerformed(Integer serverID) {
         jLabelTitleServer.setText("Server " + serverID + " Requests");
@@ -444,7 +437,7 @@ public class GUI extends javax.swing.JFrame {
     /**
      * Load requests being handled by a server to the table.
      *
-     * @param id server id
+     * @param serverID server id
      */
     private synchronized void loadServerRequests(Integer serverID) {
         if (monitor == null) {
@@ -520,7 +513,7 @@ public class GUI extends javax.swing.JFrame {
     /**
      * Update client table.
      *
-     * @param clietnID client id
+     * @param clientID client id
      */
     public synchronized void updateClientTable(int clientID, int pending,
             int beingProcessed, int rejected, int processed) {
@@ -610,11 +603,7 @@ public class GUI extends javax.swing.JFrame {
     /**
      * Add a new to the request table, if the server requests is being shown.
      *
-     * @param requestID request id
-     * @param clientID client id
-     * @param iterations number of iterations
-     * @param current current state of the request
-     * @param serverID server id
+     * @param request   the request
      */
     public synchronized void addRequestToTableRequest(RequestMessage request) {
         if (!SwingUtilities.isEventDispatchThread()) {

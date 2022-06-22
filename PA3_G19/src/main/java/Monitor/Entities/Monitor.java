@@ -18,36 +18,41 @@ import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- *
- * @author leand
+ * Representation of Monitor entity.
  */
 public class Monitor {
 
+    /** GUI interface */
     private final GUI gui;
 
-    /* Status of every server by ID */
+    /** Status of every server by ID */
     private final HashMap<Integer, ServerRequestsInfo> serversInfo;
 
-    /* List of requests of every server by ID */
+    /** List of requests of every server by ID */
     private final HashMap<Integer, HashMap<Integer, RequestMessage>> serversRequests;
 
-    /* Requests information of every client by ID */
+    /** Requests information of every client by ID */
     private final HashMap<Integer, ClientRequestsInfo> clientsInfo;
 
-    /* List of all requests handled by the Load Balancer */
+    /** List of all requests handled by the Load Balancer */
     private final List<RequestMessage> loadBalancerRequests;
 
-    /* Whether or not the primary Load Balancer is working */
+    /** Whether or not the primary Load Balancer is working */
     private final int[] loadBalancers;
 
+    /** Heartbeat list of ports */
     private final List<Integer> heartBeatMessages;
 
+    /** Sockets map. */
     private final HashMap<Integer, ClientSocket> sockets;
 
+    /** Heartbeat threshold (ms). */
     private final int heartbeatThreashold;
 
+    /** Lock */
     private final ReentrantLock rl;
 
+    /** Create instance of Monitor */
     public Monitor(GUI gui, int heartbeatThreashold) {
         this.gui = gui;
         serversInfo = new HashMap<>();
@@ -61,10 +66,17 @@ public class Monitor {
         sockets = new HashMap<>();
     }
 
+    /**
+     * Whether the primary Load Balancer is alive.
+     */
     public boolean hasPrimaryLB() {
         return loadBalancers[0] != 0;
     }
 
+    /**
+     * Ack primary Load Balancer.
+     * @param ID    the Load Balancer port/ID
+     */
     public void setLBUp(int ID) {
         if (loadBalancers[0] == 0) {
             loadBalancers[0] = ID;
@@ -74,10 +86,19 @@ public class Monitor {
         }
     }
 
+    /**
+     * Add a new socket to the socket map.
+     * @param ID    the socket port
+     * @param cs    the client socket
+     */
     public void addSocket(int ID, ClientSocket cs) {
         sockets.put(ID, cs);
     }
 
+    /**
+     * Handle a Server or Load Balancer going down.
+     * @param ID    the port/ID of the entity that just went down
+     */
     public void setDown(int ID) {
 
         // Server Down
@@ -125,6 +146,11 @@ public class Monitor {
         }
     }
 
+    /**
+     * Return the server requests to the GUI.
+     * @param serverID  the server ID
+     * @return      the list of server requests
+     */
     public List<RequestMessage> getServerRequests(int serverID) {
         try {
             rl.lock();

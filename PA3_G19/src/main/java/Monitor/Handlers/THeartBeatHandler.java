@@ -11,22 +11,32 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author guids
+ * Representation of the Heartbeat handler.
  */
 public class THeartBeatHandler extends Thread{
     
-    
+    /** The monitor instance */
     private Monitor monitor;
+    /** The Client socket */
     private ClientSocket socket;
+    /** The port/ID */
     private int ID;
-    
+
+    /**
+     * Create instance of THeartBeatHandler.
+     * @param socket    the socket
+     * @param monitor   the monitor
+     * @param ID        the port/ID
+     */
     public THeartBeatHandler(ClientSocket socket, Monitor monitor, int ID){
         this.monitor = monitor;
         this.socket = socket;
         this.ID = ID;
     }
-    
+
+    /**
+     * Run thread to send messages.
+     */
     @Override
     public void run(){
         

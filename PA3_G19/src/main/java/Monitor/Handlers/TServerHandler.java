@@ -16,14 +16,21 @@ import Utils.ServerStatusMessage;
 import java.util.List;
 
 /**
- *
- * @author leand
+ *  Representation of the TServerHandler.
  */
 public class TServerHandler extends Thread {
 
+    /** The client socket */
     private final ClientSocket socket;
+
+    /** The monitor instance */
     private final Monitor monitor;
 
+    /**
+     * Create an instance of TServerHandler.
+     * @param socket       the client socket
+     * @param monitor       the monitor instance
+     */
     public TServerHandler(ClientSocket socket, Monitor monitor) {
         this.socket = socket;
         this.monitor = monitor;

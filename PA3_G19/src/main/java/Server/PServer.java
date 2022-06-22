@@ -13,7 +13,6 @@ import Server.GUI.GUI;
 import java.io.IOException;
 
 /**
- *
  * Server process class
  */
 public class PServer {
@@ -57,18 +56,22 @@ public class PServer {
        // Create Server
        TServerSocket serverSocket = new TServerSocket(portNumber, server);
        serverSocket.start();
-       
-       
-       
-        
     }
-    
+
+    /**
+     * Start server and its GUI after configuration.
+     * @param portNumber            the port number
+     * @param monitorPortNumber    th monitor port number
+     */
     public static void startServer(int portNumber, int monitorPortNumber){
         PServer.portNumber = portNumber;
         PServer.monitorPortNumber = monitorPortNumber;
         PServer.started = true;
     }
-    
+
+    /**
+     * Terminate server process and GUI.
+     */
     public static void terminate(){
         System.exit(0);
     }

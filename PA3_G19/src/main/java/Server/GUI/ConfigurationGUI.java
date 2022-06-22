@@ -8,8 +8,7 @@ import Server.GUI.*;
 import Server.PServer;
 
 /**
- *
- * @author guids
+ * The representation of the ConfigurationGUI
  */
 public class ConfigurationGUI extends javax.swing.JFrame {
 
