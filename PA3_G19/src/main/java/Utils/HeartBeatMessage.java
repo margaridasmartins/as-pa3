@@ -1,23 +1,32 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Utils;
 
 /**
- *
- * @author guids
- */
+*
+* Heart beat Message
+* 
+*/
 public class HeartBeatMessage extends Message{
     
     
     int ID;
     
+    /**
+    *
+    * Heart beat Message constructor 
+    * 
+    * @param ID
+    */
     public HeartBeatMessage(int ID) {
         super(CodeMessages.HEARTBEAT);
         this.ID = ID;
     }
     
+    /**
+    *
+    * get ID
+    * 
+    * @return ID
+    */
     public int ID() {
         return ID;
     }

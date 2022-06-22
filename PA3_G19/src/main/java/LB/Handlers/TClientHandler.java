@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package LB.Handlers;
 import Communication.ClientSocket;
 import Utils.CodeMessages;
@@ -14,11 +10,10 @@ import LB.Entities.Server;
 import LB.GUI.GUI;
 import Utils.Message;
 import Utils.RequestMessage;
-import java.util.ArrayList;
 
 /**
  *
- * @author guids
+ * Handles client connections
  */
 public class TClientHandler extends Thread{
     
@@ -26,6 +21,14 @@ public class TClientHandler extends Thread{
     private LoadBalancer lb;
     private GUI gui;
     
+    /**
+    *
+    * Class constructor
+    * 
+     * @param socket
+     * @param lb Load balancer entity
+     * @param gui
+    */
     public TClientHandler(ClientSocket socket, LoadBalancer lb, GUI gui){
         this.socket = socket; 
         this.lb = lb;
@@ -122,6 +125,12 @@ public class TClientHandler extends Thread{
         
     }
     
+    /**
+    *
+    * set new socket connection
+    * 
+     * @param s
+    */
     public void setNewSocket(ClientSocket s)
     {
         this.socket = s;

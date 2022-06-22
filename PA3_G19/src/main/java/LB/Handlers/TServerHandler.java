@@ -1,31 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package LB.Handlers;
 
-import LB.GUI.GUI;
 import Utils.CodeMessages;
 import Communication.ClientSocket;
 import LB.Entities.LoadBalancer;
 import Entities.Request;
 import Utils.Message;
 import Utils.RequestMessage;
-import java.io.ObjectInputStream;
-import java.io.IOException;
-import java.net.Socket;
+
 
 
 /**
- *
- * @author guids
- */
+*
+* Handle server connections
+* 
+*/
 public class TServerHandler extends Thread {
 
     private final ClientSocket socket;
     private final ClientSocket monitorSocket;
     private final LoadBalancer lb;
 
+    /**
+    *
+    * Class constructor
+    * 
+     * @param socket
+     * @param monitorSocket
+     * @param lb Load Balancer entity
+    */
     public TServerHandler(ClientSocket socket, ClientSocket monitorSocket, LoadBalancer lb) {
         this.socket = socket;
         this.monitorSocket = monitorSocket;

@@ -1,23 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Client.Communication;
 import Client.GUI.GUI;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import Client.Handlers.TReplyHandler;
+
 /**
  *
- * @author guids
+ * Client Server socket
  */
-
 public class TServerSocket extends Thread{
     
     private final ServerSocket serverSocket;
     private final GUI gui;
     
+    
+    /**
+    *
+    *  Class constructor, receives as argument the socket port and client GUI
+    */
     public TServerSocket(int portNumber, GUI gui) throws IOException{     
         this.serverSocket = new ServerSocket(portNumber);
         this.gui = gui;

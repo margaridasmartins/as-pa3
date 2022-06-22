@@ -1,25 +1,24 @@
 package Communication;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-import Utils.Message;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
- *
- * @author leand
- */
+*
+*   Class to Create and manage a socket connection
+*/
 public class ClientSocket {
 
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
+    /**
+    *
+    *   Class constructor, receives a port number and a hostname to create a socket connection
+    */
     public ClientSocket(int portNumber, String hostName) {
         try {
             this.socket = new Socket(hostName, portNumber);
@@ -29,6 +28,10 @@ public class ClientSocket {
         }
     }
 
+    /**
+    *
+    *   Class constructor, receives a socket connection
+    */
     public ClientSocket(Socket socket) {
         this.socket = socket;
         try {
@@ -77,6 +80,10 @@ public class ClientSocket {
         return true;
     }
 
+    /**
+    *
+    *   Close the socket connection
+    */
     public void closeSocket() {
         try {
             this.socket.close();

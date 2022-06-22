@@ -1,27 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package LB.Entities;
 
 import Entities.Request;
 import java.util.concurrent.locks.ReentrantLock;
 import Communication.ClientSocket;
 import Utils.ServerStatusMessage;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.List;
 
+
 /**
  *
- * @author guids
+ * Load Balancer entity class
  */
 public class LoadBalancer {
     
     private boolean isPrimary = false;
     
-    private HashMap<Integer,Server> servers;
+    private final HashMap<Integer,Server> servers;
     private Server bestServer; 
     
     private final LinkedList<Request> requests;
@@ -30,6 +26,11 @@ public class LoadBalancer {
     
     private final ReentrantLock rl;
     
+    /**
+    *
+    * Load Balancer  class constructor
+    * @param lbId the load balancers ID
+    */
     public  LoadBalancer(int lbId){
         this.lbId = lbId;
         this.rl = new ReentrantLock();
@@ -37,31 +38,75 @@ public class LoadBalancer {
         this.servers = new HashMap<>();
     }
     
+    /**
+    *
+    * Set Load balancer as primary
+    * 
+    */
     public void setPrimary(){
         this.isPrimary = true;    
     }
     
+    /**
+    *
+    * see if Load balancer is primary
+    * 
+    * @return boolean isPrimary
+    */
     public boolean getPrimary(){
         return this.isPrimary;  
     }
     
+    /**
+    *
+    * get Load balancer iD
+    * 
+    * @return int ID
+    */
     public int getLoadBalencerID(){
         return lbId;
     }
     
+    /**
+    *
+    * Set Load balancer ID
+    * 
+    * @param lbId, the load balancer ID
+    */
     public void setLoadBalencerID(int lbId){
         this.lbId = lbId;
     }   
 
+    /**
+    *
+    * See if the load balancer is connected to server
+    * 
+     * @param serverId
+     * @return boolean
+    */
     public boolean hasServer(int serverId){
         return servers.containsKey(serverId);
     }
     
+    /**
+    *
+    * Get a server entity
+    * 
+     * @param serverId
+     * @return server object
+    */
     public Server getServer(int serverId){
         
         return servers.get(serverId);
     }
     
+    /**
+    *
+    * Make a new server connection
+    * 
+    * @param serverId
+    * @return server object
+    */
     public Server addServer(int serverId){
         
         // new server, needs to create a new connection
@@ -76,6 +121,12 @@ public class LoadBalancer {
         return s;
     }
     
+    /**
+    *
+    * Update servers 
+    * 
+    * @param status list of servers to be updated
+    */
     public void updateServers(List<ServerStatusMessage> status){
         
         int bNI = 100; // max ni slhoud not be more than 20
@@ -128,10 +179,22 @@ public class LoadBalancer {
        
     }
     
+    /**
+    *
+    * Get best server to send request
+    * 
+    * @return server object
+    */
     public Server getBestServer(){
         return bestServer;
     }
     
+    /**
+    *
+    * add a new Request
+    * 
+     * @param request
+    */
     public void addRequest(Request request){
         rl.lock();
         try {
@@ -142,6 +205,7 @@ public class LoadBalancer {
         
     }
     
+
     public Request getFirstRequest(){
         Request request;
         
@@ -154,6 +218,12 @@ public class LoadBalancer {
         return request;
     }
     
+    /**
+    *
+    * Delete server
+    * 
+    * @param serverId
+    */
     public void deleteServer(int serverId){
         servers.remove(serverId);
     }  
