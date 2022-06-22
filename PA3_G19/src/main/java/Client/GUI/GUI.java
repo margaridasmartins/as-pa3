@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Client.GUI;
 
 import Client.PClient;
@@ -13,9 +9,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
- * @author guids
- */
+*
+*  Client Main GUI
+*/
 public class GUI extends javax.swing.JFrame {
 
     private ClientSocket socket;

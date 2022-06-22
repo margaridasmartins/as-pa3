@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package LB.GUI;
 import LB.PLoadBalancer;
 import javax.swing.SwingConstants;
@@ -10,7 +6,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author guids
+ * Load Balancer main GUI
  */
 public class GUI extends javax.swing.JFrame {
 

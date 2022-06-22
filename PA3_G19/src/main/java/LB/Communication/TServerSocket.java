@@ -1,26 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package LB.Communication;
 import LB.Entities.LoadBalancer;
 import Communication.ClientSocket;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import LB.Handlers.TServerHandler;
+
 /**
  *
- * @author guids
+ * Server socket Load Balancer class
  */
-
 public class TServerSocket extends Thread{
     
     private final ServerSocket serverSocket;
     private final ClientSocket monitorSocket;
     private final LoadBalancer lb;
     
-    
+    /**
+    *
+    * Class constructor 
+    * @param portNumber the lB id 
+    * @param monitorSocket
+    * @param lb Load balancer entity
+    * @throws java.io.IOException
+    */
     public TServerSocket(int portNumber, ClientSocket monitorSocket, LoadBalancer lb) throws IOException{  
         this.serverSocket = new ServerSocket(portNumber);
         this.monitorSocket = monitorSocket;

@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Client.Handlers;
 
 import Client.GUI.GUI;
-import Utils.CodeMessages;
 import Utils.Message;
 import Utils.RequestMessage;
 import java.io.IOException;
@@ -15,14 +10,19 @@ import java.net.Socket;
 
 
 /**
- *
- * @author guids
- */
+*
+*   Class to handle server replies
+*/
 public class TReplyHandler extends Thread{
     
     private final Socket socket;
     private final GUI gui;
     
+    
+    /**
+    *
+    *   Class constructor, receives a socket connection as argument and the clients GUI
+    */
     public TReplyHandler(Socket socket, GUI gui){
         this.socket = socket; 
         this.gui = gui;

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Client;
 
 import Client.GUI.ConfigurationGUI;
@@ -13,7 +9,9 @@ import Client.Communication.TServerSocket;
  *
  * Client process class
  */
-import java.io.IOException;/**
+import java.io.IOException;
+
+/**
  *
  * Client process class
  */
@@ -59,12 +57,18 @@ public class PClient {
        
     }
     
+    /**
+     * set client port number and load balancer port
+     */
     public static void startClient(int portNumber, int loadBalancerPortNumber){
         PClient.portNumber = portNumber;
         PClient.loadBalancerPortNumber = loadBalancerPortNumber;
         PClient.started = true;
     }
     
+    /**
+     * terminate client process
+     */
     public static void terminate(){
         System.exit(0);
     }

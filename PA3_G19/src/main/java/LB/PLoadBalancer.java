@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package LB;
 
 import LB.GUI.ConfigurationGUI;
@@ -75,13 +71,23 @@ public class PLoadBalancer {
         serverSocket.start();
 
     }
-
+    
+    /**
+    *
+    *   start main load balancer GUI
+    *   @param portNumber
+    *   @param monitorPortNumber
+    */
     public static void startLoadBalancer(int portNumber, int monitorPortNumber) {
         PLoadBalancer.portNumber = portNumber;
         PLoadBalancer.monitorPortNumber = monitorPortNumber;
         PLoadBalancer.started = true;
     }
 
+    /**
+    *
+    *   terminate load balancer
+    */
     public static void terminate() {
         System.exit(0);
     }
